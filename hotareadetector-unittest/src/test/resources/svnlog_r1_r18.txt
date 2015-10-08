@@ -1,0 +1,124 @@
+------------------------------------------------------------------------
+r18 | user1 | 2015-04-13 17:45:34 +0200 (H, 13 ápr. 2015) | 1 line
+Changed paths:
+   M /trunk/myproject/mysecontext.txt
+   M /trunk/myproject/reallyalongtext.txt
+
+Modifications on two files, several places.
+------------------------------------------------------------------------
+r17 | user1 | 2015-04-08 17:42:58 +0200 (Sze, 08 ápr. 2015) | 1 line
+Changed paths:
+   M /trunk/myproject/reallyalongtext.txt
+
+Modifications on a long text.
+------------------------------------------------------------------------
+r16 | user1 | 2015-04-08 17:41:41 +0200 (Sze, 08 ápr. 2015) | 1 line
+Changed paths:
+   A /trunk/myproject/reallyalongtext.txt
+
+A really long text.
+------------------------------------------------------------------------
+r15 | user1 | 2015-04-08 17:39:43 +0200 (Sze, 08 ápr. 2015) | 1 line
+Changed paths:
+   M /trunk/myproject/longtext.txt
+   M /trunk/myproject/mysecontext.txt
+
+Some complex modifications.
+------------------------------------------------------------------------
+r14 | user1 | 2015-04-08 17:38:39 +0200 (Sze, 08 ápr. 2015) | 1 line
+Changed paths:
+   A /trunk/myproject/longtext.txt
+   M /trunk/myproject/mysecontext.txt
+
+Adding longer texts.
+------------------------------------------------------------------------
+r13 | user1 | 2015-04-02 09:26:11 +0200 (Cs, 02 ápr. 2015) | 1 line
+Changed paths:
+   A /trunk/myfolder/filename with spaces.txt
+
+Filename with spaces.
+------------------------------------------------------------------------
+r12 | user1 | 2015-04-01 17:47:28 +0200 (Sze, 01 ápr. 2015) | 4 lines
+Changed paths:
+   M /trunk/myfolder/myfile.txt
+
+This commit has multiple lines of comment.
+Second line.
+Third line.
+
+------------------------------------------------------------------------
+r11 | user2 | 2015-03-26 17:50:23 +0100 (Cs, 26 márc. 2015) | 1 line
+Changed paths:
+   A /trunk/myproject/myrenamedtext.txt (from /trunk/myproject/mytext.txt:9)
+   D /trunk/myproject/mytext.txt
+
+Rename.
+------------------------------------------------------------------------
+r10 | user1 | 2015-03-26 17:36:16 +0100 (Cs, 26 márc. 2015) | 1 line
+Changed paths:
+   A /trunk/myfolder
+   A /trunk/myfolder/myfile.txt
+
+New folder.
+------------------------------------------------------------------------
+r9 | user1 | 2015-03-26 17:35:21 +0100 (Cs, 26 márc. 2015) | 1 line
+Changed paths:
+   A /trunk/myproject/addnewfile.txt
+   D /trunk/myproject/myaddedfile.txt
+   M /trunk/myproject/mysecontext.txt
+   M /trunk/myproject/mytext.txt
+
+Very complex update.
+------------------------------------------------------------------------
+r8 | user1 | 2015-03-26 17:34:14 +0100 (Cs, 26 márc. 2015) | 1 line
+Changed paths:
+   A /trunk/myproject/myaddedfile.txt
+   M /trunk/myproject/mysecontext.txt
+   M /trunk/myproject/mytext.txt
+
+Complex modification.
+------------------------------------------------------------------------
+r7 | user2 | 2015-03-26 17:28:37 +0100 (Cs, 26 márc. 2015) | 1 line
+Changed paths:
+   M /trunk/myproject/mysecontext.txt
+
+Add a line by user2.
+------------------------------------------------------------------------
+r6 | user1 | 2015-03-26 17:26:26 +0100 (Cs, 26 márc. 2015) | 1 line
+Changed paths:
+   M /trunk/myproject/mysecontext.txt
+
+Within line modification.
+------------------------------------------------------------------------
+r5 | user1 | 2015-03-26 17:25:46 +0100 (Cs, 26 márc. 2015) | 1 line
+Changed paths:
+   M /trunk/myproject/mysecontext.txt
+
+My First modification.
+------------------------------------------------------------------------
+r4 | user1 | 2015-03-26 17:25:05 +0100 (Cs, 26 márc. 2015) | 1 line
+Changed paths:
+   A /trunk/myproject/mysecontext.txt
+
+Secon text file.
+------------------------------------------------------------------------
+r3 | user1 | 2015-03-26 17:20:29 +0100 (Cs, 26 márc. 2015) | 1 line
+Changed paths:
+   A /trunk/myproject/mytext.txt
+
+My first commit.
+------------------------------------------------------------------------
+r2 | VisualSVN Server | 2015-03-26 17:15:35 +0100 (Cs, 26 márc. 2015) | 1 line
+Changed paths:
+   A /trunk/myproject
+
+Created folder 'myproject'.
+------------------------------------------------------------------------
+r1 | VisualSVN Server | 2015-03-26 17:13:53 +0100 (Cs, 26 márc. 2015) | 1 line
+Changed paths:
+   A /branches
+   A /tags
+   A /trunk
+
+Initial structure.
+------------------------------------------------------------------------

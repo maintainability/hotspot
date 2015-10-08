@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<assembly>
+
+	<id>bin</id>
+	<formats>
+		<format>dir</format>
+	</formats>
+	
+	<includeBaseDirectory>false</includeBaseDirectory>
+	
+	<dependencySets>
+		<dependencySet>
+			<outputDirectory>deployment</outputDirectory>
+			<includes>
+				<include>maintainability:hotareadetector-core</include>
+				<include>maintainability:hotareadetector-svn</include>
+				<include>maintainability:hotareadetector-main</include>
+			</includes>
+		</dependencySet>
+		
+	</dependencySets>
+	
+</assembly>

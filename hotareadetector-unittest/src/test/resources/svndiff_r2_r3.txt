@@ -1,0 +1,6 @@
+Index: trunk/myproject/mytext.txt
+===================================================================
+--- trunk/myproject/mytext.txt	(revision 0)
++++ trunk/myproject/mytext.txt	(revision 3)
+@@ -0,0 +1 @@
++This is my first text file.

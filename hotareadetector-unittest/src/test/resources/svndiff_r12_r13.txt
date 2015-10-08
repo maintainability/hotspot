@@ -1,0 +1,6 @@
+Index: trunk/myfolder/filename with spaces.txt
+===================================================================
+--- trunk/myfolder/filename with spaces.txt	(revision 0)
++++ trunk/myfolder/filename with spaces.txt	(revision 13)
+@@ -0,0 +1 @@
++The name of this file contains spaces.

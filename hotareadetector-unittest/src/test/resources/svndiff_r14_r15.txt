@@ -1,0 +1,35 @@
+Index: trunk/myproject/mysecontext.txt
+===================================================================
+--- trunk/myproject/mysecontext.txt	(revision 14)
++++ trunk/myproject/mysecontext.txt	(revision 15)
+@@ -2,9 +2,8 @@
+ Added first line by user2.
+ This is my second text file.
+ This is new line, remove next.
+-New modification.
+ Making it longer.
+ And longer.
+ And longer.
+ And even longer.
+-Maybe enough...
++Maybe enough!
+Index: trunk/myproject/longtext.txt
+===================================================================
+--- trunk/myproject/longtext.txt	(revision 14)
++++ trunk/myproject/longtext.txt	(revision 15)
+@@ -1,13 +1,13 @@
+ First line.
+ Second line.
++Added line.
+ Blank line comes.
+ 
+ This is a line.
+ This is another line.
+-A line.
++A line with modification.
+ Another blank line.
+ 
+ A line to make the text longer.
+-This line will be deleted.
+ This is the last but first line.
+ Last line.

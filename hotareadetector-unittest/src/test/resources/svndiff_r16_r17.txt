@@ -1,0 +1,30 @@
+Index: trunk/myproject/reallyalongtext.txt
+===================================================================
+--- trunk/myproject/reallyalongtext.txt	(revision 16)
++++ trunk/myproject/reallyalongtext.txt	(revision 17)
+@@ -17,7 +17,7 @@
+ really
+ a
+ long
+-text.
++text!
+ 
+ This
+ is
+@@ -77,7 +77,6 @@
+ 
+ This
+ is
+-really
+ a
+ long
+ text.
+@@ -175,7 +174,7 @@
+ 
+ This
+ is
+-really
++really-really
+ a
+ long
+ text.

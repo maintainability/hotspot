@@ -1,0 +1,8 @@
+Index: trunk/myproject/mysecontext.txt
+===================================================================
+--- trunk/myproject/mysecontext.txt	(revision 5)
++++ trunk/myproject/mysecontext.txt	(revision 6)
+@@ -1,2 +1,2 @@
+-This is my second text.
++This is my second text file.
+ Added line by first user.

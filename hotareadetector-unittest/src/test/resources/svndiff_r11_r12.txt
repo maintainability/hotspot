@@ -1,0 +1,7 @@
+Index: trunk/myfolder/myfile.txt
+===================================================================
+--- trunk/myfolder/myfile.txt	(revision 11)
++++ trunk/myfolder/myfile.txt	(revision 12)
+@@ -1 +1,2 @@
+ My text.
++Adding text, with multiple lines of comment.

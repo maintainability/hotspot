@@ -1,0 +1,6 @@
+Index: trunk/myfolder/myfile.txt
+===================================================================
+--- trunk/myfolder/myfile.txt	(revision 0)
++++ trunk/myfolder/myfile.txt	(revision 10)
+@@ -0,0 +1 @@
++My text.

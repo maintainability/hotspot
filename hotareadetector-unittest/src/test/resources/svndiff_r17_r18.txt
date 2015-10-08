@@ -1,0 +1,45 @@
+Index: trunk/myproject/mysecontext.txt
+===================================================================
+--- trunk/myproject/mysecontext.txt	(revision 17)
++++ trunk/myproject/mysecontext.txt	(revision 18)
+@@ -1,9 +1,9 @@
+ Modifications in several lines.
+ Added first line by user2.
++Added line.
+ This is my second text file.
+ This is new line, remove next.
+-Making it longer.
+ And longer.
+ And longer.
+-And even longer.
++And even longer, with some modification.
+ Maybe enough!
+Index: trunk/myproject/reallyalongtext.txt
+===================================================================
+--- trunk/myproject/reallyalongtext.txt	(revision 17)
++++ trunk/myproject/reallyalongtext.txt	(revision 18)
+@@ -16,7 +16,7 @@
+ is
+ really
+ a
+-long
++long-long
+ text!
+ 
+ This
+@@ -59,6 +59,7 @@
+ really
+ a
+ long
++long
+ text.
+ 
+ This
+@@ -140,7 +141,6 @@
+ This
+ is
+ really
+-a
+ long
+ text.
+ 
