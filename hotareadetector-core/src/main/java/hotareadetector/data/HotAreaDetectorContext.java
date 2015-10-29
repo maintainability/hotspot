@@ -21,6 +21,8 @@ public class HotAreaDetectorContext {
 	private Integer revision = null;
 	private boolean saveLogsOnly = false;
 	private boolean atRNecessary = true;
+	private boolean ignoreChurn = false;
+	private boolean ignoreOwnership = false;
 
 	public String getSourceControlClientExecutor() {
 		return sourceControlClientExecutor;
@@ -144,6 +146,22 @@ public class HotAreaDetectorContext {
 
 	public void setAtRNecessary(boolean atRNecessary) {
 		this.atRNecessary = atRNecessary;
+	}
+
+	public boolean isIgnoreChurn() {
+		return ignoreChurn;
+	}
+
+	public void setIgnoreChurn(boolean ignoreChurn) {
+		this.ignoreChurn = ignoreChurn;
+	}
+
+	public boolean isIgnoreOwnership() {
+		return ignoreOwnership;
+	}
+
+	public void setIgnoreOwnership(boolean ignoreOwnership) {
+		this.ignoreOwnership = ignoreOwnership;
 	}
 
 }

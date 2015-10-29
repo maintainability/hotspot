@@ -30,9 +30,48 @@ public class HotAreaCalculatorTest {
 		CommitFileCell commitFileCell =  CommitFileCellGenerator.createCommitFileCellWithPredefinedValues();
 		HotAreaCalculator hotAreaCalculator = createHotAreaCalculator(true);
 		
-		Double hotNumber = hotAreaCalculator.calculateHotNumberCommitFileCell(commitFileCell);
+		Double hotNumber = hotAreaCalculator.calculateHotNumberCommitFileCell(commitFileCell, false, false);
 		
 		assertEquals(0.3, hotNumber, tolerance);
+	}
+	
+	/**
+	 * Test the hot number calculator with all information, no ownership.
+	 */
+	@Test
+	public void testCalculateHotNumberCommitFileCellDeepAnalysisNoOwnership() throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
+		CommitFileCell commitFileCell =  CommitFileCellGenerator.createCommitFileCellWithPredefinedValues();
+		HotAreaCalculator hotAreaCalculator = createHotAreaCalculator(true);
+		
+		Double hotNumber = hotAreaCalculator.calculateHotNumberCommitFileCell(commitFileCell, false, true);
+		
+		assertEquals(0.5, hotNumber, tolerance);
+	}
+	
+	/**
+	 * Test the hot number calculator with all information, no churn.
+	 */
+	@Test
+	public void testCalculateHotNumberCommitFileCellDeepAnalysisNoChurn() throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
+		CommitFileCell commitFileCell =  CommitFileCellGenerator.createCommitFileCellWithPredefinedValues();
+		HotAreaCalculator hotAreaCalculator = createHotAreaCalculator(true);
+		
+		Double hotNumber = hotAreaCalculator.calculateHotNumberCommitFileCell(commitFileCell, true, false);
+		
+		assertEquals(0.1, hotNumber, tolerance);
+	}
+	
+	/**
+	 * Test the hot number calculator with all information, neither ownership nor churn.
+	 */
+	@Test
+	public void testCalculateHotNumberCommitFileCellDeepAnalysisNoChurnNoOwnership() throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
+		CommitFileCell commitFileCell =  CommitFileCellGenerator.createCommitFileCellWithPredefinedValues();
+		HotAreaCalculator hotAreaCalculator = createHotAreaCalculator(true);
+		
+		Double hotNumber = hotAreaCalculator.calculateHotNumberCommitFileCell(commitFileCell, true, true);
+		
+		assertEquals(null, hotNumber);
 	}
 	
 	/**
@@ -43,7 +82,7 @@ public class HotAreaCalculatorTest {
 		CommitFileCell commitFileCell =  CommitFileCellGenerator.createCommitFileCellWithPredefinedValues();
 		HotAreaCalculator hotAreaCalculator = createHotAreaCalculator(false);
 		
-		Double hotNumber = hotAreaCalculator.calculateHotNumberCommitFileCell(commitFileCell);
+		Double hotNumber = hotAreaCalculator.calculateHotNumberCommitFileCell(commitFileCell, false, false);
 		
 		assertEquals(0.25, hotNumber, tolerance);
 	}
@@ -92,7 +131,7 @@ public class HotAreaCalculatorTest {
 		CommitFileMatrix commitFileMatrix = CommitFileMatrixGenerator.generateCommitFileMatrixRealExecution(deepAnalysis);
 		HotAreaCalculator hotAreaCalculator = new HotAreaCalculator(commitFileMatrix);
 		
-		List<HotNumber> hotNumbers = hotAreaCalculator.calculateHotNumbers();
+		List<HotNumber> hotNumbers = hotAreaCalculator.calculateHotNumbers(false, false);
 		
 		assertEquals(11, hotAreaCalculator.ownershipValues.size());
 		assertEquals(1, (int)hotAreaCalculator.ownershipValues.get(0));
@@ -230,7 +269,7 @@ public class HotAreaCalculatorTest {
 		CommitFileMatrix commitFileMatrix = CommitFileMatrixGenerator.generateCommitFileMatrixRealExecution(deepAnalysis);
 		HotAreaCalculator hotAreaCalculator = new HotAreaCalculator(commitFileMatrix, 5);
 		
-		List<HotNumber> hotNumbers = hotAreaCalculator.calculateHotNumbers();
+		List<HotNumber> hotNumbers = hotAreaCalculator.calculateHotNumbers(false, false);
 		
 		Map<String, Double> hotNumbersMap = createHotNumbersMap(hotNumbers);
 		

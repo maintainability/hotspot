@@ -94,7 +94,27 @@ public class ParameterHandler {
 				} else if ("false".compareToIgnoreCase(paramValue) == 0) {
 					context.setAtRNecessary(false);
 				} else {
-					throw new ParameterException("Parameter 'setAtRNecessary' must be either true or false (case insensitive), but was: " + paramValue + ".");
+					throw new ParameterException("Parameter 'atRNecessary' must be either true or false (case insensitive), but was: " + paramValue + ".");
+				}
+				break;
+				
+			case "-ignoreChurn":
+				if ("true".compareToIgnoreCase(paramValue) == 0) {
+					context.setIgnoreChurn(true);
+				} else if ("false".compareToIgnoreCase(paramValue) == 0) {
+					context.setIgnoreChurn(false);
+				} else {
+					throw new ParameterException("Parameter 'ignoreChurn' must be either true or false (case insensitive), but was: " + paramValue + ".");
+				}
+				break;
+				
+			case "-ignoreOwnership":
+				if ("true".compareToIgnoreCase(paramValue) == 0) {
+					context.setIgnoreOwnership(true);
+				} else if ("false".compareToIgnoreCase(paramValue) == 0) {
+					context.setIgnoreOwnership(false);
+				} else {
+					throw new ParameterException("Parameter 'ignoreOwnership' must be either true or false (case insensitive), but was: " + paramValue + ".");
 				}
 				break;
 				
@@ -123,6 +143,8 @@ public class ParameterHandler {
 		System.out.println("    -revision:        revision at which the analysis should be performed (e.g. 12345)");
 		System.out.println("    -saveLogsOnly:    true or false; indicates if full analysis should be performed (true) or just save the logs (false).");
 		System.out.println("    -atRNecessary:    true or false; indicates if the URL should be appended with @[revision] (true).");
+		System.out.println("    -ignoreChurn:     true or false; indicates if code churn should be ignored during calculation (false).");
+		System.out.println("    -ignoreOwnership: true or false; indicates if code ownership should be ignored during calculation (false).");
 	}
 
 }

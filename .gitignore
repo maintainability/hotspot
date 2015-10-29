@@ -3,3 +3,9 @@ hotareadetector-core/target/
 hotareadetector-main/target/
 hotareadetector-svn/target/
 hotareadetector-unittest/target/
+RemoteSystemsTempFiles/
+.metadata
+.recommenders
+hotareadetector-assembly/.classpath
+hotareadetector-assembly/.project
+hotareadetector-assembly/.settings/
