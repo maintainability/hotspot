@@ -1,5 +1,6 @@
 package hotareadetector.logic;
 
+import hotareadetector.data.AnalysisType;
 import hotareadetector.data.CommitFileCell;
 import hotareadetector.data.CommitFileMatrix;
 import hotareadetector.data.HotNumber;
@@ -22,6 +23,9 @@ public class HotAreaCalculator {
 	List<Integer> numberOfModifications = new ArrayList<Integer>();
 	List<Integer> churnValues = new ArrayList<Integer>();
 	List<Integer> churnValuesFiner = new ArrayList<Integer>();
+	
+	List<Integer> combinedValues = new ArrayList<Integer>();
+	
 	final int revision;
 
 	/**
@@ -56,6 +60,8 @@ public class HotAreaCalculator {
 				churnValues.add(fileData.getChurnValue());
 				churnValuesFiner.add(fileData.getChurnValueFiner());
 			}
+			
+			combinedValues.add(fileData.getNumberOfContributors() + fileData.getNumberOfModifications());
 		}
 		Collections.sort(ownershipValues);
 		Collections.sort(ownershipValuesToleranceOne);
@@ -63,15 +69,16 @@ public class HotAreaCalculator {
 		Collections.sort(numberOfModifications);
 		Collections.sort(churnValues);
 		Collections.sort(churnValuesFiner);
+		Collections.sort(combinedValues);
 	}
 
 	/**
 	 * Calculates hot numbers of each occurring file, with specific extensions only.
 	 */
-	public List<HotNumber> calculateHotNumbers(boolean ignoreChurn, boolean ignoreOwership) {
+	public List<HotNumber> calculateHotNumbers(AnalysisType analysisType) {
 		List<HotNumber> hotNumbers = new ArrayList<HotNumber>();
 		for (CommitFileCell fileData : fileDataListOfRevision) {
-			hotNumbers.add(new HotNumber(fileData.getFileName(), calculateHotNumberCommitFileCell(fileData, ignoreChurn, ignoreOwership)));
+			hotNumbers.add(new HotNumber(fileData.getFileName(), calculateHotNumberCommitFileCell(fileData, analysisType)));
 		}
 		Collections.sort(hotNumbers, Collections.reverseOrder());
 		return hotNumbers;
@@ -81,31 +88,46 @@ public class HotAreaCalculator {
 	 * Calculates the distribution position of a commit file cell, considering various ownership and churn values.
 	 * The relative positions are aggregated.
 	 */
-	protected Double calculateHotNumberCommitFileCell(CommitFileCell commitFileCell, boolean ignoreChurn, boolean ignoreOwership) {
-		Double[] aggregatedDistributionValues = new Double[2];
+	protected Double calculateHotNumberCommitFileCell(CommitFileCell commitFileCell, AnalysisType analysisType) {
+		Double result = null;
 		
-		if (!ignoreOwership) {
+		switch (analysisType) {
+		case CHURN:
+			result = Calculator.calculateDistributionValue(churnValuesFiner, commitFileCell.getChurnValueFiner());
+			break;
+			
+		case MODIFICATION:
+			result = Calculator.calculateDistributionValue(numberOfModifications, commitFileCell.getNumberOfModifications());
+			break;
+			
+		case OWNERSHIP:
+			result = Calculator.calculateDistributionValue(ownershipValues, commitFileCell.getNumberOfContributors());
+			break;
+			
+		case COMBINED:
+			result = Calculator.calculateDistributionValue(combinedValues, commitFileCell.getNumberOfContributors() + commitFileCell.getNumberOfModifications());
+			break;
+			
+		case FULL:
+			Double[] aggregatedDistributionValues = new Double[2];
+			
 			Double[] ownershipDistributionValues = new Double[3];
 			ownershipDistributionValues[0] = Calculator.calculateDistributionValue(ownershipValues, commitFileCell.getNumberOfContributors());
 			ownershipDistributionValues[1] = Calculator.calculateDistributionValue(ownershipValuesToleranceOne, commitFileCell.getNumberOfContributorsToleranceOne());
 			ownershipDistributionValues[2] = Calculator.calculateDistributionValue(ownershipValuesToleranceTwo, commitFileCell.getNumberOfContributorsToleranceTwo());
 			aggregatedDistributionValues[0] = Calculator.calculateAverage(ownershipDistributionValues);
-		} else {
-			aggregatedDistributionValues[0] = null;
-		}
 			
-		if (!ignoreChurn) {
 			Double[] churnDistributionValues = new Double[3];
 			churnDistributionValues[0] = Calculator.calculateDistributionValue(numberOfModifications, commitFileCell.getNumberOfModifications());
 			churnDistributionValues[1] = Calculator.calculateDistributionValue(churnValues, commitFileCell.getChurnValue());
 			churnDistributionValues[2] = Calculator.calculateDistributionValue(churnValuesFiner, commitFileCell.getChurnValueFiner());
 			aggregatedDistributionValues[1] = Calculator.calculateAverage(churnDistributionValues);
-		} else {
-			aggregatedDistributionValues[1] = null;
+			
+			result = Calculator.calculateAverage(aggregatedDistributionValues);
+			break;
 		}
 		
-		Double aggregatedDistributionValue = Calculator.calculateAverage(aggregatedDistributionValues);
-		return aggregatedDistributionValue;
+		return result;
 	}
 
 }

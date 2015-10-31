@@ -44,7 +44,7 @@ public class HotAreaDetectorCommandExecutor {
 			revision = context.getRevision();
 		}
 		HotAreaCalculator hotAreaCalculator = new HotAreaCalculator(commitFileMatrix, revision);
-		List<HotNumber> hotNumbers = hotAreaCalculator.calculateHotNumbers(context.isIgnoreChurn(), context.isIgnoreOwnership());
+		List<HotNumber> hotNumbers = hotAreaCalculator.calculateHotNumbers(context.getAnalysisType());
 		return hotNumbers;
 	}
 

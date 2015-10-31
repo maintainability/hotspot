@@ -3,6 +3,7 @@ package hotareadetector.data;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import static hotareadetector.data.AnalysisType.*;
 
 /**
  * Data necessary for command execution.
@@ -21,8 +22,7 @@ public class HotAreaDetectorContext {
 	private Integer revision = null;
 	private boolean saveLogsOnly = false;
 	private boolean atRNecessary = true;
-	private boolean ignoreChurn = false;
-	private boolean ignoreOwnership = false;
+	private AnalysisType analysisType = FULL;
 
 	public String getSourceControlClientExecutor() {
 		return sourceControlClientExecutor;
@@ -148,20 +148,25 @@ public class HotAreaDetectorContext {
 		this.atRNecessary = atRNecessary;
 	}
 
-	public boolean isIgnoreChurn() {
-		return ignoreChurn;
+	public AnalysisType getAnalysisType() {
+		return analysisType;
 	}
 
-	public void setIgnoreChurn(boolean ignoreChurn) {
-		this.ignoreChurn = ignoreChurn;
+	public void setAnalysisType(AnalysisType analysisType) {
+		this.analysisType = analysisType;
 	}
-
-	public boolean isIgnoreOwnership() {
-		return ignoreOwnership;
-	}
-
-	public void setIgnoreOwnership(boolean ignoreOwnership) {
-		this.ignoreOwnership = ignoreOwnership;
+	
+	private static String formattedAnalyisTypes = null;
+	
+	public static String getFormattedAnalyisTypes() {
+		if (formattedAnalyisTypes == null) {
+			String analysisTypeValues = "";
+			for (AnalysisType analysisType : AnalysisType.values()) {
+				analysisTypeValues += analysisType + ", ";
+			}
+			formattedAnalyisTypes = analysisTypeValues.substring(0, analysisTypeValues.length() - 2);
+		}
+		return formattedAnalyisTypes;
 	}
 
 }

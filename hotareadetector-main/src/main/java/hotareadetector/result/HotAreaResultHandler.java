@@ -31,7 +31,7 @@ public class HotAreaResultHandler {
 	public static void writeHotNumbersIntoFile(List<HotNumber> hotNumbers, String fileName) throws FileNotFoundException, UnsupportedEncodingException {
 		NumberFormat formatter = new DecimalFormat("#0.00000"); 
 		PrintWriter writer = new PrintWriter(fileName, "UTF-8");
-		writer.println("File name;Hot number");
+		writer.println("Name;Hotnr");
 		for (HotNumber hotNumber : hotNumbers) {
 			writer.println(hotNumber.getFileName() + ";" + formatter.format(hotNumber.getHotNumber()));
 		}
