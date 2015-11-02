@@ -84,7 +84,7 @@ public class HotAreaCalculatorTest {
 		
 		Double hotNumber = hotAreaCalculator.calculateHotNumberCommitFileCell(commitFileCell, COMBINED);
 		
-		assertEquals(0.3, hotNumber, tolerance);
+		assertEquals(0.4, hotNumber, tolerance);
 	}
 	
 	/**
@@ -109,7 +109,7 @@ public class HotAreaCalculatorTest {
 		List<Integer> valueList = new ArrayList<Integer>();
 		for (int i = 1; i <= 10; i++) {
 			valueList.add(i);
-			hotAreaCalculator.combinedValues.add(2 * i);
+			hotAreaCalculator.combinedValues.add(12 * i); // max ownership = 10 => (10 + 1) * i + i = 12 * i 
 		}
 		hotAreaCalculator.ownershipValues.addAll(valueList);
 		hotAreaCalculator.ownershipValuesToleranceOne.addAll(valueList);
@@ -200,17 +200,17 @@ public class HotAreaCalculatorTest {
 		assertEquals(9, (int)hotAreaCalculator.numberOfModifications.get(10));
 		
 		assertEquals(11, hotAreaCalculator.combinedValues.size());
-		assertEquals(2, (int)hotAreaCalculator.combinedValues.get(0));
-		assertEquals(2, (int)hotAreaCalculator.combinedValues.get(1));
-		assertEquals(2, (int)hotAreaCalculator.combinedValues.get(2));
-		assertEquals(2, (int)hotAreaCalculator.combinedValues.get(3));
-		assertEquals(2, (int)hotAreaCalculator.combinedValues.get(4));
-		assertEquals(2, (int)hotAreaCalculator.combinedValues.get(5));
-		assertEquals(2, (int)hotAreaCalculator.combinedValues.get(6));
-		assertEquals(3, (int)hotAreaCalculator.combinedValues.get(7));
-		assertEquals(3, (int)hotAreaCalculator.combinedValues.get(8));
-		assertEquals(4, (int)hotAreaCalculator.combinedValues.get(9));
-		assertEquals(11, (int)hotAreaCalculator.combinedValues.get(10));
+		assertEquals(4, (int)hotAreaCalculator.combinedValues.get(0));
+		assertEquals(4, (int)hotAreaCalculator.combinedValues.get(1));
+		assertEquals(4, (int)hotAreaCalculator.combinedValues.get(2));
+		assertEquals(4, (int)hotAreaCalculator.combinedValues.get(3));
+		assertEquals(4, (int)hotAreaCalculator.combinedValues.get(4));
+		assertEquals(4, (int)hotAreaCalculator.combinedValues.get(5));
+		assertEquals(4, (int)hotAreaCalculator.combinedValues.get(6));
+		assertEquals(7, (int)hotAreaCalculator.combinedValues.get(7));
+		assertEquals(7, (int)hotAreaCalculator.combinedValues.get(8));
+		assertEquals(10, (int)hotAreaCalculator.combinedValues.get(9));
+		assertEquals(29, (int)hotAreaCalculator.combinedValues.get(10));
 		
 		if (deepAnalysis) {
 			assertEquals(11, hotAreaCalculator.churnValues.size());

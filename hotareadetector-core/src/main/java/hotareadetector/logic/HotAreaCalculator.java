@@ -23,7 +23,6 @@ public class HotAreaCalculator {
 	List<Integer> numberOfModifications = new ArrayList<Integer>();
 	List<Integer> churnValues = new ArrayList<Integer>();
 	List<Integer> churnValuesFiner = new ArrayList<Integer>();
-	
 	List<Integer> combinedValues = new ArrayList<Integer>();
 	
 	final int revision;
@@ -61,7 +60,6 @@ public class HotAreaCalculator {
 				churnValuesFiner.add(fileData.getChurnValueFiner());
 			}
 			
-			combinedValues.add(fileData.getNumberOfContributors() + fileData.getNumberOfModifications());
 		}
 		Collections.sort(ownershipValues);
 		Collections.sort(ownershipValuesToleranceOne);
@@ -69,7 +67,14 @@ public class HotAreaCalculator {
 		Collections.sort(numberOfModifications);
 		Collections.sort(churnValues);
 		Collections.sort(churnValuesFiner);
-		Collections.sort(combinedValues);
+		
+		if (!ownershipValues.isEmpty()) {
+			int maxOwnershipValuePlusOne = ownershipValues.get(ownershipValues.size() - 1) + 1;
+			for (CommitFileCell fileData : fileDataListOfRevisionTemp) {
+				combinedValues.add(fileData.getNumberOfContributors() + maxOwnershipValuePlusOne * fileData.getNumberOfModifications());
+			}
+			Collections.sort(combinedValues);
+		}
 	}
 
 	/**
@@ -105,7 +110,10 @@ public class HotAreaCalculator {
 			break;
 			
 		case COMBINED:
-			result = Calculator.calculateDistributionValue(combinedValues, commitFileCell.getNumberOfContributors() + commitFileCell.getNumberOfModifications());
+			if (!ownershipValues.isEmpty()) {
+				int maxOwnershipValuePlusOne = ownershipValues.get(ownershipValues.size() - 1) + 1;
+				result = Calculator.calculateDistributionValue(combinedValues, commitFileCell.getNumberOfContributors() + maxOwnershipValuePlusOne * commitFileCell.getNumberOfModifications());
+			}
 			break;
 			
 		case FULL:
