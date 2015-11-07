@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import hotareadetector.mock.CommitFileCellGenerator;
@@ -238,7 +239,7 @@ public class CommitFileMatrixTest {
 	public void testPerformRename() {
 		CommitFileMatrix commitFileMatrix = CommitFileMatrixGenerator.generateCommitFileMatrixForDirectoryRename();
 		
-		List<CommitFileCell> renameResult = commitFileMatrix.performRename("/dir", "/renameddir", "user2", 2, null);
+		List<CommitFileCell> renameResult = commitFileMatrix.performRename("/dir", "/renameddir", "user2", new Date(), 2, null);
 		
 		Collections.sort(renameResult, new Comparator<CommitFileCell>() {
 			@Override

@@ -8,6 +8,7 @@ import hotareadetector.util.Calculator;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,9 +21,14 @@ public class HotAreaCalculator {
 	List<Integer> ownershipValues = new ArrayList<Integer>();
 	List<Integer> ownershipValuesToleranceOne = new ArrayList<Integer>();
 	List<Integer> ownershipValuesToleranceTwo = new ArrayList<Integer>();
+	
 	List<Integer> numberOfModifications = new ArrayList<Integer>();
 	List<Integer> churnValues = new ArrayList<Integer>();
 	List<Integer> churnValuesFiner = new ArrayList<Integer>();
+	
+	List<Date> addedDates = new ArrayList<Date>();
+	List<Date> lastModifiedDates = new ArrayList<Date>();
+	
 	List<Integer> combinedValues = new ArrayList<Integer>();
 	
 	final int revision;
@@ -59,7 +65,8 @@ public class HotAreaCalculator {
 				churnValues.add(fileData.getChurnValue());
 				churnValuesFiner.add(fileData.getChurnValueFiner());
 			}
-			
+			addedDates.add(fileData.getDateAdded());
+			lastModifiedDates.add(fileData.getDateLastModified());
 		}
 		Collections.sort(ownershipValues);
 		Collections.sort(ownershipValuesToleranceOne);
@@ -67,6 +74,8 @@ public class HotAreaCalculator {
 		Collections.sort(numberOfModifications);
 		Collections.sort(churnValues);
 		Collections.sort(churnValuesFiner);
+		Collections.sort(addedDates);
+		Collections.sort(lastModifiedDates);
 		
 		if (!ownershipValues.isEmpty()) {
 			int maxOwnershipValuePlusOne = ownershipValues.get(ownershipValues.size() - 1) + 1;
@@ -107,6 +116,14 @@ public class HotAreaCalculator {
 			
 		case OWNERSHIP:
 			result = Calculator.calculateDistributionValue(ownershipValues, commitFileCell.getNumberOfContributors());
+			break;
+			
+		case DATEADDED:
+			result = Calculator.calculateDistributionValue(addedDates, commitFileCell.getDateAdded());
+			break;
+			
+		case DATEMODIFIED:
+			result = Calculator.calculateDistributionValue(lastModifiedDates, commitFileCell.getDateLastModified());
 			break;
 			
 		case COMBINED:

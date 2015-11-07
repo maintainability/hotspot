@@ -4,6 +4,7 @@ import hotareadetector.util.StringUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -136,7 +137,7 @@ public class CommitFileMatrix {
 	/**
 	 * Performs rename. It handles the directory rename as well.
 	 */
-	public List<CommitFileCell> performRename(String fromName, String toName, String developer, int revision, FileDiffInformation relatedFileDiff) {
+	public List<CommitFileCell> performRename(String fromName, String toName, String developer, Date date, int revision, FileDiffInformation relatedFileDiff) {
 		List<CommitFileCell> renamedEntries = new ArrayList<CommitFileCell>();
 		for (Entry<String, List<CommitFileCell>> fileEntry: files.entrySet()) {
 			String fileName = fileEntry.getKey();
@@ -147,7 +148,7 @@ public class CommitFileMatrix {
 				}
 				CommitFileCell latestInfoBeforeRename = fileEntry.getValue().get(0);
 				if (latestInfoBeforeRename != null) {
-					CommitFileCell actualRenamedEntry = latestInfoBeforeRename.cloneRenamed(toName + tail, developer, revision, relatedFileDiff);
+					CommitFileCell actualRenamedEntry = latestInfoBeforeRename.cloneRenamed(toName + tail, developer, date, revision, relatedFileDiff);
 					renamedEntries.add(actualRenamedEntry);
 				} else {
 					System.out.println("The history of a renamed file is not found. Normally this should not occur. Information for investigation:");

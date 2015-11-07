@@ -87,7 +87,7 @@ public class SourceControlLogic {
 				break;
 				
 			case R:
-				List<CommitFileCell> renameResult = commitFileMatrix.performRename(commitedFile.getFromFileName(), commitedFile.getFileName(), commitData.getDeveloper(), commitData.getRevisionNumber(), relatedFileDiff);
+				List<CommitFileCell> renameResult = commitFileMatrix.performRename(commitedFile.getFromFileName(), commitedFile.getFileName(), commitData.getDeveloper(), commitData.getDate(), commitData.getRevisionNumber(), relatedFileDiff);
 				result.addAll(renameResult);
 				break;
 				
@@ -115,6 +115,8 @@ public class SourceControlLogic {
 				}
 				actualCommitFile.addContributors(fileDataLatest.getContributors());
 				actualCommitFile.addContributor(commitData.getDeveloper());
+				actualCommitFile.addModificationDates(fileDataLatest.getModificationDates());
+				actualCommitFile.addModificationDate(commitData.getDate());
 				actualCommitFile.setFinished();
 			}
 		}

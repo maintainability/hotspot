@@ -1,5 +1,6 @@
 package hotareadetector.util;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,6 +21,23 @@ public class Calculator {
 		int numberOfLowerElements = 0;
 		for (int i = 0; i < allValues.size(); i++) {
 			if (allValues.get(i) < valueToCheck) {
+				numberOfLowerElements++;
+			}
+		}
+		double result = 1.0 * numberOfLowerElements / allValues.size();
+		return  result;
+	}
+	
+	/**
+	 * Calculates the distribution position of a date within a date of lists, using the same logic as above.
+	 */
+	public static Double calculateDistributionValue(List<Date> allValues, Date valueToCheck) {
+		if (allValues == null || allValues.isEmpty()) {
+			return null;
+		}
+		int numberOfLowerElements = 0;
+		for (int i = 0; i < allValues.size(); i++) {
+			if (allValues.get(i).before(valueToCheck)) {
 				numberOfLowerElements++;
 			}
 		}

@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -199,6 +200,32 @@ public class HotAreaCalculatorTest {
 		assertEquals(3, (int)hotAreaCalculator.numberOfModifications.get(9));
 		assertEquals(9, (int)hotAreaCalculator.numberOfModifications.get(10));
 		
+		assertEquals(11, hotAreaCalculator.addedDates.size());
+		assertEquals(new Date(1427386433000l), hotAreaCalculator.addedDates.get(0));
+		assertEquals(new Date(1427386433000l), hotAreaCalculator.addedDates.get(1));
+		assertEquals(new Date(1427386433000l), hotAreaCalculator.addedDates.get(2));
+		assertEquals(new Date(1427386535000l), hotAreaCalculator.addedDates.get(3));
+		assertEquals(new Date(1427387105000l), hotAreaCalculator.addedDates.get(4));
+		assertEquals(new Date(1427387721000l), hotAreaCalculator.addedDates.get(5));
+		assertEquals(new Date(1427387776000l), hotAreaCalculator.addedDates.get(6));
+		assertEquals(new Date(1427387776000l), hotAreaCalculator.addedDates.get(7));
+		assertEquals(new Date(1427959571000l), hotAreaCalculator.addedDates.get(8));
+		assertEquals(new Date(1428507519000l), hotAreaCalculator.addedDates.get(9));
+		assertEquals(new Date(1428507701000l), hotAreaCalculator.addedDates.get(10));
+		
+		assertEquals(11, hotAreaCalculator.lastModifiedDates.size());
+		assertEquals(new Date(1427386433000l), hotAreaCalculator.lastModifiedDates.get(0));
+		assertEquals(new Date(1427386433000l), hotAreaCalculator.lastModifiedDates.get(1));
+		assertEquals(new Date(1427386433000l), hotAreaCalculator.lastModifiedDates.get(2));
+		assertEquals(new Date(1427386535000l), hotAreaCalculator.lastModifiedDates.get(3));
+		assertEquals(new Date(1427387721000l), hotAreaCalculator.lastModifiedDates.get(4));
+		assertEquals(new Date(1427387776000l), hotAreaCalculator.lastModifiedDates.get(5));
+		assertEquals(new Date(1427387776000l), hotAreaCalculator.lastModifiedDates.get(6));
+		assertEquals(new Date(1427959571000l), hotAreaCalculator.lastModifiedDates.get(7));
+		assertEquals(new Date(1428507519000l), hotAreaCalculator.lastModifiedDates.get(8));
+		assertEquals(new Date(1428507583000l), hotAreaCalculator.lastModifiedDates.get(9));
+		assertEquals(new Date(1428507778000l), hotAreaCalculator.lastModifiedDates.get(10));
+		
 		assertEquals(11, hotAreaCalculator.combinedValues.size());
 		assertEquals(4, (int)hotAreaCalculator.combinedValues.get(0));
 		assertEquals(4, (int)hotAreaCalculator.combinedValues.get(1));
@@ -271,6 +298,55 @@ public class HotAreaCalculatorTest {
 			assertEquals(0.0, hotNumbersMap.get("/tags"), tolerance);
 			assertEquals(0.0, hotNumbersMap.get("/trunk"), tolerance);
 		}
+	}
+	
+	/**
+	 * Check hot numbers of dates added.
+	 */
+	@Test
+	public void testDateAdded() throws IOException {
+		CommitFileMatrix commitFileMatrix = CommitFileMatrixGenerator.generateCommitFileMatrixRealExecution(false);
+		HotAreaCalculator hotAreaCalculator = new HotAreaCalculator(commitFileMatrix);
+		
+		List<HotNumber> hotNumbers = hotAreaCalculator.calculateHotNumbers(DATEADDED);
+		
+		Map<String, Double> hotNumbersMap = createHotNumbersMap(hotNumbers);
+		assertEquals(11, hotNumbersMap.size());
+		assertEquals(0.90909, hotNumbersMap.get("/trunk/myproject/reallyalongtext.txt"), tolerance);
+		assertEquals(0.81818, hotNumbersMap.get("/trunk/myproject/longtext.txt"), tolerance);
+		assertEquals(0.72727, hotNumbersMap.get("/trunk/myfolder/filename with spaces.txt"), tolerance);
+		assertEquals(0.54545, hotNumbersMap.get("/trunk/myfolder"), tolerance);
+		assertEquals(0.54545, hotNumbersMap.get("/trunk/myfolder/myfile.txt"), tolerance);
+		assertEquals(0.45454, hotNumbersMap.get("/trunk/myproject/addnewfile.txt"), tolerance);
+		assertEquals(0.36363, hotNumbersMap.get("/trunk/myproject/mysecontext.txt"), tolerance);
+		assertEquals(0.27272, hotNumbersMap.get("/trunk/myproject"), tolerance);
+		assertEquals(0.0, hotNumbersMap.get("/branches"), tolerance);
+		assertEquals(0.0, hotNumbersMap.get("/tags"), tolerance);
+		assertEquals(0.0, hotNumbersMap.get("/trunk"), tolerance);
+	}
+
+	/**
+	 * Check hot numbers of dates last modified.
+	 */
+	@Test
+	public void testDateLastModified() throws IOException {
+		CommitFileMatrix commitFileMatrix = CommitFileMatrixGenerator.generateCommitFileMatrixRealExecution(false);
+		HotAreaCalculator hotAreaCalculator = new HotAreaCalculator(commitFileMatrix);
+		
+		List<HotNumber> hotNumbers = hotAreaCalculator.calculateHotNumbers(DATEMODIFIED);
+		Map<String, Double> hotNumbersMap = createHotNumbersMap(hotNumbers);
+		assertEquals(11, hotNumbersMap.size());
+		assertEquals(0.90909, hotNumbersMap.get("/trunk/myproject/reallyalongtext.txt"), tolerance);
+		assertEquals(0.72727, hotNumbersMap.get("/trunk/myproject/longtext.txt"), tolerance);
+		assertEquals(0.63636, hotNumbersMap.get("/trunk/myfolder/filename with spaces.txt"), tolerance);
+		assertEquals(0.45454, hotNumbersMap.get("/trunk/myfolder"), tolerance);
+		assertEquals(0.45454, hotNumbersMap.get("/trunk/myfolder/myfile.txt"), tolerance);
+		assertEquals(0.36363, hotNumbersMap.get("/trunk/myproject/addnewfile.txt"), tolerance);
+		assertEquals(0.81818, hotNumbersMap.get("/trunk/myproject/mysecontext.txt"), tolerance);
+		assertEquals(0.27272, hotNumbersMap.get("/trunk/myproject"), tolerance);
+		assertEquals(0.0, hotNumbersMap.get("/branches"), tolerance);
+		assertEquals(0.0, hotNumbersMap.get("/tags"), tolerance);
+		assertEquals(0.0, hotNumbersMap.get("/trunk"), tolerance);
 	}
 
 	/**

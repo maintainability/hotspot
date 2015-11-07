@@ -3,6 +3,7 @@ package hotareadetector.data;
 import hotareadetector.logic.SourceControlLogic;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -34,6 +35,10 @@ public class CommitFileCell {
 	
 	// calculated from + and - signs
 	private int churnValueFiner = 0;
+	
+	private List<Date> modificationDates = new ArrayList<Date>();
+	private Date dateAdded = null;
+	private Date dateLastModified = null;
 
 	/**
 	 * Calculate the number of different contributors with 0, 1 and 2 tolerances, and set the object finished.
@@ -60,6 +65,19 @@ public class CommitFileCell {
 		Set<String> contributorsToleranceTwoSet = new HashSet<String>();
 		contributorsToleranceTwoSet.addAll(contributorsToleranceTwo);
 		numberOfContributorsToleranceTwo = contributorsToleranceTwoSet.size();
+		
+		int modificationDatesSize = modificationDates.size();
+		if (modificationDatesSize > 0) {
+			dateAdded = modificationDates.get(0);
+			dateLastModified = modificationDates.get(modificationDatesSize - 1);
+			// The last but first date is considered if available.
+			// Reason: in the most cases the last action before release is a directory rename of the complete directory.
+			// Therefore the real last modification will be the same for all files.
+			// Therefore the last but first date is more relevant.
+			if (modificationDatesSize > 1) {
+				dateLastModified = modificationDates.get(modificationDatesSize - 2);
+			}
+		}
 		
 		finished = true;
 	}
@@ -149,10 +167,34 @@ public class CommitFileCell {
 		this.latestOperation = latestOperation;
 	}
 	
+	public void addModificationDate(Date modificationDate) {
+		assert(!finished);
+		modificationDates.add(modificationDate);
+	}
+	
+	public void addModificationDates(List<Date> modificationDatesParam) {
+		assert(!finished);
+		modificationDates.addAll(modificationDatesParam);
+	}
+	
+	public Date getDateAdded() {
+		return dateAdded;
+	}
+	
+	public Date getDateLastModified() {
+		return dateLastModified;
+	}
+	
+	public List<Date> getModificationDates() {
+		List<Date> modificationDatesLocal = new ArrayList<Date>();
+		modificationDatesLocal.addAll(modificationDates);
+		return modificationDatesLocal;
+	}
+
 	/**
 	 * Creates a clone about the current commit file cell, with modifications necessary for rename.
 	 */
-	public CommitFileCell cloneRenamed(String newFileName, String contributor, int newRevision, FileDiffInformation relatedFileDiff) {
+	public CommitFileCell cloneRenamed(String newFileName, String contributor, Date date, int newRevision, FileDiffInformation relatedFileDiff) {
 		CommitFileCell clone = new CommitFileCell();
 		clone.churnValue = churnValue;
 		clone.churnValueFiner = churnValueFiner;
@@ -167,8 +209,12 @@ public class CommitFileCell {
 		clone.finished = false;
 		clone.latestOperation = OperationType.R;
 		clone.numberOfModifications = numberOfModifications + 1;
+		clone.modificationDates = new ArrayList<Date>();
+		clone.modificationDates.addAll(modificationDates);
+		clone.modificationDates.add(date);
 		clone.revision = newRevision;
 		clone.setFinished();
 		return clone;
 	}
+
 }

@@ -20,8 +20,7 @@ public class ParameterHandler {
 		for (String arg : args) {
 			int equalSignIndex = arg.indexOf('=');
 			if (equalSignIndex < 0) {
-				throw new ParameterException(
-						"Parameter format must be arg=param. The following parameter doesn't comply this: " + arg);
+				throw new ParameterException("Parameter format must be arg=param. The following parameter doesn't comply this: " + arg);
 			}
 			String paramName = arg.substring(0, equalSignIndex);
 			String paramValue = arg.substring(equalSignIndex + 1);
@@ -48,9 +47,7 @@ public class ParameterHandler {
 				} else if ("false".compareToIgnoreCase(paramValue) == 0) {
 					context.setDeepAnalysis(false);
 				} else {
-					throw new ParameterException(
-							"Parameter 'deepAnalysis' must be either true or false (case insensitive), but was: "
-									+ paramValue + ".");
+					throw new ParameterException("Parameter 'deepAnalysis' must be either true or false (case insensitive), but was: " + paramValue + ".");
 				}
 				break;
 
@@ -80,9 +77,7 @@ public class ParameterHandler {
 				} else if ("false".compareToIgnoreCase(paramValue) == 0) {
 					context.setSaveLogsOnly(false);
 				} else {
-					throw new ParameterException(
-							"Parameter 'saveLogsOnly' must be either true or false (case insensitive), but was: "
-									+ paramValue + ".");
+					throw new ParameterException("Parameter 'saveLogsOnly' must be either true or false (case insensitive), but was: " + paramValue + ".");
 				}
 				break;
 
@@ -90,9 +85,7 @@ public class ParameterHandler {
 				try {
 					context.setRevision(Integer.parseInt(paramValue));
 				} catch (NumberFormatException e) {
-					throw new ParameterException(
-							"Format of parameter revison is invalid. Should be numeric, e.g. 12345, but was "
-									+ paramValue + ".");
+					throw new ParameterException("Format of parameter revison is invalid. Should be numeric, e.g. 12345, but was " + paramValue + ".");
 				}
 				break;
 
@@ -102,9 +95,7 @@ public class ParameterHandler {
 				} else if ("false".compareToIgnoreCase(paramValue) == 0) {
 					context.setAtRNecessary(false);
 				} else {
-					throw new ParameterException(
-							"Parameter 'atRNecessary' must be either true or false (case insensitive), but was: "
-									+ paramValue + ".");
+					throw new ParameterException("Parameter 'atRNecessary' must be either true or false (case insensitive), but was: " + paramValue + ".");
 				}
 				break;
 
@@ -112,8 +103,7 @@ public class ParameterHandler {
 				try {
 					context.setAnalysisType(AnalysisType.valueOf(paramValue));
 				} catch (IllegalArgumentException iae) {
-					throw new ParameterException("Wrong 'analysisType'; must be one of "
-							+ HotAreaDetectorContext.getFormattedAnalyisTypes() + ", but was: " + paramValue + ".");
+					throw new ParameterException("Wrong 'analysisType'; must be one of " + HotAreaDetectorContext.getFormattedAnalyisTypes() + ", but was: " + paramValue + ".");
 				}
 				break;
 
@@ -130,25 +120,19 @@ public class ParameterHandler {
 	 */
 	public static void printUsage() {
 		System.out.println("The parameter format must be param=value. Parameters:");
-		System.out.println(
-				"    -client:          if the type is svn, then the executable svn client, else it must be omitted.");
+		System.out.println("    -client:          if the type is svn, then the executable svn client, else it must be omitted.");
 		System.out.println("    -userName:        if the type is svn, then the user name, else it must be omitted.");
 		System.out.println("    -password:        if the type is svn, then the password, else it must be omitted.");
-		System.out.println(
-				"    -deepAnalysis:    true or false; indicates if deep analyisis (executing diffs on each revision) should be performed.");
+		System.out.println("    -deepAnalysis:    true or false; indicates if deep analyisis (executing diffs on each revision) should be performed.");
 		System.out.println("    -dirName:         name of the directory where the logs reside");
-		System.out.println(
-				"    -outputFileName:  name of the result file. If set, then the result is written to that file. If not set, then the result is written on the console.");
+		System.out.println("    -outputFileName:  name of the result file. If set, then the result is written to that file. If not set, then the result is written on the console.");
 		System.out.println("    -extensions:      extensions to consider, e.g. java,xml (use empty for folders)");
 		System.out.println("    -includePrefixes: prefixes of the paths to consider only (e.g. /trunk/myproject)");
 		System.out.println("    -excludePrefixes: prefixes to exclude from analysis (e.g. /trunk/myproject/test)");
 		System.out.println("    -revision:        revision at which the analysis should be performed (e.g. 12345)");
-		System.out.println(
-				"    -saveLogsOnly:    true or false; indicates if full analysis should be performed (true) or just save the logs (false).");
-		System.out.println(
-				"    -atRNecessary:    true or false; indicates if the URL should be appended with @[revision] (true).");
-		System.out.println("    -analysisType:    " + HotAreaDetectorContext.getFormattedAnalyisTypes()
-				+ "; indicates the type of the analysis (FULL).");
+		System.out.println("    -saveLogsOnly:    true or false; indicates if full analysis should be performed (true) or just save the logs (false).");
+		System.out.println("    -atRNecessary:    true or false; indicates if the URL should be appended with @[revision] (true).");
+		System.out.println("    -analysisType:    " + HotAreaDetectorContext.getFormattedAnalyisTypes() + "; indicates the type of the analysis (FULL).");
 	}
 
 }

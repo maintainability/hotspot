@@ -3,6 +3,7 @@ package hotareadetector.util;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
@@ -300,6 +301,23 @@ public class CalculatorTest {
 		Double result = Calculator.calculateDistributionValue(allValues, valueToCheck);
 		
 		assertEquals(null, result);
+	}
+	
+	/**
+	 * Check distribution value of dates.
+	 */
+	@Test
+	public void testCalculateDistributionValueDate() {
+		List<Date> allValues = new ArrayList<Date>();
+		long now = new Date().getTime();
+		for (long i = 0; i < 10; i++) {
+			allValues.add(new Date(now + i));
+		}
+		Date valueToCheck = new Date(now + 3);
+		
+		Double result = Calculator.calculateDistributionValue(allValues, valueToCheck);
+		
+		assertEquals(0.3, result, tolerance);
 	}
 
 }
