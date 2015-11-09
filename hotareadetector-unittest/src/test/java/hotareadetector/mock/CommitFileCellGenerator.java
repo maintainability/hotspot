@@ -55,8 +55,8 @@ public class CommitFileCellGenerator {
 		commitFileCell11.setFileName("Main.java");
 		commitFileCell11.setRevision(1);
 		commitFileCell11.setNumberOfModifications(1);
-		commitFileCell11.setChurnValue(5);
-		commitFileCell11.setChurnValueFiner(5);
+		commitFileCell11.setChurnValueCoarse(5);
+		commitFileCell11.setChurnValueFine(5);
 		commitFileCell11.addContributor("mike");
 		commitFileCell11.setLatestOperation(OperationType.A);
 		
@@ -64,8 +64,8 @@ public class CommitFileCellGenerator {
 		commitFileCell12.setFileName("Game.java");
 		commitFileCell12.setRevision(1);
 		commitFileCell12.setNumberOfModifications(1);
-		commitFileCell12.setChurnValue(10);
-		commitFileCell12.setChurnValueFiner(10);
+		commitFileCell12.setChurnValueCoarse(10);
+		commitFileCell12.setChurnValueFine(10);
 		commitFileCell12.addContributor("mike");
 		commitFileCell12.setLatestOperation(OperationType.A);
 		
@@ -73,8 +73,8 @@ public class CommitFileCellGenerator {
 		commitFileCell13.setFileName("Test.java");
 		commitFileCell13.setRevision(1);
 		commitFileCell13.setNumberOfModifications(1);
-		commitFileCell13.setChurnValue(1);
-		commitFileCell13.setChurnValueFiner(1);
+		commitFileCell13.setChurnValueCoarse(1);
+		commitFileCell13.setChurnValueFine(1);
 		commitFileCell13.addContributor("mike");
 		commitFileCell13.setLatestOperation(OperationType.A);
 		
@@ -94,8 +94,8 @@ public class CommitFileCellGenerator {
 		commitFileCell21.setFileName("Game.java");
 		commitFileCell21.setRevision(2);
 		commitFileCell21.setNumberOfModifications(2);
-		commitFileCell21.setChurnValue(25);
-		commitFileCell21.setChurnValueFiner(15);
+		commitFileCell21.setChurnValueCoarse(25);
+		commitFileCell21.setChurnValueFine(15);
 		commitFileCell21.addContributor("mike");
 		commitFileCell21.addContributor("sully");
 		commitFileCell21.setLatestOperation(OperationType.M);
@@ -104,8 +104,8 @@ public class CommitFileCellGenerator {
 		commitFileCell22.setFileName("Data.java");
 		commitFileCell22.setRevision(2);
 		commitFileCell22.setNumberOfModifications(1);
-		commitFileCell22.setChurnValue(20);
-		commitFileCell22.setChurnValueFiner(20);
+		commitFileCell22.setChurnValueCoarse(20);
+		commitFileCell22.setChurnValueFine(20);
 		commitFileCell22.addContributor("sully");
 		commitFileCell22.setLatestOperation(OperationType.M);
 		
@@ -113,8 +113,8 @@ public class CommitFileCellGenerator {
 		commitFileCell23.setFileName("Test.java");
 		commitFileCell23.setRevision(2);
 		commitFileCell23.setNumberOfModifications(2);
-		commitFileCell23.setChurnValue(2);
-		commitFileCell23.setChurnValueFiner(2);
+		commitFileCell23.setChurnValueCoarse(2);
+		commitFileCell23.setChurnValueFine(2);
 		commitFileCell23.addContributor("sully");
 		commitFileCell23.setLatestOperation(OperationType.D);
 		
@@ -134,8 +134,8 @@ public class CommitFileCellGenerator {
 		commitFileCell31.setFileName("Main.java");
 		commitFileCell31.setRevision(3);
 		commitFileCell31.setNumberOfModifications(2);
-		commitFileCell31.setChurnValue(10);
-		commitFileCell31.setChurnValueFiner(10);
+		commitFileCell31.setChurnValueCoarse(10);
+		commitFileCell31.setChurnValueFine(10);
 		commitFileCell31.addContributor("mike");
 		commitFileCell31.addContributor("mike");
 		commitFileCell31.setLatestOperation(OperationType.M);
@@ -154,8 +154,8 @@ public class CommitFileCellGenerator {
 		commitFileCell1.setFileName("/dir");
 		commitFileCell1.setRevision(1);
 		commitFileCell1.setNumberOfModifications(1);
-		commitFileCell1.setChurnValue(0);
-		commitFileCell1.setChurnValueFiner(0);
+		commitFileCell1.setChurnValueCoarse(0);
+		commitFileCell1.setChurnValueFine(0);
 		commitFileCell1.addContributor("user1");
 		commitFileCell1.setLatestOperation(OperationType.A);
 		
@@ -163,8 +163,8 @@ public class CommitFileCellGenerator {
 		commitFileCell2.setFileName("/dir/file1.txt");
 		commitFileCell2.setRevision(1);
 		commitFileCell2.setNumberOfModifications(1);
-		commitFileCell2.setChurnValue(5);
-		commitFileCell2.setChurnValueFiner(2);
+		commitFileCell2.setChurnValueCoarse(5);
+		commitFileCell2.setChurnValueFine(2);
 		commitFileCell2.addContributor("user1");
 		commitFileCell2.setLatestOperation(OperationType.A);
 		
@@ -172,8 +172,8 @@ public class CommitFileCellGenerator {
 		commitFileCell3.setFileName("/dir/file2.txt");
 		commitFileCell3.setRevision(1);
 		commitFileCell3.setNumberOfModifications(1);
-		commitFileCell3.setChurnValue(10);
-		commitFileCell3.setChurnValueFiner(7);
+		commitFileCell3.setChurnValueCoarse(10);
+		commitFileCell3.setChurnValueFine(7);
 		commitFileCell3.addContributor("user1");
 		commitFileCell3.setLatestOperation(OperationType.A);
 		
@@ -181,8 +181,8 @@ public class CommitFileCellGenerator {
 		commitFileCell4.setFileName("/dir2");
 		commitFileCell4.setRevision(1);
 		commitFileCell4.setNumberOfModifications(1);
-		commitFileCell4.setChurnValue(0);
-		commitFileCell4.setChurnValueFiner(0);
+		commitFileCell4.setChurnValueCoarse(0);
+		commitFileCell4.setChurnValueFine(0);
 		commitFileCell4.addContributor("user1");
 		commitFileCell4.setLatestOperation(OperationType.A);
 		
@@ -190,8 +190,8 @@ public class CommitFileCellGenerator {
 		commitFileCell5.setFileName("/dir2/file1.txt");
 		commitFileCell5.setRevision(1);
 		commitFileCell5.setNumberOfModifications(1);
-		commitFileCell5.setChurnValue(15);
-		commitFileCell5.setChurnValueFiner(12);
+		commitFileCell5.setChurnValueCoarse(15);
+		commitFileCell5.setChurnValueFine(12);
 		commitFileCell5.addContributor("user1");
 		commitFileCell5.setLatestOperation(OperationType.A);
 		
@@ -210,8 +210,8 @@ public class CommitFileCellGenerator {
 	 */
 	public static CommitFileCell createCommitFileCellWithPredefinedValues() throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
 		CommitFileCell commitFileCell = new CommitFileCell();
-		setPrivateField(commitFileCell, "churnValue", 7);
-		setPrivateField(commitFileCell, "churnValueFiner", 6);
+		setPrivateField(commitFileCell, "churnValueCoarse", 7);
+		setPrivateField(commitFileCell, "churnValueFine", 6);
 		setPrivateField(commitFileCell, "numberOfModifications", 5);
 		setPrivateField(commitFileCell, "numberOfContributors", 3);
 		setPrivateField(commitFileCell, "numberOfContributorsToleranceOne", 2);

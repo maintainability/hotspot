@@ -97,11 +97,11 @@ public class SourceControlLogicTest {
 				assertEquals(1, fileData.getNumberOfContributorsToleranceTwo());
 				assertEquals(3, fileData.getNumberOfModifications());
 				if (deepAnalysis) {
-					assertEquals(262, fileData.getChurnValue());
-					assertEquals(190, fileData.getChurnValueFiner());
+					assertEquals(262, fileData.getChurnValueCoarse());
+					assertEquals(190, fileData.getChurnValueFine());
 				} else {
-					assertEquals(0, fileData.getChurnValue());
-					assertEquals(0, fileData.getChurnValueFiner());
+					assertEquals(0, fileData.getChurnValueCoarse());
+					assertEquals(0, fileData.getChurnValueFine());
 				}
 				break;
 				
@@ -113,11 +113,11 @@ public class SourceControlLogicTest {
 				assertEquals(0, fileData.getNumberOfContributorsToleranceTwo());
 				assertEquals(2, fileData.getNumberOfModifications());
 				if (deepAnalysis) {
-					assertEquals(39, fileData.getChurnValue());
-					assertEquals(17, fileData.getChurnValueFiner());
+					assertEquals(39, fileData.getChurnValueCoarse());
+					assertEquals(17, fileData.getChurnValueFine());
 				} else {
-					assertEquals(0, fileData.getChurnValue());
-					assertEquals(0, fileData.getChurnValueFiner());
+					assertEquals(0, fileData.getChurnValueCoarse());
+					assertEquals(0, fileData.getChurnValueFine());
 				}
 				break;
 				
@@ -129,11 +129,11 @@ public class SourceControlLogicTest {
 				assertEquals(0, fileData.getNumberOfContributorsToleranceTwo());
 				assertEquals(1, fileData.getNumberOfModifications());
 				if (deepAnalysis) {
-					assertEquals(1, fileData.getChurnValue());
-					assertEquals(1, fileData.getChurnValueFiner());
+					assertEquals(1, fileData.getChurnValueCoarse());
+					assertEquals(1, fileData.getChurnValueFine());
 				} else {
-					assertEquals(0, fileData.getChurnValue());
-					assertEquals(0, fileData.getChurnValueFiner());
+					assertEquals(0, fileData.getChurnValueCoarse());
+					assertEquals(0, fileData.getChurnValueFine());
 				}
 				break;
 				
@@ -145,11 +145,11 @@ public class SourceControlLogicTest {
 				assertEquals(1, fileData.getNumberOfContributorsToleranceTwo());
 				assertEquals(4, fileData.getNumberOfModifications());
 				if (deepAnalysis) {
-					assertEquals(12, fileData.getChurnValue());
-					assertEquals(6, fileData.getChurnValueFiner());
+					assertEquals(12, fileData.getChurnValueCoarse());
+					assertEquals(6, fileData.getChurnValueFine());
 				} else {
-					assertEquals(0, fileData.getChurnValue());
-					assertEquals(0, fileData.getChurnValueFiner());
+					assertEquals(0, fileData.getChurnValueCoarse());
+					assertEquals(0, fileData.getChurnValueFine());
 				}
 				break;
 				
@@ -161,11 +161,11 @@ public class SourceControlLogicTest {
 				assertEquals(0, fileData.getNumberOfContributorsToleranceTwo());
 				assertEquals(1, fileData.getNumberOfModifications());
 				if (deepAnalysis) {
-					assertEquals(0, fileData.getChurnValue());
-					assertEquals(0, fileData.getChurnValueFiner());
+					assertEquals(0, fileData.getChurnValueCoarse());
+					assertEquals(0, fileData.getChurnValueFine());
 				} else {
-					assertEquals(0, fileData.getChurnValue());
-					assertEquals(0, fileData.getChurnValueFiner());
+					assertEquals(0, fileData.getChurnValueCoarse());
+					assertEquals(0, fileData.getChurnValueFine());
 				}
 				break;
 				
@@ -177,11 +177,11 @@ public class SourceControlLogicTest {
 				assertEquals(0, fileData.getNumberOfContributorsToleranceTwo());
 				assertEquals(2, fileData.getNumberOfModifications());
 				if (deepAnalysis) {
-					assertEquals(4, fileData.getChurnValue());
-					assertEquals(2, fileData.getChurnValueFiner());
+					assertEquals(4, fileData.getChurnValueCoarse());
+					assertEquals(2, fileData.getChurnValueFine());
 				} else {
-					assertEquals(0, fileData.getChurnValue());
-					assertEquals(0, fileData.getChurnValueFiner());
+					assertEquals(0, fileData.getChurnValueCoarse());
+					assertEquals(0, fileData.getChurnValueFine());
 				}
 				break;
 				
@@ -193,11 +193,11 @@ public class SourceControlLogicTest {
 				assertEquals(0, fileData.getNumberOfContributorsToleranceTwo());
 				assertEquals(1, fileData.getNumberOfModifications());
 				if (deepAnalysis) {
-					assertEquals(1, fileData.getChurnValue());
-					assertEquals(1, fileData.getChurnValueFiner());
+					assertEquals(1, fileData.getChurnValueCoarse());
+					assertEquals(1, fileData.getChurnValueFine());
 				} else {
-					assertEquals(0, fileData.getChurnValue());
-					assertEquals(0, fileData.getChurnValueFiner());
+					assertEquals(0, fileData.getChurnValueCoarse());
+					assertEquals(0, fileData.getChurnValueFine());
 				}
 				break;
 				
@@ -209,11 +209,11 @@ public class SourceControlLogicTest {
 				assertEquals(0, fileData.getNumberOfContributorsToleranceTwo());
 				assertEquals(2, fileData.getNumberOfModifications());
 				if (deepAnalysis) {
-					assertEquals(2, fileData.getChurnValue());
-					assertEquals(2, fileData.getChurnValueFiner());
+					assertEquals(2, fileData.getChurnValueCoarse());
+					assertEquals(2, fileData.getChurnValueFine());
 				} else {
-					assertEquals(0, fileData.getChurnValue());
-					assertEquals(0, fileData.getChurnValueFiner());
+					assertEquals(0, fileData.getChurnValueCoarse());
+					assertEquals(0, fileData.getChurnValueFine());
 				}
 				break;
 				
@@ -225,11 +225,11 @@ public class SourceControlLogicTest {
 				assertEquals(1, fileData.getNumberOfContributorsToleranceTwo());
 				assertEquals(9, fileData.getNumberOfModifications());
 				if (deepAnalysis) {
-					assertEquals(77, fileData.getChurnValue());
-					assertEquals(27, fileData.getChurnValueFiner());
+					assertEquals(77, fileData.getChurnValueCoarse());
+					assertEquals(27, fileData.getChurnValueFine());
 				} else {
-					assertEquals(0, fileData.getChurnValue());
-					assertEquals(0, fileData.getChurnValueFiner());
+					assertEquals(0, fileData.getChurnValueCoarse());
+					assertEquals(0, fileData.getChurnValueFine());
 				}
 				break;
 				
@@ -241,11 +241,11 @@ public class SourceControlLogicTest {
 				assertEquals(1, fileData.getNumberOfContributorsToleranceTwo());
 				assertEquals(4, fileData.getNumberOfModifications());
 				if (deepAnalysis) {
-					assertEquals(12, fileData.getChurnValue());
-					assertEquals(6, fileData.getChurnValueFiner());
+					assertEquals(12, fileData.getChurnValueCoarse());
+					assertEquals(6, fileData.getChurnValueFine());
 				} else {
-					assertEquals(0, fileData.getChurnValue());
-					assertEquals(0, fileData.getChurnValueFiner());
+					assertEquals(0, fileData.getChurnValueCoarse());
+					assertEquals(0, fileData.getChurnValueFine());
 				}
 				break;
 				
@@ -257,11 +257,11 @@ public class SourceControlLogicTest {
 				assertEquals(0, fileData.getNumberOfContributorsToleranceTwo());
 				assertEquals(1, fileData.getNumberOfModifications());
 				if (deepAnalysis) {
-					assertEquals(0, fileData.getChurnValue());
-					assertEquals(0, fileData.getChurnValueFiner());
+					assertEquals(0, fileData.getChurnValueCoarse());
+					assertEquals(0, fileData.getChurnValueFine());
 				} else {
-					assertEquals(0, fileData.getChurnValue());
-					assertEquals(0, fileData.getChurnValueFiner());
+					assertEquals(0, fileData.getChurnValueCoarse());
+					assertEquals(0, fileData.getChurnValueFine());
 				}
 				break;
 				
@@ -273,11 +273,11 @@ public class SourceControlLogicTest {
 				assertEquals(0, fileData.getNumberOfContributorsToleranceTwo());
 				assertEquals(1, fileData.getNumberOfModifications());
 				if (deepAnalysis) {
-					assertEquals(0, fileData.getChurnValue());
-					assertEquals(0, fileData.getChurnValueFiner());
+					assertEquals(0, fileData.getChurnValueCoarse());
+					assertEquals(0, fileData.getChurnValueFine());
 				} else {
-					assertEquals(0, fileData.getChurnValue());
-					assertEquals(0, fileData.getChurnValueFiner());
+					assertEquals(0, fileData.getChurnValueCoarse());
+					assertEquals(0, fileData.getChurnValueFine());
 				}
 				break;
 				
@@ -289,11 +289,11 @@ public class SourceControlLogicTest {
 				assertEquals(0, fileData.getNumberOfContributorsToleranceTwo());
 				assertEquals(1, fileData.getNumberOfModifications());
 				if (deepAnalysis) {
-					assertEquals(0, fileData.getChurnValue());
-					assertEquals(0, fileData.getChurnValueFiner());
+					assertEquals(0, fileData.getChurnValueCoarse());
+					assertEquals(0, fileData.getChurnValueFine());
 				} else {
-					assertEquals(0, fileData.getChurnValue());
-					assertEquals(0, fileData.getChurnValueFiner());
+					assertEquals(0, fileData.getChurnValueCoarse());
+					assertEquals(0, fileData.getChurnValueFine());
 				}
 				break;
 				
@@ -305,11 +305,11 @@ public class SourceControlLogicTest {
 				assertEquals(0, fileData.getNumberOfContributorsToleranceTwo());
 				assertEquals(1, fileData.getNumberOfModifications());
 				if (deepAnalysis) {
-					assertEquals(0, fileData.getChurnValue());
-					assertEquals(0, fileData.getChurnValueFiner());
+					assertEquals(0, fileData.getChurnValueCoarse());
+					assertEquals(0, fileData.getChurnValueFine());
 				} else {
-					assertEquals(0, fileData.getChurnValue());
-					assertEquals(0, fileData.getChurnValueFiner());
+					assertEquals(0, fileData.getChurnValueCoarse());
+					assertEquals(0, fileData.getChurnValueFine());
 				}
 				break;
 			}
@@ -478,8 +478,8 @@ public class SourceControlLogicTest {
 		assertTrue(commitFileCells.get(0).getContributors().contains("mike"));
 		assertFalse(commitFileCells.get(0).getContributors().contains("sully"));
 		assertEquals(1, commitFileCells.get(0).getNumberOfModifications());
-		assertEquals(0, commitFileCells.get(0).getChurnValue());
-		assertEquals(0, commitFileCells.get(0).getChurnValueFiner());
+		assertEquals(0, commitFileCells.get(0).getChurnValueCoarse());
+		assertEquals(0, commitFileCells.get(0).getChurnValueFine());
 		
 		assertEquals("Main.java", commitFileCells.get(1).getFileName());
 		assertEquals(4, commitFileCells.get(1).getRevision());
@@ -490,8 +490,8 @@ public class SourceControlLogicTest {
 		assertTrue(commitFileCells.get(1).getContributors().contains("mike"));
 		assertFalse(commitFileCells.get(1).getContributors().contains("sully"));
 		assertEquals(3, commitFileCells.get(1).getNumberOfModifications());
-		assertEquals(63, commitFileCells.get(1).getChurnValue());
-		assertEquals(19, commitFileCells.get(1).getChurnValueFiner());
+		assertEquals(63, commitFileCells.get(1).getChurnValueCoarse());
+		assertEquals(19, commitFileCells.get(1).getChurnValueFine());
 		
 		assertEquals("Thread.java", commitFileCells.get(2).getFileName());
 		assertEquals(4, commitFileCells.get(2).getRevision());
@@ -502,8 +502,8 @@ public class SourceControlLogicTest {
 		assertTrue(commitFileCells.get(2).getContributors().contains("mike"));
 		assertFalse(commitFileCells.get(2).getContributors().contains("sully"));
 		assertEquals(1, commitFileCells.get(2).getNumberOfModifications());
-		assertEquals(30, commitFileCells.get(2).getChurnValue());
-		assertEquals(30, commitFileCells.get(2).getChurnValueFiner());
+		assertEquals(30, commitFileCells.get(2).getChurnValueCoarse());
+		assertEquals(30, commitFileCells.get(2).getChurnValueFine());
 
 		assertEquals("Data.java", commitFileCells.get(3).getFileName());
 		assertEquals(4, commitFileCells.get(3).getRevision());
@@ -514,8 +514,8 @@ public class SourceControlLogicTest {
 		assertTrue(commitFileCells.get(3).getContributors().contains("mike"));
 		assertTrue(commitFileCells.get(3).getContributors().contains("sully"));
 		assertEquals(2, commitFileCells.get(3).getNumberOfModifications());
-		assertEquals(40, commitFileCells.get(3).getChurnValue());
-		assertEquals(40, commitFileCells.get(3).getChurnValueFiner());
+		assertEquals(40, commitFileCells.get(3).getChurnValueCoarse());
+		assertEquals(40, commitFileCells.get(3).getChurnValueFine());
 		
 		assertEquals("MyGame.java", commitFileCells.get(4).getFileName());
 		assertEquals(4, commitFileCells.get(4).getRevision());
@@ -526,8 +526,8 @@ public class SourceControlLogicTest {
 		assertTrue(commitFileCells.get(4).getContributors().contains("mike"));
 		assertTrue(commitFileCells.get(4).getContributors().contains("sully"));
 		assertEquals(3, commitFileCells.get(4).getNumberOfModifications());
-		assertEquals(41, commitFileCells.get(4).getChurnValue());
-		assertEquals(31, commitFileCells.get(4).getChurnValueFiner());
+		assertEquals(41, commitFileCells.get(4).getChurnValueCoarse());
+		assertEquals(31, commitFileCells.get(4).getChurnValueFine());
 		
 		assertEquals("Game.java", commitFileCells.get(5).getFileName());
 		assertEquals(4, commitFileCells.get(5).getRevision());
@@ -538,8 +538,8 @@ public class SourceControlLogicTest {
 		assertTrue(commitFileCells.get(5).getContributors().contains("mike"));
 		assertTrue(commitFileCells.get(5).getContributors().contains("sully"));
 		assertEquals(3, commitFileCells.get(5).getNumberOfModifications());
-		assertEquals(39, commitFileCells.get(5).getChurnValue());
-		assertEquals(29, commitFileCells.get(5).getChurnValueFiner());
+		assertEquals(39, commitFileCells.get(5).getChurnValueCoarse());
+		assertEquals(29, commitFileCells.get(5).getChurnValueFine());
 	}
 	
 	/**

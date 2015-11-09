@@ -59,6 +59,10 @@ public class ParameterHandler {
 				context.setOutputFileName(paramValue);
 				break;
 
+			case "-metricsPrefix":
+				context.setMetricsFileName(paramValue);
+				break;
+				
 			case "-extensions":
 				context.setExtensions(paramValue);
 				break;
@@ -126,6 +130,7 @@ public class ParameterHandler {
 		System.out.println("    -deepAnalysis:    true or false; indicates if deep analyisis (executing diffs on each revision) should be performed.");
 		System.out.println("    -dirName:         name of the directory where the logs reside");
 		System.out.println("    -outputFileName:  name of the result file. If set, then the result is written to that file. If not set, then the result is written on the console.");
+		System.out.println("    -metricsPrefix:   indicates that the metrics should be saved as well, into files. Prefix of the result files, without extension. (Not written if not set.)");
 		System.out.println("    -extensions:      extensions to consider, e.g. java,xml (use empty for folders)");
 		System.out.println("    -includePrefixes: prefixes of the paths to consider only (e.g. /trunk/myproject)");
 		System.out.println("    -excludePrefixes: prefixes to exclude from analysis (e.g. /trunk/myproject/test)");

@@ -55,7 +55,7 @@ public class Calculator {
 			return null;
 		}
 		double sum = 0.0;
-		double numberOfElements = 0;
+		int numberOfElements = 0;
 		for (Double distributionValue : distributionValues) {
 			if (distributionValue != null) {
 				sum += distributionValue;
@@ -68,4 +68,25 @@ public class Calculator {
 		return sum / numberOfElements;
 	}
 
+	/**
+	 * Calculate the average of the dates.
+	 * It indeed calculates the average of the longs representing the times, and creates a Date object again.
+	 */
+	public static Date calculateAverage(List<Date> dates) {
+		if (dates == null || dates.isEmpty()) {
+			return null;
+		}
+		long sum = 0;
+		int numberOfElements = 0;
+		for (Date date : dates) {
+			if (date != null) {
+				sum += date.getTime();
+				numberOfElements++;
+			}
+		}
+		if (numberOfElements == 0) {
+			return null;
+		}
+		return new Date(sum / numberOfElements);
+	}
 }

@@ -103,23 +103,23 @@ public class CommitFileMatrixTest {
 		assertEquals(2, commitFileMatrix.files.get("Main.java").size());
 		assertEquals("Main.java", commitFileMatrix.files.get("Main.java").get(0).getFileName());
 		assertEquals(3, commitFileMatrix.files.get("Main.java").get(0).getRevision());
-		assertEquals(10, commitFileMatrix.files.get("Main.java").get(0).getChurnValue());
+		assertEquals(10, commitFileMatrix.files.get("Main.java").get(0).getChurnValueCoarse());
 		assertEquals("Main.java", commitFileMatrix.files.get("Main.java").get(1).getFileName());
 		assertEquals(1, commitFileMatrix.files.get("Main.java").get(1).getRevision());
-		assertEquals(5, commitFileMatrix.files.get("Main.java").get(1).getChurnValue());
+		assertEquals(5, commitFileMatrix.files.get("Main.java").get(1).getChurnValueCoarse());
 		
 		assertEquals(2, commitFileMatrix.files.get("Game.java").size());
 		assertEquals("Game.java", commitFileMatrix.files.get("Game.java").get(0).getFileName());
 		assertEquals(2, commitFileMatrix.files.get("Game.java").get(0).getRevision());
-		assertEquals(25, commitFileMatrix.files.get("Game.java").get(0).getChurnValue());
+		assertEquals(25, commitFileMatrix.files.get("Game.java").get(0).getChurnValueCoarse());
 		assertEquals("Game.java", commitFileMatrix.files.get("Game.java").get(1).getFileName());
 		assertEquals(1, commitFileMatrix.files.get("Game.java").get(1).getRevision());
-		assertEquals(10, commitFileMatrix.files.get("Game.java").get(1).getChurnValue());
+		assertEquals(10, commitFileMatrix.files.get("Game.java").get(1).getChurnValueCoarse());
 		
 		assertEquals(1, commitFileMatrix.files.get("Data.java").size());
 		assertEquals("Data.java", commitFileMatrix.files.get("Data.java").get(0).getFileName());
 		assertEquals(2, commitFileMatrix.files.get("Data.java").get(0).getRevision());
-		assertEquals(20, commitFileMatrix.files.get("Data.java").get(0).getChurnValue());
+		assertEquals(20, commitFileMatrix.files.get("Data.java").get(0).getChurnValueCoarse());
 		
 		assertEquals(null, commitFileMatrix.files.get("Thread.java"));
 		
@@ -132,9 +132,9 @@ public class CommitFileMatrixTest {
 		assertEquals(1, commitFileMatrix.commits.get(Integer.valueOf(1)).get(0).getRevision());
 		assertEquals(1, commitFileMatrix.commits.get(Integer.valueOf(1)).get(1).getRevision());
 		assertEquals(1, commitFileMatrix.commits.get(Integer.valueOf(1)).get(2).getRevision());
-		assertEquals(1, commitFileMatrix.commits.get(Integer.valueOf(1)).get(0).getChurnValue());
-		assertEquals(10, commitFileMatrix.commits.get(Integer.valueOf(1)).get(1).getChurnValue());
-		assertEquals(5, commitFileMatrix.commits.get(Integer.valueOf(1)).get(2).getChurnValue());
+		assertEquals(1, commitFileMatrix.commits.get(Integer.valueOf(1)).get(0).getChurnValueCoarse());
+		assertEquals(10, commitFileMatrix.commits.get(Integer.valueOf(1)).get(1).getChurnValueCoarse());
+		assertEquals(5, commitFileMatrix.commits.get(Integer.valueOf(1)).get(2).getChurnValueCoarse());
 
 		assertEquals(3, commitFileMatrix.commits.get(Integer.valueOf(2)).size());
 		assertEquals("Test.java", commitFileMatrix.commits.get(Integer.valueOf(2)).get(0).getFileName());
@@ -143,16 +143,16 @@ public class CommitFileMatrixTest {
 		assertEquals(2, commitFileMatrix.commits.get(Integer.valueOf(2)).get(0).getRevision());
 		assertEquals(2, commitFileMatrix.commits.get(Integer.valueOf(2)).get(1).getRevision());
 		assertEquals(2, commitFileMatrix.commits.get(Integer.valueOf(2)).get(2).getRevision());
-		assertEquals(2, commitFileMatrix.commits.get(Integer.valueOf(2)).get(0).getChurnValue());
-		assertEquals(20, commitFileMatrix.commits.get(Integer.valueOf(2)).get(1).getChurnValue());
-		assertEquals(25, commitFileMatrix.commits.get(Integer.valueOf(2)).get(2).getChurnValue());
+		assertEquals(2, commitFileMatrix.commits.get(Integer.valueOf(2)).get(0).getChurnValueCoarse());
+		assertEquals(20, commitFileMatrix.commits.get(Integer.valueOf(2)).get(1).getChurnValueCoarse());
+		assertEquals(25, commitFileMatrix.commits.get(Integer.valueOf(2)).get(2).getChurnValueCoarse());
 
 		assertEquals(null, commitFileMatrix.commits.get(Integer.valueOf(5)));
 		
-		assertEquals(10, mainData.getChurnValue());
-		assertEquals(25, gameData.getChurnValue());
-		assertEquals(20, dataData.getChurnValue());
-		assertEquals(2, testData.getChurnValue());
+		assertEquals(10, mainData.getChurnValueCoarse());
+		assertEquals(25, gameData.getChurnValueCoarse());
+		assertEquals(20, dataData.getChurnValueCoarse());
+		assertEquals(2, testData.getChurnValueCoarse());
 		assertEquals(null, threadData);
 	}
 	

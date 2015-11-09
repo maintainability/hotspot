@@ -26,7 +26,7 @@ public class SvnCommandParserTest {
 	@Test
 	public void testParseSourceControlLog() throws IOException {
 		SourceControlResultData testSvnLogResult = mock(SourceControlResultData.class);
-		when(testSvnLogResult.getResultBufferedReader()).thenReturn(new BufferedReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream("svnlog_r1_r18.txt"))));
+		when(testSvnLogResult.getResultBufferedReader()).thenReturn(new BufferedReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream("svnlog.txt"))));
 		
 		SvnCommandParser svnCommandParser = new SvnCommandParser();
 		

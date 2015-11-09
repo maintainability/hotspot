@@ -110,8 +110,8 @@ public class SourceControlLogic {
 				actualCommitFile.setNumberOfModifications(fileDataLatest.getNumberOfModifications() + 1);
 				// null check is necessary because in case of directory changes there is no diff
 				if (relatedFileDiff != null) {
-					actualCommitFile.setChurnValue(fileDataLatest.getChurnValue() + extractChurnValue(relatedFileDiff.getAtAtDiffs()));
-					actualCommitFile.setChurnValueFiner(fileDataLatest.getChurnValueFiner() + relatedFileDiff.getNumberOfAdds() + relatedFileDiff.getNumberOfRemoves());
+					actualCommitFile.setChurnValueCoarse(fileDataLatest.getChurnValueCoarse() + extractChurnValue(relatedFileDiff.getAtAtDiffs()));
+					actualCommitFile.setChurnValueFine(fileDataLatest.getChurnValueFine() + relatedFileDiff.getNumberOfAdds() + relatedFileDiff.getNumberOfRemoves());
 				}
 				actualCommitFile.addContributors(fileDataLatest.getContributors());
 				actualCommitFile.addContributor(commitData.getDeveloper());

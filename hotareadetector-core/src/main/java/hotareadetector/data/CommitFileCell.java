@@ -1,6 +1,7 @@
 package hotareadetector.data;
 
 import hotareadetector.logic.SourceControlLogic;
+import hotareadetector.util.Calculator;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,14 +32,15 @@ public class CommitFileCell {
 	private int numberOfModifications = 0;
 	
 	// calculated from @@ ... @@ values	
-	private int churnValue = 0;
+	private int churnValueCoarse = 0;
 	
 	// calculated from + and - signs
-	private int churnValueFiner = 0;
+	private int churnValueFine = 0;
 	
 	private List<Date> modificationDates = new ArrayList<Date>();
 	private Date dateAdded = null;
 	private Date dateLastModified = null;
+	private Date dateAverage = null;
 
 	/**
 	 * Calculate the number of different contributors with 0, 1 and 2 tolerances, and set the object finished.
@@ -77,6 +79,7 @@ public class CommitFileCell {
 			if (modificationDatesSize > 1) {
 				dateLastModified = modificationDates.get(modificationDatesSize - 2);
 			}
+			dateAverage = Calculator.calculateAverage(modificationDates);
 		}
 		
 		finished = true;
@@ -109,22 +112,22 @@ public class CommitFileCell {
 		this.numberOfModifications = numberOfModifications;
 	}
 	
-	public int getChurnValue() {
-		return churnValue;
+	public int getChurnValueCoarse() {
+		return churnValueCoarse;
 	}
 	
-	public void setChurnValue(int churnValue) {
+	public void setChurnValueCoarse(int churnValueCoarse) {
 		assert(!finished);
-		this.churnValue = churnValue;
+		this.churnValueCoarse = churnValueCoarse;
 	}
 	
-	public int getChurnValueFiner() {
-		return churnValueFiner;
+	public int getChurnValueFine() {
+		return churnValueFine;
 	}
 	
-	public void setChurnValueFiner(int churnValueFiner) {
+	public void setChurnValueFine(int churnValueFine) {
 		assert(!finished);
-		this.churnValueFiner = churnValueFiner;
+		this.churnValueFine = churnValueFine;
 	}
 	
 	public List<String> getContributors() {
@@ -185,6 +188,10 @@ public class CommitFileCell {
 		return dateLastModified;
 	}
 	
+	public Date getDateAverage() {
+		return dateAverage;
+	}
+	
 	public List<Date> getModificationDates() {
 		List<Date> modificationDatesLocal = new ArrayList<Date>();
 		modificationDatesLocal.addAll(modificationDates);
@@ -196,11 +203,11 @@ public class CommitFileCell {
 	 */
 	public CommitFileCell cloneRenamed(String newFileName, String contributor, Date date, int newRevision, FileDiffInformation relatedFileDiff) {
 		CommitFileCell clone = new CommitFileCell();
-		clone.churnValue = churnValue;
-		clone.churnValueFiner = churnValueFiner;
+		clone.churnValueCoarse = churnValueCoarse;
+		clone.churnValueFine = churnValueFine;
 		if (relatedFileDiff != null) {
-			clone.churnValue += SourceControlLogic.extractChurnValue(relatedFileDiff.getAtAtDiffs());
-			clone.churnValueFiner += relatedFileDiff.getNumberOfAdds() + relatedFileDiff.getNumberOfRemoves();
+			clone.churnValueCoarse += SourceControlLogic.extractChurnValue(relatedFileDiff.getAtAtDiffs());
+			clone.churnValueFine += relatedFileDiff.getNumberOfAdds() + relatedFileDiff.getNumberOfRemoves();
 		}
 		clone.contributors = new ArrayList<String>();
 		clone.contributors.addAll(contributors);

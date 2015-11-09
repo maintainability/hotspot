@@ -21,7 +21,8 @@ public class HotAreaResultHandler {
 		NumberFormat formatter = new DecimalFormat("#0.00000"); 
 		System.out.println("Hot numbers:");
 		for (HotNumber hotNumber : hotNumbers) {
-			System.out.println(hotNumber.getFileName() + ": " + formatter.format(hotNumber.getHotNumber()));
+			Double hotNumberValue = hotNumber.getHotNumber();
+			System.out.println(hotNumber.getFileName() + ": " + ((hotNumberValue != null) ? formatter.format(hotNumberValue) : "<empty>"));
 		}
 	}
 

@@ -320,4 +320,21 @@ public class CalculatorTest {
 		assertEquals(0.3, result, tolerance);
 	}
 
+	/**
+	 * Check the average of the dates.
+	 */
+	@Test
+	public void testCalculateAverageDate() {
+		List<Date> dates = new ArrayList<Date>();
+		Date now = new Date();
+		
+		dates.add(now);
+		dates.add(new Date(now.getTime() - 1000));
+		dates.add(null);
+		dates.add(new Date(now.getTime() + 4000));
+		
+		Date result = Calculator.calculateAverage(dates);
+		
+		assertEquals(new Date(now.getTime() + 1000), result);
+	}
 }

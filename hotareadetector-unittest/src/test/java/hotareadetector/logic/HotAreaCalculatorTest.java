@@ -117,8 +117,8 @@ public class HotAreaCalculatorTest {
 		hotAreaCalculator.ownershipValuesToleranceTwo.addAll(valueList);
 		hotAreaCalculator.numberOfModifications.addAll(valueList);
 		if (deepAnalysis) {
-			hotAreaCalculator.churnValues.addAll(valueList);
-			hotAreaCalculator.churnValuesFiner.addAll(valueList);
+			hotAreaCalculator.churnValuesCoarse.addAll(valueList);
+			hotAreaCalculator.churnValuesFine.addAll(valueList);
 		}
 		return hotAreaCalculator;
 	}
@@ -226,6 +226,19 @@ public class HotAreaCalculatorTest {
 		assertEquals(new Date(1428507583000l), hotAreaCalculator.lastModifiedDates.get(9));
 		assertEquals(new Date(1428507778000l), hotAreaCalculator.lastModifiedDates.get(10));
 		
+		assertEquals(11, hotAreaCalculator.averageDates.size());
+		assertEquals(new Date(1427386433000l), hotAreaCalculator.averageDates.get(0));
+		assertEquals(new Date(1427386433000l), hotAreaCalculator.averageDates.get(1));
+		assertEquals(new Date(1427386433000l), hotAreaCalculator.averageDates.get(2));
+		assertEquals(new Date(1427386535000l), hotAreaCalculator.averageDates.get(3));
+		assertEquals(new Date(1427387721000l), hotAreaCalculator.averageDates.get(4));
+		assertEquals(new Date(1427387776000l), hotAreaCalculator.averageDates.get(5));
+		assertEquals(new Date(1427645512000l), hotAreaCalculator.averageDates.get(6));
+		assertEquals(new Date(1427808796111l), hotAreaCalculator.averageDates.get(7));
+		assertEquals(new Date(1427959571000l), hotAreaCalculator.averageDates.get(8));
+		assertEquals(new Date(1428507551000l), hotAreaCalculator.averageDates.get(9));
+		assertEquals(new Date(1428651804333l), hotAreaCalculator.averageDates.get(10));
+		
 		assertEquals(11, hotAreaCalculator.combinedValues.size());
 		assertEquals(4, (int)hotAreaCalculator.combinedValues.get(0));
 		assertEquals(4, (int)hotAreaCalculator.combinedValues.get(1));
@@ -240,34 +253,34 @@ public class HotAreaCalculatorTest {
 		assertEquals(29, (int)hotAreaCalculator.combinedValues.get(10));
 		
 		if (deepAnalysis) {
-			assertEquals(11, hotAreaCalculator.churnValues.size());
-			assertEquals(0, (int)hotAreaCalculator.churnValues.get(0));
-			assertEquals(0, (int)hotAreaCalculator.churnValues.get(1));
-			assertEquals(0, (int)hotAreaCalculator.churnValues.get(2));
-			assertEquals(0, (int)hotAreaCalculator.churnValues.get(3));
-			assertEquals(0, (int)hotAreaCalculator.churnValues.get(4));
-			assertEquals(1, (int)hotAreaCalculator.churnValues.get(5));
-			assertEquals(1, (int)hotAreaCalculator.churnValues.get(6));
-			assertEquals(4, (int)hotAreaCalculator.churnValues.get(7));
-			assertEquals(39, (int)hotAreaCalculator.churnValues.get(8));
-			assertEquals(77, (int)hotAreaCalculator.churnValues.get(9));
-			assertEquals(262, (int)hotAreaCalculator.churnValues.get(10));
+			assertEquals(11, hotAreaCalculator.churnValuesCoarse.size());
+			assertEquals(0, (int)hotAreaCalculator.churnValuesCoarse.get(0));
+			assertEquals(0, (int)hotAreaCalculator.churnValuesCoarse.get(1));
+			assertEquals(0, (int)hotAreaCalculator.churnValuesCoarse.get(2));
+			assertEquals(0, (int)hotAreaCalculator.churnValuesCoarse.get(3));
+			assertEquals(0, (int)hotAreaCalculator.churnValuesCoarse.get(4));
+			assertEquals(1, (int)hotAreaCalculator.churnValuesCoarse.get(5));
+			assertEquals(1, (int)hotAreaCalculator.churnValuesCoarse.get(6));
+			assertEquals(4, (int)hotAreaCalculator.churnValuesCoarse.get(7));
+			assertEquals(39, (int)hotAreaCalculator.churnValuesCoarse.get(8));
+			assertEquals(77, (int)hotAreaCalculator.churnValuesCoarse.get(9));
+			assertEquals(262, (int)hotAreaCalculator.churnValuesCoarse.get(10));
 			
-			assertEquals(11, hotAreaCalculator.churnValuesFiner.size());
-			assertEquals(0, (int)hotAreaCalculator.churnValuesFiner.get(0));
-			assertEquals(0, (int)hotAreaCalculator.churnValuesFiner.get(1));
-			assertEquals(0, (int)hotAreaCalculator.churnValuesFiner.get(2));
-			assertEquals(0, (int)hotAreaCalculator.churnValuesFiner.get(3));
-			assertEquals(0, (int)hotAreaCalculator.churnValuesFiner.get(4));
-			assertEquals(1, (int)hotAreaCalculator.churnValuesFiner.get(5));
-			assertEquals(1, (int)hotAreaCalculator.churnValuesFiner.get(6));
-			assertEquals(2, (int)hotAreaCalculator.churnValuesFiner.get(7));
-			assertEquals(17, (int)hotAreaCalculator.churnValuesFiner.get(8));
-			assertEquals(27, (int)hotAreaCalculator.churnValuesFiner.get(9));
-			assertEquals(190, (int)hotAreaCalculator.churnValuesFiner.get(10));
+			assertEquals(11, hotAreaCalculator.churnValuesFine.size());
+			assertEquals(0, (int)hotAreaCalculator.churnValuesFine.get(0));
+			assertEquals(0, (int)hotAreaCalculator.churnValuesFine.get(1));
+			assertEquals(0, (int)hotAreaCalculator.churnValuesFine.get(2));
+			assertEquals(0, (int)hotAreaCalculator.churnValuesFine.get(3));
+			assertEquals(0, (int)hotAreaCalculator.churnValuesFine.get(4));
+			assertEquals(1, (int)hotAreaCalculator.churnValuesFine.get(5));
+			assertEquals(1, (int)hotAreaCalculator.churnValuesFine.get(6));
+			assertEquals(2, (int)hotAreaCalculator.churnValuesFine.get(7));
+			assertEquals(17, (int)hotAreaCalculator.churnValuesFine.get(8));
+			assertEquals(27, (int)hotAreaCalculator.churnValuesFine.get(9));
+			assertEquals(190, (int)hotAreaCalculator.churnValuesFine.get(10));
 		} else {
-			assertEquals(0, hotAreaCalculator.churnValues.size());
-			assertEquals(0, hotAreaCalculator.churnValuesFiner.size());
+			assertEquals(0, hotAreaCalculator.churnValuesCoarse.size());
+			assertEquals(0, hotAreaCalculator.churnValuesFine.size());
 		}
 		
 		Map<String, Double> hotNumbersMap = createHotNumbersMap(hotNumbers);
@@ -343,6 +356,30 @@ public class HotAreaCalculatorTest {
 		assertEquals(0.45454, hotNumbersMap.get("/trunk/myfolder/myfile.txt"), tolerance);
 		assertEquals(0.36363, hotNumbersMap.get("/trunk/myproject/addnewfile.txt"), tolerance);
 		assertEquals(0.81818, hotNumbersMap.get("/trunk/myproject/mysecontext.txt"), tolerance);
+		assertEquals(0.27272, hotNumbersMap.get("/trunk/myproject"), tolerance);
+		assertEquals(0.0, hotNumbersMap.get("/branches"), tolerance);
+		assertEquals(0.0, hotNumbersMap.get("/tags"), tolerance);
+		assertEquals(0.0, hotNumbersMap.get("/trunk"), tolerance);
+	}
+
+	/**
+	 * Check hot numbers of average dates.
+	 */
+	@Test
+	public void testDateAverage() throws IOException {
+		CommitFileMatrix commitFileMatrix = CommitFileMatrixGenerator.generateCommitFileMatrixRealExecution(false);
+		HotAreaCalculator hotAreaCalculator = new HotAreaCalculator(commitFileMatrix);
+		
+		List<HotNumber> hotNumbers = hotAreaCalculator.calculateHotNumbers(DATEAVERAGE);
+		Map<String, Double> hotNumbersMap = createHotNumbersMap(hotNumbers);
+		assertEquals(11, hotNumbersMap.size());
+		assertEquals(0.90909, hotNumbersMap.get("/trunk/myproject/reallyalongtext.txt"), tolerance);
+		assertEquals(0.81818, hotNumbersMap.get("/trunk/myproject/longtext.txt"), tolerance);
+		assertEquals(0.72727, hotNumbersMap.get("/trunk/myfolder/filename with spaces.txt"), tolerance);
+		assertEquals(0.45454, hotNumbersMap.get("/trunk/myfolder"), tolerance);
+		assertEquals(0.54545, hotNumbersMap.get("/trunk/myfolder/myfile.txt"), tolerance);
+		assertEquals(0.36363, hotNumbersMap.get("/trunk/myproject/addnewfile.txt"), tolerance);
+		assertEquals(0.63636, hotNumbersMap.get("/trunk/myproject/mysecontext.txt"), tolerance);
 		assertEquals(0.27272, hotNumbersMap.get("/trunk/myproject"), tolerance);
 		assertEquals(0.0, hotNumbersMap.get("/branches"), tolerance);
 		assertEquals(0.0, hotNumbersMap.get("/tags"), tolerance);

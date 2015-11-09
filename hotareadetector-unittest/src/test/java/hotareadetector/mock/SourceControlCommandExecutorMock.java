@@ -31,7 +31,7 @@ public class SourceControlCommandExecutorMock implements SourceControlCommandExe
 	@Override
 	public SourceControlResultData executeSourceControlLogCommand() throws IOException {
 		SourceControlResultData testSvnLogResult = mock(SourceControlResultData.class);
-		when(testSvnLogResult.getResultBufferedReader()).thenReturn(new BufferedReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream("svnlog_r1_r18.txt"))));
+		when(testSvnLogResult.getResultBufferedReader()).thenReturn(new BufferedReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream("svnlog.txt"))));
 		return testSvnLogResult;
 	}
 

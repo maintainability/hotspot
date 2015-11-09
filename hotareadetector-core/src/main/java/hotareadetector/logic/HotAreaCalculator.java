@@ -6,6 +6,8 @@ import hotareadetector.data.CommitFileMatrix;
 import hotareadetector.data.HotNumber;
 import hotareadetector.util.Calculator;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -23,11 +25,12 @@ public class HotAreaCalculator {
 	List<Integer> ownershipValuesToleranceTwo = new ArrayList<Integer>();
 	
 	List<Integer> numberOfModifications = new ArrayList<Integer>();
-	List<Integer> churnValues = new ArrayList<Integer>();
-	List<Integer> churnValuesFiner = new ArrayList<Integer>();
+	List<Integer> churnValuesCoarse = new ArrayList<Integer>();
+	List<Integer> churnValuesFine = new ArrayList<Integer>();
 	
 	List<Date> addedDates = new ArrayList<Date>();
 	List<Date> lastModifiedDates = new ArrayList<Date>();
+	List<Date> averageDates = new ArrayList<Date>();
 	
 	List<Integer> combinedValues = new ArrayList<Integer>();
 	
@@ -62,20 +65,22 @@ public class HotAreaCalculator {
 			ownershipValuesToleranceTwo.add(fileData.getNumberOfContributorsToleranceTwo());
 			numberOfModifications.add(fileData.getNumberOfModifications());
 			if (commitFileMatrix.isDeepAnalysis()) {
-				churnValues.add(fileData.getChurnValue());
-				churnValuesFiner.add(fileData.getChurnValueFiner());
+				churnValuesCoarse.add(fileData.getChurnValueCoarse());
+				churnValuesFine.add(fileData.getChurnValueFine());
 			}
 			addedDates.add(fileData.getDateAdded());
 			lastModifiedDates.add(fileData.getDateLastModified());
+			averageDates.add(fileData.getDateAverage());
 		}
 		Collections.sort(ownershipValues);
 		Collections.sort(ownershipValuesToleranceOne);
 		Collections.sort(ownershipValuesToleranceTwo);
 		Collections.sort(numberOfModifications);
-		Collections.sort(churnValues);
-		Collections.sort(churnValuesFiner);
+		Collections.sort(churnValuesCoarse);
+		Collections.sort(churnValuesFine);
 		Collections.sort(addedDates);
 		Collections.sort(lastModifiedDates);
+		Collections.sort(averageDates);
 		
 		if (!ownershipValues.isEmpty()) {
 			int maxOwnershipValuePlusOne = ownershipValues.get(ownershipValues.size() - 1) + 1;
@@ -84,6 +89,54 @@ public class HotAreaCalculator {
 			}
 			Collections.sort(combinedValues);
 		}
+	}
+	
+	/**
+	 * Saves metrics to file.
+	 */
+	public void saveMetrics(String fileNamePrefix) throws IOException {
+		PrintWriter writerChurn = new PrintWriter(fileNamePrefix + "-churn.csv", "UTF-8");
+		PrintWriter writerChurnCoarse = new PrintWriter(fileNamePrefix + "-churncoarse.csv", "UTF-8");
+		PrintWriter writerModifications = new PrintWriter(fileNamePrefix + "-modifications.csv", "UTF-8");
+		PrintWriter writerOwnership = new PrintWriter(fileNamePrefix + "-ownership.csv", "UTF-8");
+		PrintWriter writerOwnership1 = new PrintWriter(fileNamePrefix + "-ownership1.csv", "UTF-8");
+		PrintWriter writerOwnership2 = new PrintWriter(fileNamePrefix + "-ownership2.csv", "UTF-8");
+		PrintWriter writerDateAdded = new PrintWriter(fileNamePrefix + "-dateadded.csv", "UTF-8");
+		PrintWriter writerDateAverage = new PrintWriter(fileNamePrefix + "-dateaverage.csv", "UTF-8");
+		PrintWriter writerDateModified = new PrintWriter(fileNamePrefix + "-datemodified.csv", "UTF-8");
+		
+		
+		writerChurn.println("Name;Churn");
+		writerChurnCoarse.println("Name;Churncoarse");
+		writerModifications.println("Name;Modifications");
+		writerOwnership.println("Name;Ownership");
+		writerOwnership1.println("Name;Ownership1");
+		writerOwnership2.println("Name;Ownership2");
+		writerDateAdded.println("Name;DateAdded");
+		writerDateAverage.println("Name;DateAverage");
+		writerDateModified.println("Name;DateModified");
+
+		for (CommitFileCell fileData : fileDataListOfRevision) {
+			writerChurn.println(fileData.getFileName() + ";" + fileData.getChurnValueFine());
+			writerChurnCoarse.println(fileData.getFileName() + ";" + fileData.getChurnValueCoarse());
+			writerModifications.println(fileData.getFileName() + ";" + fileData.getNumberOfModifications());
+			writerOwnership.println(fileData.getFileName() + ";" + fileData.getNumberOfContributors());
+			writerOwnership1.println(fileData.getFileName() + ";" + fileData.getNumberOfContributorsToleranceOne());
+			writerOwnership2.println(fileData.getFileName() + ";" + fileData.getNumberOfContributorsToleranceTwo());
+			writerDateAdded.println(fileData.getFileName() + ";" + fileData.getDateAdded());
+			writerDateAverage.println(fileData.getFileName() + ";" + fileData.getDateAverage());
+			writerDateModified.println(fileData.getFileName() + ";" + fileData.getDateLastModified());
+		}
+		
+		writerChurn.close();
+		writerChurnCoarse.close();
+		writerModifications.close();
+		writerOwnership.close();
+		writerOwnership1.close();
+		writerOwnership2.close();
+		writerDateAdded.close();
+		writerDateAverage.close();
+		writerDateModified.close();
 	}
 
 	/**
@@ -107,7 +160,7 @@ public class HotAreaCalculator {
 		
 		switch (analysisType) {
 		case CHURN:
-			result = Calculator.calculateDistributionValue(churnValuesFiner, commitFileCell.getChurnValueFiner());
+			result = Calculator.calculateDistributionValue(churnValuesFine, commitFileCell.getChurnValueFine());
 			break;
 			
 		case MODIFICATION:
@@ -118,12 +171,24 @@ public class HotAreaCalculator {
 			result = Calculator.calculateDistributionValue(ownershipValues, commitFileCell.getNumberOfContributors());
 			break;
 			
+		case OWNERSHIP_TOLERANCE1:
+			result = Calculator.calculateDistributionValue(ownershipValuesToleranceOne, commitFileCell.getNumberOfContributorsToleranceOne());
+			break;
+			
+		case OWNERSHIP_TOLERANCE2:
+			result = Calculator.calculateDistributionValue(ownershipValuesToleranceTwo, commitFileCell.getNumberOfContributorsToleranceTwo());
+			break;
+			
 		case DATEADDED:
 			result = Calculator.calculateDistributionValue(addedDates, commitFileCell.getDateAdded());
 			break;
 			
 		case DATEMODIFIED:
 			result = Calculator.calculateDistributionValue(lastModifiedDates, commitFileCell.getDateLastModified());
+			break;
+			
+		case DATEAVERAGE:
+			result = Calculator.calculateDistributionValue(averageDates, commitFileCell.getDateAverage());
 			break;
 			
 		case COMBINED:
@@ -144,11 +209,14 @@ public class HotAreaCalculator {
 			
 			Double[] churnDistributionValues = new Double[3];
 			churnDistributionValues[0] = Calculator.calculateDistributionValue(numberOfModifications, commitFileCell.getNumberOfModifications());
-			churnDistributionValues[1] = Calculator.calculateDistributionValue(churnValues, commitFileCell.getChurnValue());
-			churnDistributionValues[2] = Calculator.calculateDistributionValue(churnValuesFiner, commitFileCell.getChurnValueFiner());
+			churnDistributionValues[1] = Calculator.calculateDistributionValue(churnValuesCoarse, commitFileCell.getChurnValueCoarse());
+			churnDistributionValues[2] = Calculator.calculateDistributionValue(churnValuesFine, commitFileCell.getChurnValueFine());
 			aggregatedDistributionValues[1] = Calculator.calculateAverage(churnDistributionValues);
 			
 			result = Calculator.calculateAverage(aggregatedDistributionValues);
+			break;
+			
+		case NONE:
 			break;
 		}
 		

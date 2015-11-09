@@ -23,6 +23,7 @@ public class HotAreaDetectorContext {
 	private boolean saveLogsOnly = false;
 	private boolean atRNecessary = true;
 	private AnalysisType analysisType = FULL;
+	private String metricsPrefix = null;
 
 	public String getSourceControlClientExecutor() {
 		return sourceControlClientExecutor;
@@ -167,6 +168,14 @@ public class HotAreaDetectorContext {
 			formattedAnalyisTypes = analysisTypeValues.substring(0, analysisTypeValues.length() - 2);
 		}
 		return formattedAnalyisTypes;
+	}
+
+	public String getMetricsPrefix() {
+		return metricsPrefix;
+	}
+
+	public void setMetricsFileName(String metricsPrefix) {
+		this.metricsPrefix = metricsPrefix;
 	}
 
 }

@@ -44,6 +44,9 @@ public class HotAreaDetectorCommandExecutor {
 			revision = context.getRevision();
 		}
 		HotAreaCalculator hotAreaCalculator = new HotAreaCalculator(commitFileMatrix, revision);
+		if (context.getMetricsPrefix() != null) {
+			hotAreaCalculator.saveMetrics(context.getDirName() + "/" + context.getMetricsPrefix());
+		}
 		List<HotNumber> hotNumbers = hotAreaCalculator.calculateHotNumbers(context.getAnalysisType());
 		return hotNumbers;
 	}
