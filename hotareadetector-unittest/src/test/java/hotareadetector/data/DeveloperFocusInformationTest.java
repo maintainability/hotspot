@@ -102,4 +102,18 @@ public class DeveloperFocusInformationTest {
 		assertEquals("/com/mycompany/myapp/util/Calculations.java", modifiedFiles.get(5));
 	}
 
+	@Test
+	public void testGetModifiedFilesPerDeveloper() throws ParseException {
+		DeveloperFocusInformation developerFocusInformation = buildDeveloperFocusInformation();
+		List<String> modifiedFiles = developerFocusInformation.getModifiedFilesPerDeveloper("steve");
+		
+		assertEquals(6, modifiedFiles.size());
+		assertEquals("/com/mycompany/myapp/Main.java", modifiedFiles.get(0));
+		assertEquals("/com/mycompany/myapp/game/Game.java", modifiedFiles.get(1));
+		assertEquals("/com/mycompany/myapp/util/Conversions.java", modifiedFiles.get(2));
+		assertEquals("/com/mycompany/myapp/Main.java", modifiedFiles.get(3));
+		assertEquals("/com/mycompany/myapp/util/Calculations.java", modifiedFiles.get(4));
+		assertEquals("/com/mycompany/myapp/util/Calculations.java", modifiedFiles.get(5));
+	}
+
 }

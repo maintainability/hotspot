@@ -137,7 +137,7 @@ public class CommitFileMatrix {
 	/**
 	 * Performs rename. It handles the directory rename as well.
 	 */
-	public List<CommitFileCell> performRename(String fromName, String toName, String developer, Date date, int revision, FileDiffInformation relatedFileDiff) {
+	public List<CommitFileCell> performRename(String fromName, String toName, String developer, Date date, int revision, FileDiffInformation relatedFileDiff, DeveloperFocusInformation developerFocusInformation) {
 		List<CommitFileCell> renamedEntries = new ArrayList<CommitFileCell>();
 		for (Entry<String, List<CommitFileCell>> fileEntry: files.entrySet()) {
 			String fileName = fileEntry.getKey();
@@ -148,7 +148,7 @@ public class CommitFileMatrix {
 				}
 				CommitFileCell latestInfoBeforeRename = fileEntry.getValue().get(0);
 				if (latestInfoBeforeRename != null) {
-					CommitFileCell actualRenamedEntry = latestInfoBeforeRename.cloneRenamed(toName + tail, developer, date, revision, relatedFileDiff);
+					CommitFileCell actualRenamedEntry = latestInfoBeforeRename.cloneRenamed(toName + tail, developer, date, revision, relatedFileDiff, developerFocusInformation);
 					renamedEntries.add(actualRenamedEntry);
 				} else {
 					System.out.println("The history of a renamed file is not found. Normally this should not occur. Information for investigation:");

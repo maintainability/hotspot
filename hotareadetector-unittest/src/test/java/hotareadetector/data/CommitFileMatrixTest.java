@@ -239,7 +239,7 @@ public class CommitFileMatrixTest {
 	public void testPerformRename() {
 		CommitFileMatrix commitFileMatrix = CommitFileMatrixGenerator.generateCommitFileMatrixForDirectoryRename();
 		
-		List<CommitFileCell> renameResult = commitFileMatrix.performRename("/dir", "/renameddir", "user2", new Date(), 2, null);
+		List<CommitFileCell> renameResult = commitFileMatrix.performRename("/dir", "/renameddir", "user2", new Date(), 2, null, null);
 		
 		Collections.sort(renameResult, new Comparator<CommitFileCell>() {
 			@Override

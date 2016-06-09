@@ -466,7 +466,7 @@ public class SourceControlLogicTest {
 		fileDiffInformation.add(fileDiffInformation5);
 		
 		SourceControlLogic sourceControlLogic = new SourceControlLogic();
-		List<CommitFileCell> commitFileCells = sourceControlLogic.calculateCumulativeData(commitFileMatrix, commitData, fileDiffInformation);
+		List<CommitFileCell> commitFileCells = sourceControlLogic.calculateCumulativeData(commitFileMatrix, commitData, fileDiffInformation, null);
 		
 		assertEquals(6, commitFileCells.size());
 		

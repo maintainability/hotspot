@@ -2,8 +2,10 @@ package hotareadetector.data;
 
 import hotareadetector.logic.SourceControlLogic;
 import hotareadetector.util.Calculator;
+import hotareadetector.util.DeveloperFocusUtil;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -22,12 +24,13 @@ public class CommitFileCell {
 	
 	private String fileName = "";
 	
-	// set of contributors
 	private List<ContributorDate> contributors = new ArrayList<ContributorDate>();
 	
 	private int numberOfContributors = -1;
 	private int numberOfContributorsToleranceOne = -1;
 	private int numberOfContributorsToleranceTwo = -1;
+	
+	private double focusWeightedContributors = -1.0;
 
 	private int numberOfModifications = 0;
 	
@@ -43,15 +46,26 @@ public class CommitFileCell {
 	private Date dateAverage = null;
 
 	/**
-	 * Calculate the number of different contributors with 0, 1 and 2 tolerances, and set the object finished.
+	 * Calculates the number of different contributors with 0, 1 and 2 tolerances and the focus weighted contributors,
+	 * updates the modification dates and sets the object finished.
 	 */
-	public void setFinished() {
+	public void setFinished(DeveloperFocusInformation developerFocusInformation) {
+		Date actualCommitDate = modificationDates.get(modificationDates.size() - 1);
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(actualCommitDate);
+		calendar.add(Calendar.MONTH, -3);
+		Date threeMonthsBefore = calendar.getTime();
 		Set<String> contributorsSet = new HashSet<String>();
 		List<String> contributorsToleranceOne = new ArrayList<String>();
+		List<String> contributedFilesLast90Days = new ArrayList<String>();
 		for (ContributorDate contributor : contributors) {
 			contributorsSet.add(contributor.getContributor());
 			contributorsToleranceOne.add(contributor.getContributor());
+			if (developerFocusInformation != null && contributor.getDate().after(threeMonthsBefore)) {
+				contributedFilesLast90Days.addAll(developerFocusInformation.getModifiedFilesPerDeveloperAfter(contributor.getContributor(), threeMonthsBefore));
+			}
 		}
+		focusWeightedContributors = DeveloperFocusUtil.calculateFocusValue(contributedFilesLast90Days);
 		
 		numberOfContributors = contributorsSet.size();		
 		for (String contributor : contributorsSet) {
@@ -203,7 +217,7 @@ public class CommitFileCell {
 	/**
 	 * Creates a clone about the current commit file cell, with modifications necessary for rename.
 	 */
-	public CommitFileCell cloneRenamed(String newFileName, String contributor, Date date, int newRevision, FileDiffInformation relatedFileDiff) {
+	public CommitFileCell cloneRenamed(String newFileName, String contributor, Date date, int newRevision, FileDiffInformation relatedFileDiff, DeveloperFocusInformation developerFocusInformation) {
 		CommitFileCell clone = new CommitFileCell();
 		clone.churnValueCoarse = churnValueCoarse;
 		clone.churnValueFine = churnValueFine;
@@ -222,7 +236,7 @@ public class CommitFileCell {
 		clone.modificationDates.addAll(modificationDates);
 		clone.modificationDates.add(date);
 		clone.revision = newRevision;
-		clone.setFinished();
+		clone.setFinished(developerFocusInformation);
 		return clone;
 	}
 

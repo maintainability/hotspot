@@ -53,11 +53,23 @@ public class DeveloperFocusInformation {
 		developersModifications.put(developer, developerModifications);
 	}
 	
+	public void addModifications(String developer, Date date, List<CommitedFileData> commitFileDataList) {
+		for (CommitedFileData commitFileData : commitFileDataList) {
+			addModification(developer, date, commitFileData.getFileName());
+		}
+	}
+	
+	/**
+	 * Returns all the modified files by the developer after specified date.
+	 */
 	public List<String> getModifiedFilesPerDeveloperAfter(String developer, Date date) {
 		List<String> result = new ArrayList<String>();
 		TreeMap<Date, ArrayList<String>> developerModifications = developersModifications.get(developer);
 		if (developerModifications != null) {
-			SortedMap<Date, ArrayList<String>> modificationsFromDate = developerModifications.tailMap(date);
+			SortedMap<Date, ArrayList<String>> modificationsFromDate = developerModifications;
+			if (date != null) {
+				modificationsFromDate = developerModifications.tailMap(date);
+			}
 			if (modificationsFromDate != null) {
 				for (ArrayList<String> modificationFromDate : modificationsFromDate.values()) {
 					result.addAll(modificationFromDate);
@@ -65,5 +77,13 @@ public class DeveloperFocusInformation {
 			}
 		}
 		return result;
-	}	
+	}
+	
+	/**
+	 * Returns all files by developer.
+	 */
+	public List<String> getModifiedFilesPerDeveloper(String developer) {
+		return getModifiedFilesPerDeveloperAfter(developer, null);
+	}
+
 }
