@@ -4,6 +4,7 @@ import hotareadetector.data.CommitData;
 import hotareadetector.data.CommitFileCell;
 import hotareadetector.data.CommitFileMatrix;
 import hotareadetector.data.CommitedFileData;
+import hotareadetector.data.ContributorDate;
 import hotareadetector.data.FileDiffInformation;
 import hotareadetector.data.HotAreaDetectorContext;
 import hotareadetector.data.OperationType;
@@ -114,7 +115,7 @@ public class SourceControlLogic {
 					actualCommitFile.setChurnValueFine(fileDataLatest.getChurnValueFine() + relatedFileDiff.getNumberOfAdds() + relatedFileDiff.getNumberOfRemoves());
 				}
 				actualCommitFile.addContributors(fileDataLatest.getContributors());
-				actualCommitFile.addContributor(commitData.getDeveloper());
+				actualCommitFile.addContributor(new ContributorDate(commitData.getDeveloper(), commitData.getDate()));
 				actualCommitFile.addModificationDates(fileDataLatest.getModificationDates());
 				actualCommitFile.addModificationDate(commitData.getDate());
 				actualCommitFile.setFinished();

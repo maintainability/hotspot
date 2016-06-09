@@ -7,6 +7,7 @@ import hotareadetector.data.CommitData;
 import hotareadetector.data.CommitFileCell;
 import hotareadetector.data.CommitFileMatrix;
 import hotareadetector.data.CommitedFileData;
+import hotareadetector.data.ContributorDate;
 import hotareadetector.data.FileDiffInformation;
 import hotareadetector.data.HotAreaDetectorContext;
 import hotareadetector.data.OperationType;
@@ -475,8 +476,8 @@ public class SourceControlLogicTest {
 		assertEquals(1, commitFileCells.get(0).getNumberOfContributors());
 		assertEquals(0, commitFileCells.get(0).getNumberOfContributorsToleranceOne());
 		assertEquals(0, commitFileCells.get(0).getNumberOfContributorsToleranceTwo());
-		assertTrue(commitFileCells.get(0).getContributors().contains("mike"));
-		assertFalse(commitFileCells.get(0).getContributors().contains("sully"));
+		assertTrue(contributorDatesContainsContributor(commitFileCells.get(0).getContributors(), "mike"));
+		assertFalse(contributorDatesContainsContributor(commitFileCells.get(0).getContributors(), "sully"));
 		assertEquals(1, commitFileCells.get(0).getNumberOfModifications());
 		assertEquals(0, commitFileCells.get(0).getChurnValueCoarse());
 		assertEquals(0, commitFileCells.get(0).getChurnValueFine());
@@ -487,8 +488,8 @@ public class SourceControlLogicTest {
 		assertEquals(1, commitFileCells.get(1).getNumberOfContributors());
 		assertEquals(1, commitFileCells.get(1).getNumberOfContributorsToleranceOne());
 		assertEquals(1, commitFileCells.get(1).getNumberOfContributorsToleranceTwo());
-		assertTrue(commitFileCells.get(1).getContributors().contains("mike"));
-		assertFalse(commitFileCells.get(1).getContributors().contains("sully"));
+		assertTrue(contributorDatesContainsContributor(commitFileCells.get(1).getContributors(), "mike"));
+		assertFalse(contributorDatesContainsContributor(commitFileCells.get(1).getContributors(), "sully"));
 		assertEquals(3, commitFileCells.get(1).getNumberOfModifications());
 		assertEquals(63, commitFileCells.get(1).getChurnValueCoarse());
 		assertEquals(19, commitFileCells.get(1).getChurnValueFine());
@@ -499,8 +500,8 @@ public class SourceControlLogicTest {
 		assertEquals(1, commitFileCells.get(2).getNumberOfContributors());
 		assertEquals(0, commitFileCells.get(2).getNumberOfContributorsToleranceOne());
 		assertEquals(0, commitFileCells.get(2).getNumberOfContributorsToleranceTwo());
-		assertTrue(commitFileCells.get(2).getContributors().contains("mike"));
-		assertFalse(commitFileCells.get(2).getContributors().contains("sully"));
+		assertTrue(contributorDatesContainsContributor(commitFileCells.get(2).getContributors(), "mike"));
+		assertFalse(contributorDatesContainsContributor(commitFileCells.get(2).getContributors(), "sully"));
 		assertEquals(1, commitFileCells.get(2).getNumberOfModifications());
 		assertEquals(30, commitFileCells.get(2).getChurnValueCoarse());
 		assertEquals(30, commitFileCells.get(2).getChurnValueFine());
@@ -511,8 +512,8 @@ public class SourceControlLogicTest {
 		assertEquals(2, commitFileCells.get(3).getNumberOfContributors());
 		assertEquals(0, commitFileCells.get(3).getNumberOfContributorsToleranceOne());
 		assertEquals(0, commitFileCells.get(3).getNumberOfContributorsToleranceTwo());
-		assertTrue(commitFileCells.get(3).getContributors().contains("mike"));
-		assertTrue(commitFileCells.get(3).getContributors().contains("sully"));
+		assertTrue(contributorDatesContainsContributor(commitFileCells.get(3).getContributors(), "mike"));
+		assertTrue(contributorDatesContainsContributor(commitFileCells.get(3).getContributors(), "sully"));
 		assertEquals(2, commitFileCells.get(3).getNumberOfModifications());
 		assertEquals(40, commitFileCells.get(3).getChurnValueCoarse());
 		assertEquals(40, commitFileCells.get(3).getChurnValueFine());
@@ -523,8 +524,8 @@ public class SourceControlLogicTest {
 		assertEquals(2, commitFileCells.get(4).getNumberOfContributors());
 		assertEquals(1, commitFileCells.get(4).getNumberOfContributorsToleranceOne());
 		assertEquals(0, commitFileCells.get(4).getNumberOfContributorsToleranceTwo());
-		assertTrue(commitFileCells.get(4).getContributors().contains("mike"));
-		assertTrue(commitFileCells.get(4).getContributors().contains("sully"));
+		assertTrue(contributorDatesContainsContributor(commitFileCells.get(4).getContributors(), "mike"));
+		assertTrue(contributorDatesContainsContributor(commitFileCells.get(4).getContributors(), "sully"));
 		assertEquals(3, commitFileCells.get(4).getNumberOfModifications());
 		assertEquals(41, commitFileCells.get(4).getChurnValueCoarse());
 		assertEquals(31, commitFileCells.get(4).getChurnValueFine());
@@ -535,8 +536,8 @@ public class SourceControlLogicTest {
 		assertEquals(2, commitFileCells.get(5).getNumberOfContributors());
 		assertEquals(1, commitFileCells.get(5).getNumberOfContributorsToleranceOne());
 		assertEquals(0, commitFileCells.get(5).getNumberOfContributorsToleranceTwo());
-		assertTrue(commitFileCells.get(5).getContributors().contains("mike"));
-		assertTrue(commitFileCells.get(5).getContributors().contains("sully"));
+		assertTrue(contributorDatesContainsContributor(commitFileCells.get(5).getContributors(), "mike"));
+		assertTrue(contributorDatesContainsContributor(commitFileCells.get(5).getContributors(), "sully"));
 		assertEquals(3, commitFileCells.get(5).getNumberOfModifications());
 		assertEquals(39, commitFileCells.get(5).getChurnValueCoarse());
 		assertEquals(29, commitFileCells.get(5).getChurnValueFine());
@@ -609,5 +610,14 @@ public class SourceControlLogicTest {
 		assertEquals("/trunk/myproject/test/mypackage/MyFileTest.java", result.get(2).getCommitedFiles().get(0).getFileName());
 		
 		
+	}
+	
+	private boolean contributorDatesContainsContributor(List<ContributorDate> contributorDates, String contributor) {
+		for (ContributorDate contributorDate : contributorDates) {
+			if (contributorDate.getContributor().equals(contributor)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

@@ -23,7 +23,7 @@ public class CommitFileCell {
 	private String fileName = "";
 	
 	// set of contributors
-	private List<String> contributors = new ArrayList<String>();
+	private List<ContributorDate> contributors = new ArrayList<ContributorDate>();
 	
 	private int numberOfContributors = -1;
 	private int numberOfContributorsToleranceOne = -1;
@@ -47,11 +47,13 @@ public class CommitFileCell {
 	 */
 	public void setFinished() {
 		Set<String> contributorsSet = new HashSet<String>();
-		contributorsSet.addAll(contributors);
-		numberOfContributors = contributorsSet.size();
-		
 		List<String> contributorsToleranceOne = new ArrayList<String>();
-		contributorsToleranceOne.addAll(contributors);
+		for (ContributorDate contributor : contributors) {
+			contributorsSet.add(contributor.getContributor());
+			contributorsToleranceOne.add(contributor.getContributor());
+		}
+		
+		numberOfContributors = contributorsSet.size();		
 		for (String contributor : contributorsSet) {
 			contributorsToleranceOne.remove(contributor);
 		}
@@ -130,18 +132,18 @@ public class CommitFileCell {
 		this.churnValueFine = churnValueFine;
 	}
 	
-	public List<String> getContributors() {
-		List<String> contributorsLocal = new ArrayList<String>();
+	public List<ContributorDate> getContributors() {
+		List<ContributorDate> contributorsLocal = new ArrayList<ContributorDate>();
 		contributorsLocal.addAll(contributors);
 		return contributorsLocal;
 	}
 
-	public void addContributor(String contributor) {
+	public void addContributor(ContributorDate contributor) {
 		assert(!finished);
 		contributors.add(contributor);
 	}
 
-	public void addContributors(List<String> contributorsParam) {
+	public void addContributors(List<ContributorDate> contributorsParam) {
 		assert(!finished);
 		contributors.addAll(contributorsParam);
 	}
@@ -209,9 +211,9 @@ public class CommitFileCell {
 			clone.churnValueCoarse += SourceControlLogic.extractChurnValue(relatedFileDiff.getAtAtDiffs());
 			clone.churnValueFine += relatedFileDiff.getNumberOfAdds() + relatedFileDiff.getNumberOfRemoves();
 		}
-		clone.contributors = new ArrayList<String>();
+		clone.contributors = new ArrayList<ContributorDate>();
 		clone.contributors.addAll(contributors);
-		clone.contributors.add(contributor);
+		clone.contributors.add(new ContributorDate(contributor, date));
 		clone.fileName = newFileName;
 		clone.finished = false;
 		clone.latestOperation = OperationType.R;

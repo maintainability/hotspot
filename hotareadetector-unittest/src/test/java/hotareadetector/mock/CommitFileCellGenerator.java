@@ -2,15 +2,19 @@ package hotareadetector.mock;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import hotareadetector.data.CommitFileCell;
+import hotareadetector.data.ContributorDate;
 import hotareadetector.data.OperationType;
 
 /**
  * Helper class for generating commit-file cells.
  */
 public class CommitFileCellGenerator {
+	private static Date now = new Date();
+	
 	
 	/**
 	 * Creates one commit-file cell.
@@ -57,7 +61,7 @@ public class CommitFileCellGenerator {
 		commitFileCell11.setNumberOfModifications(1);
 		commitFileCell11.setChurnValueCoarse(5);
 		commitFileCell11.setChurnValueFine(5);
-		commitFileCell11.addContributor("mike");
+		commitFileCell11.addContributor(new ContributorDate("mike", now));
 		commitFileCell11.setLatestOperation(OperationType.A);
 		
 		CommitFileCell commitFileCell12 = new CommitFileCell();
@@ -66,7 +70,7 @@ public class CommitFileCellGenerator {
 		commitFileCell12.setNumberOfModifications(1);
 		commitFileCell12.setChurnValueCoarse(10);
 		commitFileCell12.setChurnValueFine(10);
-		commitFileCell12.addContributor("mike");
+		commitFileCell12.addContributor(new ContributorDate("mike", now));
 		commitFileCell12.setLatestOperation(OperationType.A);
 		
 		CommitFileCell commitFileCell13 = new CommitFileCell();
@@ -75,7 +79,7 @@ public class CommitFileCellGenerator {
 		commitFileCell13.setNumberOfModifications(1);
 		commitFileCell13.setChurnValueCoarse(1);
 		commitFileCell13.setChurnValueFine(1);
-		commitFileCell13.addContributor("mike");
+		commitFileCell13.addContributor(new ContributorDate("mike", now));
 		commitFileCell13.setLatestOperation(OperationType.A);
 		
 		List<CommitFileCell> firstCommit = new ArrayList<CommitFileCell>();
@@ -96,8 +100,8 @@ public class CommitFileCellGenerator {
 		commitFileCell21.setNumberOfModifications(2);
 		commitFileCell21.setChurnValueCoarse(25);
 		commitFileCell21.setChurnValueFine(15);
-		commitFileCell21.addContributor("mike");
-		commitFileCell21.addContributor("sully");
+		commitFileCell21.addContributor(new ContributorDate("mike", now));
+		commitFileCell21.addContributor(new ContributorDate("sully", now));
 		commitFileCell21.setLatestOperation(OperationType.M);
 		
 		CommitFileCell commitFileCell22 = new CommitFileCell();
@@ -106,7 +110,7 @@ public class CommitFileCellGenerator {
 		commitFileCell22.setNumberOfModifications(1);
 		commitFileCell22.setChurnValueCoarse(20);
 		commitFileCell22.setChurnValueFine(20);
-		commitFileCell22.addContributor("sully");
+		commitFileCell22.addContributor(new ContributorDate("sully", now));
 		commitFileCell22.setLatestOperation(OperationType.M);
 		
 		CommitFileCell commitFileCell23 = new CommitFileCell();
@@ -115,7 +119,7 @@ public class CommitFileCellGenerator {
 		commitFileCell23.setNumberOfModifications(2);
 		commitFileCell23.setChurnValueCoarse(2);
 		commitFileCell23.setChurnValueFine(2);
-		commitFileCell23.addContributor("sully");
+		commitFileCell23.addContributor(new ContributorDate("sully", now));
 		commitFileCell23.setLatestOperation(OperationType.D);
 		
 		List<CommitFileCell> secondCommit = new ArrayList<CommitFileCell>();
@@ -136,8 +140,8 @@ public class CommitFileCellGenerator {
 		commitFileCell31.setNumberOfModifications(2);
 		commitFileCell31.setChurnValueCoarse(10);
 		commitFileCell31.setChurnValueFine(10);
-		commitFileCell31.addContributor("mike");
-		commitFileCell31.addContributor("mike");
+		commitFileCell31.addContributor(new ContributorDate("mike", now));
+		commitFileCell31.addContributor(new ContributorDate("mike", now));
 		commitFileCell31.setLatestOperation(OperationType.M);
 		
 		List<CommitFileCell> thirdCommit = new ArrayList<CommitFileCell>();
@@ -156,7 +160,7 @@ public class CommitFileCellGenerator {
 		commitFileCell1.setNumberOfModifications(1);
 		commitFileCell1.setChurnValueCoarse(0);
 		commitFileCell1.setChurnValueFine(0);
-		commitFileCell1.addContributor("user1");
+		commitFileCell1.addContributor(new ContributorDate("user1", now));
 		commitFileCell1.setLatestOperation(OperationType.A);
 		
 		CommitFileCell commitFileCell2 = new CommitFileCell();
@@ -165,7 +169,7 @@ public class CommitFileCellGenerator {
 		commitFileCell2.setNumberOfModifications(1);
 		commitFileCell2.setChurnValueCoarse(5);
 		commitFileCell2.setChurnValueFine(2);
-		commitFileCell2.addContributor("user1");
+		commitFileCell2.addContributor(new ContributorDate("user1", now));
 		commitFileCell2.setLatestOperation(OperationType.A);
 		
 		CommitFileCell commitFileCell3 = new CommitFileCell();
@@ -174,7 +178,7 @@ public class CommitFileCellGenerator {
 		commitFileCell3.setNumberOfModifications(1);
 		commitFileCell3.setChurnValueCoarse(10);
 		commitFileCell3.setChurnValueFine(7);
-		commitFileCell3.addContributor("user1");
+		commitFileCell3.addContributor(new ContributorDate("user1", now));
 		commitFileCell3.setLatestOperation(OperationType.A);
 		
 		CommitFileCell commitFileCell4 = new CommitFileCell();
@@ -183,7 +187,7 @@ public class CommitFileCellGenerator {
 		commitFileCell4.setNumberOfModifications(1);
 		commitFileCell4.setChurnValueCoarse(0);
 		commitFileCell4.setChurnValueFine(0);
-		commitFileCell4.addContributor("user1");
+		commitFileCell4.addContributor(new ContributorDate("user1", now));
 		commitFileCell4.setLatestOperation(OperationType.A);
 		
 		CommitFileCell commitFileCell5 = new CommitFileCell();
@@ -192,7 +196,7 @@ public class CommitFileCellGenerator {
 		commitFileCell5.setNumberOfModifications(1);
 		commitFileCell5.setChurnValueCoarse(15);
 		commitFileCell5.setChurnValueFine(12);
-		commitFileCell5.addContributor("user1");
+		commitFileCell5.addContributor(new ContributorDate("user1", now));
 		commitFileCell5.setLatestOperation(OperationType.A);
 		
 		List<CommitFileCell> commitForDirRename = new ArrayList<CommitFileCell>();
