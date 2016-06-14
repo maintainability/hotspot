@@ -159,7 +159,7 @@ public class CalculatorTest {
 	 * Calculating distribution value, select an element which occurs twice.
 	 */
 	@Test
-	public void testCalculateDistributionValueDouble() {
+	public void testCalculateDistributionValueTwice() {
 		List<Integer> allValues = new ArrayList<Integer>();
 		allValues.add(1);
 		allValues.add(2);
@@ -177,7 +177,7 @@ public class CalculatorTest {
 	 * Calculating distribution value, an element occurs twice, select another.
 	 */
 	@Test
-	public void testCalculateDistributionValueDoubleOther() {
+	public void testCalculateDistributionValueTwiceOther() {
 		List<Integer> allValues = new ArrayList<Integer>();
 		allValues.add(1);
 		allValues.add(2);
@@ -281,7 +281,7 @@ public class CalculatorTest {
 	 * Calculating distribution value, null check.
 	 */
 	@Test
-	public void testCalculateDistributionValueDoubleNullCheck() {
+	public void testCalculateDistributionValueNullCheck() {
 		List<Integer> allValues = null;
 		int valueToCheck = 2;
 		
@@ -294,7 +294,7 @@ public class CalculatorTest {
 	 * Calculating distribution value, empty check.
 	 */
 	@Test
-	public void testCalculateDistributionValueDoubleEmptyCheck() {
+	public void testCalculateDistributionValueEmptyCheck() {
 		List<Integer> allValues = new ArrayList<Integer>();
 		int valueToCheck = 2;
 		
@@ -303,6 +303,24 @@ public class CalculatorTest {
 		assertEquals(null, result);
 	}
 	
+	/**
+	 * Calculating distribution value for double elements.
+	 */
+	@Test
+	public void testCalculateDistributionValueDouble() {
+		List<Double> allValues = new ArrayList<Double>();
+		allValues.add(1.0);
+		allValues.add(2.0);
+		allValues.add(3.0);
+		allValues.add(4.0);
+		allValues.add(5.0);
+		double valueToCheck = 3.0;
+
+		Double result = Calculator.calculateDistributionValue(allValues, valueToCheck);
+
+		assertEquals(0.4, result, tolerance);
+	}
+
 	/**
 	 * Check distribution value of dates.
 	 */
