@@ -23,6 +23,7 @@ public class HotAreaCalculator {
 	List<Integer> ownershipValues = new ArrayList<Integer>();
 	List<Integer> ownershipValuesToleranceOne = new ArrayList<Integer>();
 	List<Integer> ownershipValuesToleranceTwo = new ArrayList<Integer>();
+	List<Double> focusWeightedContributors = new ArrayList<Double>();
 	
 	List<Integer> numberOfModifications = new ArrayList<Integer>();
 	List<Integer> churnValuesCoarse = new ArrayList<Integer>();
@@ -63,6 +64,7 @@ public class HotAreaCalculator {
 			ownershipValues.add(fileData.getNumberOfContributors());
 			ownershipValuesToleranceOne.add(fileData.getNumberOfContributorsToleranceOne());
 			ownershipValuesToleranceTwo.add(fileData.getNumberOfContributorsToleranceTwo());
+			focusWeightedContributors.add(fileData.getFocusWeightedContributors());
 			numberOfModifications.add(fileData.getNumberOfModifications());
 			if (commitFileMatrix.isDeepAnalysis()) {
 				churnValuesCoarse.add(fileData.getChurnValueCoarse());
@@ -75,6 +77,7 @@ public class HotAreaCalculator {
 		Collections.sort(ownershipValues);
 		Collections.sort(ownershipValuesToleranceOne);
 		Collections.sort(ownershipValuesToleranceTwo);
+		Collections.sort(focusWeightedContributors);
 		Collections.sort(numberOfModifications);
 		Collections.sort(churnValuesCoarse);
 		Collections.sort(churnValuesFine);
@@ -177,6 +180,10 @@ public class HotAreaCalculator {
 			
 		case OWNERSHIP_TOLERANCE2:
 			result = Calculator.calculateDistributionValue(ownershipValuesToleranceTwo, commitFileCell.getNumberOfContributorsToleranceTwo());
+			break;
+			
+		case OWNERSHIP_FOCUS:
+			result = Calculator.calculateDistributionValue(focusWeightedContributors, commitFileCell.getFocusWeightedContributors());
 			break;
 			
 		case DATEADDED:

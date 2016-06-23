@@ -63,5 +63,18 @@ public class CommitFileMatrixGenerator {
 		return commitFileMatrix;
 	}
 	
+	/**
+	 * Commit file matrix using an artificial log, created for developer focus calculation.
+	 */
+	public static CommitFileMatrix generateCommitFileMatrixDeveloperFocus() throws IOException {
+		SourceControlLogic sourceControlLogic = new SourceControlLogic();
+		SourceControlCommandExecutor executor = new SourceControlCommandExecutorDeveloperFocusMock();
+		SourceControlCommandParser parser = new SvnCommandParser();
+		HotAreaDetectorContext context = new HotAreaDetectorContext();
+		context.setDeepAnalysis(false);
+		sourceControlLogic.readCommitData(executor, parser, context);
+		CommitFileMatrix commitFileMatrix = sourceControlLogic.readCommitData(executor, parser, context);
+		return commitFileMatrix;
+	}
 
 }

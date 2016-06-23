@@ -50,22 +50,25 @@ public class CommitFileCell {
 	 * updates the modification dates and sets the object finished.
 	 */
 	public void setFinished(DeveloperFocusInformation developerFocusInformation) {
-		Date actualCommitDate = modificationDates.get(modificationDates.size() - 1);
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(actualCommitDate);
-		calendar.add(Calendar.MONTH, -3);
-		Date threeMonthsBefore = calendar.getTime();
 		Set<String> contributorsSet = new HashSet<String>();
 		List<String> contributorsToleranceOne = new ArrayList<String>();
-		List<String> contributedFilesLast90Days = new ArrayList<String>();
 		for (ContributorDate contributor : contributors) {
 			contributorsSet.add(contributor.getContributor());
 			contributorsToleranceOne.add(contributor.getContributor());
-			if (developerFocusInformation != null && contributor.getDate().after(threeMonthsBefore)) {
-				contributedFilesLast90Days.addAll(developerFocusInformation.getModifiedFilesPerDeveloperAfter(contributor.getContributor(), threeMonthsBefore));
+		}
+		
+		if (developerFocusInformation != null) {
+			focusWeightedContributors = 0.0;
+			for (String contributorName : contributorsSet) {
+				List<String> modifiedFilesPerDeveloper = developerFocusInformation.getModifiedFilesPerDeveloper(contributorName);
+				Set<String> modifiedFilesPerDeveloperSet = new HashSet<String>();
+				modifiedFilesPerDeveloperSet.addAll(modifiedFilesPerDeveloper);
+				List<String> modifiedFilesPerDeveloperNoDoubles = new ArrayList<String>();
+				modifiedFilesPerDeveloperNoDoubles.addAll(modifiedFilesPerDeveloperSet);
+				double actualFocusValue = DeveloperFocusUtil.calculateFocusValue(modifiedFilesPerDeveloperNoDoubles);
+				focusWeightedContributors += actualFocusValue;
 			}
 		}
-		focusWeightedContributors = DeveloperFocusUtil.calculateFocusValue(contributedFilesLast90Days);
 		
 		numberOfContributors = contributorsSet.size();		
 		for (String contributor : contributorsSet) {
@@ -176,6 +179,11 @@ public class CommitFileCell {
 		assert(finished);
 		return numberOfContributorsToleranceTwo;
 	}
+	
+	public double getFocusWeightedContributors() {
+		assert(finished);
+		return focusWeightedContributors;
+	}
 
 	public OperationType getLatestOperation() {
 		return latestOperation;
@@ -228,6 +236,7 @@ public class CommitFileCell {
 		clone.contributors = new ArrayList<ContributorDate>();
 		clone.contributors.addAll(contributors);
 		clone.contributors.add(new ContributorDate(contributor, date));
+		clone.focusWeightedContributors = focusWeightedContributors;
 		clone.fileName = newFileName;
 		clone.finished = false;
 		clone.latestOperation = OperationType.R;
