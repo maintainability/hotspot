@@ -19,7 +19,7 @@ Changed paths:
 
 Comment of commit 4.
 ------------------------------------------------------------------------
-r3 | mike | 2016-02-06 09:50:00 +0200 (Szo, 06 feb. 2016) | 1 line
+r3 | mike | 2016-02-06 18:14:00 +0200 (Szo, 06 feb. 2016) | 1 line
 Changed paths:
    M /com/mycompany/myapp/data/concrete/Circle.java
 
@@ -33,7 +33,7 @@ Changed paths:
 
 Comment of commit 2.
 ------------------------------------------------------------------------
-r1 | mike | 2016-02-06 18:14:00 +0200 (Szo, 06 feb. 2016) | 1 line
+r1 | mike | 2016-02-06 09:50:00 +0200 (Szo, 06 feb. 2016) | 1 line
 Changed paths:
    A /com/mycompany/myapp/main/Main.java
    A /com/mycompany/myapp/util/Converter.java

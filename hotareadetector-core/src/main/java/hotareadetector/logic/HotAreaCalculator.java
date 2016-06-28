@@ -104,6 +104,7 @@ public class HotAreaCalculator {
 		PrintWriter writerOwnership = new PrintWriter(fileNamePrefix + "-ownership.csv", "UTF-8");
 		PrintWriter writerOwnership1 = new PrintWriter(fileNamePrefix + "-ownership1.csv", "UTF-8");
 		PrintWriter writerOwnership2 = new PrintWriter(fileNamePrefix + "-ownership2.csv", "UTF-8");
+		PrintWriter writerFocus = new PrintWriter(fileNamePrefix + "-focus.csv", "UTF-8");
 		PrintWriter writerDateAdded = new PrintWriter(fileNamePrefix + "-dateadded.csv", "UTF-8");
 		PrintWriter writerDateAverage = new PrintWriter(fileNamePrefix + "-dateaverage.csv", "UTF-8");
 		PrintWriter writerDateModified = new PrintWriter(fileNamePrefix + "-datemodified.csv", "UTF-8");
@@ -115,6 +116,7 @@ public class HotAreaCalculator {
 		writerOwnership.println("Name;Ownership");
 		writerOwnership1.println("Name;Ownership1");
 		writerOwnership2.println("Name;Ownership2");
+		writerFocus.println("Name;Focus");
 		writerDateAdded.println("Name;DateAdded");
 		writerDateAverage.println("Name;DateAverage");
 		writerDateModified.println("Name;DateModified");
@@ -126,6 +128,7 @@ public class HotAreaCalculator {
 			writerOwnership.println(fileData.getFileName() + ";" + fileData.getNumberOfContributors());
 			writerOwnership1.println(fileData.getFileName() + ";" + fileData.getNumberOfContributorsToleranceOne());
 			writerOwnership2.println(fileData.getFileName() + ";" + fileData.getNumberOfContributorsToleranceTwo());
+			writerFocus.println(fileData.getFileName() + ";" + fileData.getFocusWeightedContributors());
 			writerDateAdded.println(fileData.getFileName() + ";" + fileData.getDateAdded());
 			writerDateAverage.println(fileData.getFileName() + ";" + fileData.getDateAverage());
 			writerDateModified.println(fileData.getFileName() + ";" + fileData.getDateLastModified());
@@ -137,6 +140,7 @@ public class HotAreaCalculator {
 		writerOwnership.close();
 		writerOwnership1.close();
 		writerOwnership2.close();
+		writerFocus.close();
 		writerDateAdded.close();
 		writerDateAverage.close();
 		writerDateModified.close();

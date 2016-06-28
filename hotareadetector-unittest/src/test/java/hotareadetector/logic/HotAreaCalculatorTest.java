@@ -451,9 +451,9 @@ public class HotAreaCalculatorTest {
 	 * 
 	 * 1. /com/mycompany/myapp/main/Main.java
 	 * Modified by mike and sully.
-	 * Last modified in the second commit.
 	 * 
 	 * A. mike
+	 * Last modified: first commit
 	 * Files to be considered to calculate the focus information:
 	 * - /com/mycompany/myapp/main/Main.java
 	 * - /com/mycompany/myapp/util/Converter.java
@@ -461,6 +461,7 @@ public class HotAreaCalculatorTest {
 	 * Focus information: (3 / (3 over 2)) * (2 + 2 + 2) = (3 / 3) * 6 = 6.0
 	 * 
 	 * B. sully
+	 * Last modified: second commit
 	 * Files to be considered to calculate the focus information:
 	 * - /com/mycompany/myapp/data/concrete/Circle.java
 	 * - /com/mycompany/myapp/util/Calculator.java
@@ -472,9 +473,9 @@ public class HotAreaCalculatorTest {
 	 * 
 	 * 2. /com/mycompany/myapp/util/Converter.java
 	 * Modified by mike.
-	 * Last modified in the fourth commit.
 	 * 
 	 * A. mike
+	 * Last modified: fourth commit
 	 * Files to be considered to calculate the focus information:
 	 * - /com/mycompany/myapp/main/Main.java
 	 * - /com/mycompany/myapp/util/Converter.java
@@ -487,51 +488,52 @@ public class HotAreaCalculatorTest {
 	 * 
 	 * 3. /com/mycompany/myapp/data/Shape.java
 	 * Modified by mike and sully.
-	 * Last modified in the fifth commit.
 	 * 
 	 * A. mike
-	 * Files to be considered to calculate the focus information: same as /com/mycompany/myapp/util/Converter.java
-	 * Focus information: 8.67
+	 * Last modified: first commit
+	 * Focus information: 6.00
 	 * 
 	 * B. sully
-	 * Last modified in the fifth commit. Files to be considered to calculate the focus information:
+	 * Last modified: fifth commit
+	 * Files to be considered to calculate the focus information:
 	 * - /com/mycompany/myapp/data/concrete/Circle.java
 	 * - /com/mycompany/myapp/util/Calculator.java
 	 * - /com/mycompany/myapp/main/Main.java
 	 * - /com/mycompany/myapp/data/Shape.java
 	 * Focus information: (4 / (4 over 2)) * (3 + 3 + 1 + 2 + 2 + 2) = (4 / 6) * 13 = 8.67
 	 * 
-	 * Resulting focus weighted contributors: 8.67 + 8.67 = 17.33
+	 * Resulting focus weighted contributors: 6.00 + 8.67 = 14.67
 	 * 
 	 * 
 	 * 4. /com/mycompany/myapp/data/concrete/Circle.java
 	 * Modified by mike and sully.
-	 * Last modified in the fifth commit.
 	 * 
 	 * A. mike
-	 * The focus information is same as in case of /com/mycompany/myapp/util/Converter.java: 8.67.
+	 * Last modified: fourth commit
+	 * Focus information: 8.67
 	 * 
 	 * B. sully
-	 * The focus information is the same as in case of /com/mycompany/myapp/data/Shape.java: 8.67.
+	 * Last modified: fifth commit
+	 * Focus information: 8.67
 	 * 
 	 * Resulting focus weighted contributors: 8.67 + 8.67 = 17.33
 	 * 
 	 * 
 	 * 5. /com/mycompany/myapp/util/Calculator.java
 	 * Modified by sully.
-	 * Last modified in the second commit.
 	 * 
 	 * A. sully
-	 * Therefore the focus information is the same as in the case of /com/mycompany/myapp/main/Main.java: 8.00.
+	 * Last modified: second commit
+	 * Focus information: 8.00
 	 * 
 	 * Resulting focus weighted contributors: 8.00
 	 * 
 	 * 
 	 * 6. /com/mycompany/myapp/util/Helper.java
 	 * Modified by mike.
-	 * Last modified in the sixth commit.
 	 * 
 	 * A. mike
+	 * Last modified: sixth commit
 	 * Files to be considered to calculate the focus information:
 	 * - /com/mycompany/myapp/main/Main.java
 	 * - /com/mycompany/myapp/util/Converter.java
@@ -541,15 +543,15 @@ public class HotAreaCalculatorTest {
 	 * Focus information: (5 / (5 over 2)) * (2 + 2 + 3 + 2 + 2 + 3 + 0 + 1 + 2 + 3) = (5 / 10) * 20 = 10.00
 	 * 
 	 * Resulting focus weighted contributors: 10.00
-
+	 * 
 	 * 
 	 * As final result we receive the following values:
 	 * - /com/mycompany/myapp/util/Calculator.java       (8.00): 0.000
 	 * - /com/mycompany/myapp/util/Converter.java        (8.67): 0.167
 	 * - /com/mycompany/myapp/util/Helper.java          (10.00): 0.333
 	 * - /com/mycompany/myapp/main/Main.java            (14.00): 0.500
-	 * - /com/mycompany/myapp/data/Shape.java           (17.33): 0.667
-	 * - /com/mycompany/myapp/data/concrete/Circle.java (17.33): 0.667
+	 * - /com/mycompany/myapp/data/Shape.java           (14.67): 0.667
+	 * - /com/mycompany/myapp/data/concrete/Circle.java (17.33): 0.833
 	 * 
 	 * Remark: this example was originally prepared for the last 3 months logic, this is why there are jumps in the log.
 	 */
@@ -562,13 +564,21 @@ public class HotAreaCalculatorTest {
 		
 		Map<String, Double> hotNumbersMap = createHotNumbersMap(hotNumbers);
 		
+		assertEquals(6, hotAreaCalculator.focusWeightedContributors.size());
+		assertEquals(8.0, hotAreaCalculator.focusWeightedContributors.get(0), tolerance);
+		assertEquals(8.0 + 2.0 / 3, hotAreaCalculator.focusWeightedContributors.get(1), tolerance);
+		assertEquals(10.0, hotAreaCalculator.focusWeightedContributors.get(2), tolerance);
+		assertEquals(14.0, hotAreaCalculator.focusWeightedContributors.get(3), tolerance);
+		assertEquals(14.0 + 2.0 / 3, hotAreaCalculator.focusWeightedContributors.get(4), tolerance);
+		assertEquals(17.0 + 1.0 / 3, hotAreaCalculator.focusWeightedContributors.get(5), tolerance);		
+		
 		assertEquals(6, hotNumbers.size());
 		assertEquals(0.0 / 6, hotNumbersMap.get("/com/mycompany/myapp/util/Calculator.java"), tolerance);
 		assertEquals(1.0 / 6, hotNumbersMap.get("/com/mycompany/myapp/util/Converter.java"), tolerance);
 		assertEquals(2.0 / 6, hotNumbersMap.get("/com/mycompany/myapp/util/Helper.java"), tolerance);
 		assertEquals(3.0 / 6, hotNumbersMap.get("/com/mycompany/myapp/main/Main.java"), tolerance);
 		assertEquals(4.0 / 6, hotNumbersMap.get("/com/mycompany/myapp/data/Shape.java"), tolerance);
-		assertEquals(4.0 / 6, hotNumbersMap.get("/com/mycompany/myapp/data/concrete/Circle.java"), tolerance);
+		assertEquals(5.0 / 6, hotNumbersMap.get("/com/mycompany/myapp/data/concrete/Circle.java"), tolerance);
 	}
 	
 	/**

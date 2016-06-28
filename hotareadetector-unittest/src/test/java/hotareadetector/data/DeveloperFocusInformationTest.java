@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.List;
+import java.util.Set;
 
 /**
  * Developer focus information related unit test.
@@ -29,6 +29,7 @@ public class DeveloperFocusInformationTest {
 		developerFocusInformation.addModification("bob",   dateFormat.parse("2016.03.08. 16:18:54"), "/com/mycompany/myapp/Main.java");
 		developerFocusInformation.addModification("bob",   dateFormat.parse("2016.03.08. 16:18:54"), "/com/mycompany/myapp/util/Calculations.java");
 		developerFocusInformation.addModification("steve", dateFormat.parse("2016.03.09. 17:22:08"), "/com/mycompany/myapp/util/Calculations.java");
+		developerFocusInformation.addModification("steve", dateFormat.parse("2016.03.09. 17:22:08"), "/com/mycompany/myapp/util/Asserts.java");
 		return developerFocusInformation;
 	}
 	
@@ -54,8 +55,9 @@ public class DeveloperFocusInformationTest {
 		assertEquals("/com/mycompany/myapp/util/Calculations.java", developerFocusInformation.developersModifications.get("steve").get(dateFormat.parse("2016.03.08. 10:29:34")).get(1));
 		
 		assertTrue(developerFocusInformation.developersModifications.get("steve").keySet().contains(dateFormat.parse("2016.03.09. 17:22:08")));
-		assertEquals(1, developerFocusInformation.developersModifications.get("steve").get(dateFormat.parse("2016.03.09. 17:22:08")).size());
+		assertEquals(2, developerFocusInformation.developersModifications.get("steve").get(dateFormat.parse("2016.03.09. 17:22:08")).size());
 		assertEquals("/com/mycompany/myapp/util/Calculations.java", developerFocusInformation.developersModifications.get("steve").get(dateFormat.parse("2016.03.09. 17:22:08")).get(0));
+		assertEquals("/com/mycompany/myapp/util/Asserts.java", developerFocusInformation.developersModifications.get("steve").get(dateFormat.parse("2016.03.09. 17:22:08")).get(1));
 		
 		assertFalse(developerFocusInformation.developersModifications.get("steve").keySet().contains(dateFormat.parse("2016.03.08. 16:18:54")));
 		
@@ -67,53 +69,37 @@ public class DeveloperFocusInformationTest {
 		assertEquals(2, developerFocusInformation.developersModifications.get("bob").get(dateFormat.parse("2016.03.08. 16:18:54")).size());
 		assertEquals("/com/mycompany/myapp/Main.java", developerFocusInformation.developersModifications.get("bob").get(dateFormat.parse("2016.03.08. 16:18:54")).get(0));
 		assertEquals("/com/mycompany/myapp/util/Calculations.java", developerFocusInformation.developersModifications.get("bob").get(dateFormat.parse("2016.03.08. 16:18:54")).get(1));
+		
+		assertEquals(dateFormat.parse("2016.02.12. 12:43:15"), developerFocusInformation.fileLastModifiedByDeveloper.get(new ContributorFile("steve", "/com/mycompany/myapp/game/Game.java")));
+		assertEquals(dateFormat.parse("2016.02.12. 12:43:15"), developerFocusInformation.fileLastModifiedByDeveloper.get(new ContributorFile("steve", "/com/mycompany/myapp/util/Conversions.java")));
+		assertEquals(dateFormat.parse("2016.03.08. 10:29:34"), developerFocusInformation.fileLastModifiedByDeveloper.get(new ContributorFile("steve", "/com/mycompany/myapp/Main.java")));
+		assertEquals(dateFormat.parse("2016.03.08. 16:18:54"), developerFocusInformation.fileLastModifiedByDeveloper.get(new ContributorFile("bob", "/com/mycompany/myapp/Main.java")));
+		assertEquals(dateFormat.parse("2016.03.08. 16:18:54"), developerFocusInformation.fileLastModifiedByDeveloper.get(new ContributorFile("bob", "/com/mycompany/myapp/util/Calculations.java")));
+		assertEquals(dateFormat.parse("2016.03.09. 17:22:08"), developerFocusInformation.fileLastModifiedByDeveloper.get(new ContributorFile("steve", "/com/mycompany/myapp/util/Calculations.java")));
+		assertEquals(dateFormat.parse("2016.03.09. 17:22:08"), developerFocusInformation.fileLastModifiedByDeveloper.get(new ContributorFile("steve", "/com/mycompany/myapp/util/Asserts.java")));
 	}
 	
-	@Test
-	public void testGetModifiedFilesPerDeveloperAfter() throws ParseException {
-		DeveloperFocusInformation developerFocusInformation = buildDeveloperFocusInformation();
-		List<String> modifiedFiles = developerFocusInformation.getModifiedFilesPerDeveloperAfter("steve", dateFormat.parse("2016.03.01. 00:00:00"));
-		
-		assertEquals(3, modifiedFiles.size());
-		assertEquals("/com/mycompany/myapp/Main.java", modifiedFiles.get(0));
-		assertEquals("/com/mycompany/myapp/util/Calculations.java", modifiedFiles.get(1));
-		assertEquals("/com/mycompany/myapp/util/Calculations.java", modifiedFiles.get(2));
-	}
-
-	@Test
-	public void testGetModifiedFilesPerDeveloperAfterEmpty() throws ParseException {
-		DeveloperFocusInformation developerFocusInformation = buildDeveloperFocusInformation();
-		List<String> modifiedFiles = developerFocusInformation.getModifiedFilesPerDeveloperAfter("steve", dateFormat.parse("2016.04.01. 00:00:00"));
-		
-		assertTrue(modifiedFiles.isEmpty());
-	}
-
-	@Test
-	public void testGetModifiedFilesPerDeveloperAfterAll() throws ParseException {
-		DeveloperFocusInformation developerFocusInformation = buildDeveloperFocusInformation();
-		List<String> modifiedFiles = developerFocusInformation.getModifiedFilesPerDeveloperAfter("steve", dateFormat.parse("1970.01.01. 00:00:00"));
-		
-		assertEquals(6, modifiedFiles.size());
-		assertEquals("/com/mycompany/myapp/Main.java", modifiedFiles.get(0));
-		assertEquals("/com/mycompany/myapp/game/Game.java", modifiedFiles.get(1));
-		assertEquals("/com/mycompany/myapp/util/Conversions.java", modifiedFiles.get(2));
-		assertEquals("/com/mycompany/myapp/Main.java", modifiedFiles.get(3));
-		assertEquals("/com/mycompany/myapp/util/Calculations.java", modifiedFiles.get(4));
-		assertEquals("/com/mycompany/myapp/util/Calculations.java", modifiedFiles.get(5));
-	}
-
+	/**
+	 * Which files has been modified by steve no later than last modification of him of file /com/mycompany/myapp/Main.java?
+	 * Last modification of that file by steve: 2016.03.08. 10:29:34.
+	 * Files modified by steve no later:
+	 * - /com/mycompany/myapp/Main.java (2 times)
+	 * - /com/mycompany/myapp/game/Game.java
+	 * - /com/mycompany/myapp/util/Conversions.java
+	 * - /com/mycompany/myapp/util/Calculations.java
+	 */
 	@Test
 	public void testGetModifiedFilesPerDeveloper() throws ParseException {
 		DeveloperFocusInformation developerFocusInformation = buildDeveloperFocusInformation();
-		List<String> modifiedFiles = developerFocusInformation.getModifiedFilesPerDeveloper("steve");
 		
-		assertEquals(6, modifiedFiles.size());
-		assertEquals("/com/mycompany/myapp/Main.java", modifiedFiles.get(0));
-		assertEquals("/com/mycompany/myapp/game/Game.java", modifiedFiles.get(1));
-		assertEquals("/com/mycompany/myapp/util/Conversions.java", modifiedFiles.get(2));
-		assertEquals("/com/mycompany/myapp/Main.java", modifiedFiles.get(3));
-		assertEquals("/com/mycompany/myapp/util/Calculations.java", modifiedFiles.get(4));
-		assertEquals("/com/mycompany/myapp/util/Calculations.java", modifiedFiles.get(5));
+		Set<String> modifiedFiles = developerFocusInformation.getModifiedFilesPerDeveloper("steve", "/com/mycompany/myapp/Main.java");
+		
+		assertEquals(4, modifiedFiles.size());
+		assertTrue(modifiedFiles.contains("/com/mycompany/myapp/Main.java"));
+		assertTrue(modifiedFiles.contains("/com/mycompany/myapp/game/Game.java"));
+		assertTrue(modifiedFiles.contains("/com/mycompany/myapp/util/Conversions.java"));
+		assertTrue(modifiedFiles.contains("/com/mycompany/myapp/util/Calculations.java"));
+		assertFalse(modifiedFiles.contains("/com/mycompany/myapp/util/Asserts.java"));
+		assertFalse(modifiedFiles.contains("/com/mycompany/myapp/util/NoSuchFile.java"));
 	}
-
 }

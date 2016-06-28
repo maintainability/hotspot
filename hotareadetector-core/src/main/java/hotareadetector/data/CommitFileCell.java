@@ -5,7 +5,6 @@ import hotareadetector.util.Calculator;
 import hotareadetector.util.DeveloperFocusUtil;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -60,7 +59,7 @@ public class CommitFileCell {
 		if (developerFocusInformation != null) {
 			focusWeightedContributors = 0.0;
 			for (String contributorName : contributorsSet) {
-				List<String> modifiedFilesPerDeveloper = developerFocusInformation.getModifiedFilesPerDeveloper(contributorName);
+				Set<String> modifiedFilesPerDeveloper = developerFocusInformation.getModifiedFilesPerDeveloper(contributorName, fileName);
 				Set<String> modifiedFilesPerDeveloperSet = new HashSet<String>();
 				modifiedFilesPerDeveloperSet.addAll(modifiedFilesPerDeveloper);
 				List<String> modifiedFilesPerDeveloperNoDoubles = new ArrayList<String>();
