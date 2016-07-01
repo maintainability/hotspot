@@ -5,7 +5,7 @@ import hotareadetector.data.CommitFileCell;
 import hotareadetector.data.CommitFileMatrix;
 import hotareadetector.data.CommitedFileData;
 import hotareadetector.data.ContributorDate;
-import hotareadetector.data.DeveloperFocusInformation;
+import hotareadetector.data.ContributorFocusInformation;
 import hotareadetector.data.FileDiffInformation;
 import hotareadetector.data.HotAreaDetectorContext;
 import hotareadetector.data.OperationType;
@@ -39,7 +39,7 @@ public class SourceControlLogic {
 		CommitData previous = null;
 		CommitData actual = null;
 		List<FileDiffInformation> emptyFiles = new ArrayList<FileDiffInformation>();
-		DeveloperFocusInformation developerFocusInformation = new DeveloperFocusInformation();
+		ContributorFocusInformation developerFocusInformation = new ContributorFocusInformation();
 		for (CommitData commitData : commitDataListFiltered) {
 			System.out.println("Elaborating revision r" + commitData.getRevisionNumber() + "...");
 			
@@ -79,7 +79,7 @@ public class SourceControlLogic {
 		return null;
 	}
 	
-	protected List<CommitFileCell> calculateCumulativeData(CommitFileMatrix commitFileMatrix, CommitData commitData, List<FileDiffInformation> commitedFiles, DeveloperFocusInformation developerFocusInformation) {
+	protected List<CommitFileCell> calculateCumulativeData(CommitFileMatrix commitFileMatrix, CommitData commitData, List<FileDiffInformation> commitedFiles, ContributorFocusInformation developerFocusInformation) {
 		List<CommitFileCell> result = new ArrayList<CommitFileCell>();
 		CommitFileCell emptyFileData = new CommitFileCell();
 		for (CommitedFileData commitedFile : commitData.getCommitedFiles()) {
@@ -93,6 +93,7 @@ public class SourceControlLogic {
 			case R:
 				List<CommitFileCell> renameResult = commitFileMatrix.performRename(commitedFile.getFromFileName(), commitedFile.getFileName(), commitData.getDeveloper(), commitData.getDate(), commitData.getRevisionNumber(), relatedFileDiff, developerFocusInformation);
 				result.addAll(renameResult);
+				developerFocusInformation.applyRename(commitedFile.getFromFileName(), commitedFile.getFileName());
 				break;
 				
 			case D:

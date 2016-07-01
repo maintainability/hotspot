@@ -48,7 +48,7 @@ public class CommitFileCell {
 	 * Calculates the number of different contributors with 0, 1 and 2 tolerances and the focus weighted contributors,
 	 * updates the modification dates and sets the object finished.
 	 */
-	public void setFinished(DeveloperFocusInformation developerFocusInformation) {
+	public void setFinished(ContributorFocusInformation developerFocusInformation) {
 		Set<String> contributorsSet = new HashSet<String>();
 		List<String> contributorsToleranceOne = new ArrayList<String>();
 		for (ContributorDate contributor : contributors) {
@@ -59,7 +59,7 @@ public class CommitFileCell {
 		if (developerFocusInformation != null) {
 			focusWeightedContributors = 0.0;
 			for (String contributorName : contributorsSet) {
-				Set<String> modifiedFilesPerDeveloper = developerFocusInformation.getModifiedFilesPerDeveloper(contributorName, fileName);
+				Set<String> modifiedFilesPerDeveloper = developerFocusInformation.getModifiedFilesPerContributor(contributorName, fileName);
 				Set<String> modifiedFilesPerDeveloperSet = new HashSet<String>();
 				modifiedFilesPerDeveloperSet.addAll(modifiedFilesPerDeveloper);
 				List<String> modifiedFilesPerDeveloperNoDoubles = new ArrayList<String>();
@@ -224,7 +224,7 @@ public class CommitFileCell {
 	/**
 	 * Creates a clone about the current commit file cell, with modifications necessary for rename.
 	 */
-	public CommitFileCell cloneRenamed(String newFileName, String contributor, Date date, int newRevision, FileDiffInformation relatedFileDiff, DeveloperFocusInformation developerFocusInformation) {
+	public CommitFileCell cloneRenamed(String newFileName, String contributor, Date date, int newRevision, FileDiffInformation relatedFileDiff, ContributorFocusInformation developerFocusInformation) {
 		CommitFileCell clone = new CommitFileCell();
 		clone.churnValueCoarse = churnValueCoarse;
 		clone.churnValueFine = churnValueFine;

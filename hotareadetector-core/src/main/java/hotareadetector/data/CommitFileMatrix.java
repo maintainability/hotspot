@@ -137,7 +137,7 @@ public class CommitFileMatrix {
 	/**
 	 * Performs rename. It handles the directory rename as well.
 	 */
-	public List<CommitFileCell> performRename(String fromName, String toName, String developer, Date date, int revision, FileDiffInformation relatedFileDiff, DeveloperFocusInformation developerFocusInformation) {
+	public List<CommitFileCell> performRename(String fromName, String toName, String developer, Date date, int revision, FileDiffInformation relatedFileDiff, ContributorFocusInformation developerFocusInformation) {
 		List<CommitFileCell> renamedEntries = new ArrayList<CommitFileCell>();
 		for (Entry<String, List<CommitFileCell>> fileEntry: files.entrySet()) {
 			String fileName = fileEntry.getKey();

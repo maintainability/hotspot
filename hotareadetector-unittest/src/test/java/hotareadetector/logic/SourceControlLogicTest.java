@@ -8,6 +8,7 @@ import hotareadetector.data.CommitFileCell;
 import hotareadetector.data.CommitFileMatrix;
 import hotareadetector.data.CommitedFileData;
 import hotareadetector.data.ContributorDate;
+import hotareadetector.data.ContributorFocusInformation;
 import hotareadetector.data.FileDiffInformation;
 import hotareadetector.data.HotAreaDetectorContext;
 import hotareadetector.data.OperationType;
@@ -466,7 +467,7 @@ public class SourceControlLogicTest {
 		fileDiffInformation.add(fileDiffInformation5);
 		
 		SourceControlLogic sourceControlLogic = new SourceControlLogic();
-		List<CommitFileCell> commitFileCells = sourceControlLogic.calculateCumulativeData(commitFileMatrix, commitData, fileDiffInformation, null);
+		List<CommitFileCell> commitFileCells = sourceControlLogic.calculateCumulativeData(commitFileMatrix, commitData, fileDiffInformation, new ContributorFocusInformation());
 		
 		assertEquals(6, commitFileCells.size());
 		
