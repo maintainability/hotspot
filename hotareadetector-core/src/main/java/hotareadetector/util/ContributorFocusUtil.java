@@ -29,14 +29,69 @@ public class ContributorFocusUtil {
 	 * /com/mycompany/myapp/util/Calculations.java -> 7
 	 * /com/mycompany/myapp/util/Asserts.java -> 5
 	 */
-	public static Map<String, Double> calculateFocusWeightedOwnership(Map<String, List<CommitDataExtended>> fileCommitMap) {
+	public Map<String, Double> calculateFocusWeightedOwnership(Map<String, List<CommitDataExtended>> fileCommitMap) {
 		System.out.println("Starting building structures for developer focus calculations.");
 		ContributorFocusStructure contributorFocusStructure = buildContributorFocusStructure(fileCommitMap);
+		initializeCache(fileCommitMap);
 		System.out.println("Finished building structures, starting calculation of focus weighted ownership.");
 		Map<String, Double> result = calculateFocusWeightedOwnershipOfFiles(contributorFocusStructure);
 		System.out.println("Finished with focus weighted ownership calculation.");
 		return result;
 	}
+	
+	/**
+	 * Ordinary number of each file; used in caching mechanism.
+	 */
+	Map<String, Integer> fileNameOrder = new HashMap<String, Integer>();
+	
+	/**
+	 * Two dimensional array for caching already calculated distances.
+	 * E.g. consider the following orders (fileNameOrder):
+	 * - /com/mycompany/myapp/utils/MyUtil.java -> 3
+	 * - /com/mycompany/myapp/game/MyGame.java -> 6
+	 * In this case if the distance between these files are calculated, then the following value will be inserted:
+	 * distanceCache[3][6] = 2
+	 * distanceCache[6][3] = 2
+	 */
+	int[][] distanceCache;
+	
+	/**
+	 * Initialize the cache.
+	 */
+	protected void initializeCache(Map<String, List<CommitDataExtended>> fileCommitMap) {
+		List<String> fileNameList = HotspotStringUtil.createSortedListFromSet(fileCommitMap.keySet());
+		int index = 0;
+		for (String fileName : fileNameList) {
+			fileNameOrder.put(fileName, index++);
+		}
+		distanceCache = new int[index][index];
+		for (int i = 0; i < index; i++) {
+			for (int j = 0; j < index; j++) {
+				distanceCache[i][j] = -1;
+			}
+		}
+	}
+	
+	/**
+	 * First check if the value has already been calculated. If not, then calculate and save. if yes, just retrieve from the cache.
+	 */
+	public int calculateDistanceCaching(String fileName1, String fileName2) {
+		Integer orderOfFile1 = fileNameOrder.get(fileName1);
+		Integer orderOfFile2 = fileNameOrder.get(fileName2);
+		if (orderOfFile1 == null || orderOfFile2 == null) {
+			System.out.println("Order of file " + orderOfFile1 + " or file " + orderOfFile2 + " not found. This message should appear in case of unit testing only. Proceeding with real calculation.");
+			return calculateDistance(fileName1, fileName2);
+		}
+		int cachedDistance = distanceCache[orderOfFile1][orderOfFile2];
+		if (cachedDistance >= 0) {
+			return cachedDistance;
+		}
+		int calculatedDistance = calculateDistance(fileName1, fileName2);
+		distanceCache[orderOfFile1][orderOfFile2] = calculatedDistance;
+		distanceCache[orderOfFile2][orderOfFile1] = calculatedDistance;
+		return calculatedDistance;
+	}
+		
 	
 	/**
 	 * Creates the following structures:
@@ -49,7 +104,7 @@ public class ContributorFocusUtil {
 	 * 
 	 * For an example, see the related unit test.
 	 */
-	protected static ContributorFocusStructure buildContributorFocusStructure(Map<String, List<CommitDataExtended>> fileCommitMap) {
+	protected ContributorFocusStructure buildContributorFocusStructure(Map<String, List<CommitDataExtended>> fileCommitMap) {
 		Map<String, TreeMap<Date, ArrayList<String>>> contributorsModifications = new HashMap<String, TreeMap<Date, ArrayList<String>>>();
 		Map<ContributorFile, Date> fileLastModifiedByContributor = new HashMap<ContributorFile, Date>();
 		Map<String, Set<String>> contributorsPerFile = new HashMap<String, Set<String>>(); 
@@ -93,7 +148,7 @@ public class ContributorFocusUtil {
 	/**
 	 * Calculates focus weighted ownership values for every file.
 	 */
-	protected static Map<String, Double> calculateFocusWeightedOwnershipOfFiles(ContributorFocusStructure contributorFocusStructure) {
+	protected Map<String, Double> calculateFocusWeightedOwnershipOfFiles(ContributorFocusStructure contributorFocusStructure) {
 		Map<String, Double> focusWeightedOwnerships = new HashMap<String, Double>();
 		Set<String> fileNames = contributorFocusStructure.getContributorsPerFile().keySet();
 		int index = 0;
@@ -108,7 +163,7 @@ public class ContributorFocusUtil {
 	/**
 	 * Calculates focus weighed ownership of a certain file.
 	 */
-	protected static Double calculateFocusWeightedOwnershipOfFile(ContributorFocusStructure contributorFocusStructure, String fileName) {
+	protected Double calculateFocusWeightedOwnershipOfFile(ContributorFocusStructure contributorFocusStructure, String fileName) {
 		Set<String> contributorsSet = contributorFocusStructure.getContributorsPerFile().get(fileName);
 		double focusWeightedOwnership = 0.0;
 		for (String contributorName : contributorsSet) {
@@ -127,7 +182,7 @@ public class ContributorFocusUtil {
 	/**
 	 * Returns all files the contributor contributed until the last modification of the file specified.
 	 */
-	protected static Set<String> determineModifiedFilesPerContributor(ContributorFocusStructure contributorFocusStructure, String contributor, String fileName) {
+	protected Set<String> determineModifiedFilesPerContributor(ContributorFocusStructure contributorFocusStructure, String contributor, String fileName) {
 		Date lastModificationDate = contributorFocusStructure.getFileLastModifiedByContributor().get(new ContributorFile(contributor, fileName));
 		Set<String> result = new TreeSet<String>();
 		TreeMap<Date, ArrayList<String>> contributorModifications = contributorFocusStructure.getContributorsModifications().get(contributor);
@@ -146,7 +201,7 @@ public class ContributorFocusUtil {
 	 * Then it multiplies with the following value: number of files multiplied by the number of files above two.
 	 * This is identical with the following: sum of pairwise distance * 2 / (number of files - 1)
 	 */
-	public static double calculateFocusValue(final List<String> fileNames) {
+	public double calculateFocusValue(final List<String> fileNames) {
 		if (fileNames == null || fileNames.size() < 2) {
 			return 0.0;
 		} else {
@@ -154,7 +209,7 @@ public class ContributorFocusUtil {
 			int totalDistance = 0;
 			for (int i = 0; i < fileNamesSize - 1; i++) {
 				for (int j = i + 1; j < fileNamesSize; j++) {
-					totalDistance += calculateDistance(fileNames.get(i), fileNames.get(j));
+					totalDistance += calculateDistanceCaching(fileNames.get(i), fileNames.get(j));
 				}
 			}
 			double result = totalDistance * 2.0 / (fileNamesSize - 1);
@@ -171,7 +226,7 @@ public class ContributorFocusUtil {
 	 * - com/mycompany/myapp/mydata/Data.java and com/mycompany/myapp/myutil/MyUtil.java: 2
 	 * - com/mycompany/myapp/mydata/Data.java and com/mycompany/myapp/myutil/myfuction/MyFunction.java: 3
 	 */
-	public static int calculateDistance(String fileName1, String fileName2) {
+	public int calculateDistance(String fileName1, String fileName2) {
 		String[] fileName1Parts = fileName1.split("/");
 		String[] fileName2Parts = fileName2.split("/");
 		int minPackageLenght = Math.min(fileName1Parts.length, fileName2Parts.length) - 1;

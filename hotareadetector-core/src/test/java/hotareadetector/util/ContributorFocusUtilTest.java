@@ -19,7 +19,7 @@ public class ContributorFocusUtilTest {
 	public void testCalculateFocusWeightedOwnership() {
 		Map<String, List<CommitDataExtended>> fileCommitMap = CommitFileMapGenerator.createFileCommitMap();
 		
-		Map<String, Double> result = ContributorFocusUtil.calculateFocusWeightedOwnership(fileCommitMap);
+		Map<String, Double> result = (new ContributorFocusUtil()).calculateFocusWeightedOwnership(fileCommitMap);
 		
 		assertEquals(5, result.size());
 		assertEquals(new Double(20.0/3), result.get(CommitFileMapGenerator.file1));
@@ -75,7 +75,7 @@ public class ContributorFocusUtilTest {
 	public void testBuildContributorFocusStructure() {
 		Map<String, List<CommitDataExtended>> fileCommitMap = CommitFileMapGenerator.createFileCommitMap();
 		
-		ContributorFocusStructure result = ContributorFocusUtil.buildContributorFocusStructure(fileCommitMap);
+		ContributorFocusStructure result = (new ContributorFocusUtil()).buildContributorFocusStructure(fileCommitMap);
 		
 		assertEquals(3, result.getContributorsModifications().get(CommitFileMapGenerator.contributor1).size());
 		
@@ -187,9 +187,9 @@ public class ContributorFocusUtilTest {
 	@Test
 	public void testCalculateFocusWeightedOwnershipOfFiles() {
 		Map<String, List<CommitDataExtended>> fileCommitMap = CommitFileMapGenerator.createFileCommitMap();
-		ContributorFocusStructure contributorFocusStructure = ContributorFocusUtil.buildContributorFocusStructure(fileCommitMap);
+		ContributorFocusStructure contributorFocusStructure = (new ContributorFocusUtil()).buildContributorFocusStructure(fileCommitMap);
 		
-		Map<String, Double> result = ContributorFocusUtil.calculateFocusWeightedOwnershipOfFiles(contributorFocusStructure);
+		Map<String, Double> result = (new ContributorFocusUtil()).calculateFocusWeightedOwnershipOfFiles(contributorFocusStructure);
 		
 		assertEquals(5, result.size());
 		assertEquals(new Double(20.0/3), result.get(CommitFileMapGenerator.file1));
@@ -203,17 +203,18 @@ public class ContributorFocusUtilTest {
 	@Test
 	public void testCalculateFocusWeightedOwnershipOfFile() {
 		Map<String, List<CommitDataExtended>> fileCommitMap = CommitFileMapGenerator.createFileCommitMap();
-		ContributorFocusStructure contributorFocusStructure = ContributorFocusUtil.buildContributorFocusStructure(fileCommitMap);
+		ContributorFocusUtil contributorFocusUtil = new ContributorFocusUtil();
+		ContributorFocusStructure contributorFocusStructure = contributorFocusUtil.buildContributorFocusStructure(fileCommitMap);
 		
-		assertEquals(new Double(20.0/3), ContributorFocusUtil.calculateFocusWeightedOwnershipOfFile(contributorFocusStructure, CommitFileMapGenerator.file1));
+		assertEquals(new Double(20.0/3), (new ContributorFocusUtil()).calculateFocusWeightedOwnershipOfFile(contributorFocusStructure, CommitFileMapGenerator.file1));
 	}
 	
 	@Test
 	public void testDetermineModifiedFilesPerContributor() {
 		Map<String, List<CommitDataExtended>> fileCommitMap = CommitFileMapGenerator.createFileCommitMap();
-		ContributorFocusStructure contributorFocusStructure = ContributorFocusUtil.buildContributorFocusStructure(fileCommitMap);
+		ContributorFocusStructure contributorFocusStructure = (new ContributorFocusUtil()).buildContributorFocusStructure(fileCommitMap);
 		
-		Set<String> fileModifications1 = ContributorFocusUtil.determineModifiedFilesPerContributor(contributorFocusStructure, CommitFileMapGenerator.contributor1, CommitFileMapGenerator.file1);
+		Set<String> fileModifications1 = (new ContributorFocusUtil()).determineModifiedFilesPerContributor(contributorFocusStructure, CommitFileMapGenerator.contributor1, CommitFileMapGenerator.file1);
 		
 		assertEquals(4, fileModifications1.size());
 		assertTrue(fileModifications1.contains(CommitFileMapGenerator.file1));
@@ -230,20 +231,60 @@ public class ContributorFocusUtilTest {
 		listOfModifiedFiles.add("org/apache/tools/ant/taskdefs/Target.java");
 		listOfModifiedFiles.add("org/apache/tools/ant/taskdefs/UpToDate.java");
 		listOfModifiedFiles.add("org/apache/tools/ant/types/mappers/FilterMapper.java");
-		assertEquals(0.0, ContributorFocusUtil.calculateFocusValue(null), 0.01);
-		assertEquals(0.0, ContributorFocusUtil.calculateFocusValue(new ArrayList<String>()), 0.01);
-		assertEquals(0.0, ContributorFocusUtil.calculateFocusValue(listOfModifiedFiles.subList(0, 1)), 0.01);
-		assertEquals(20.0/3, ContributorFocusUtil.calculateFocusValue(listOfModifiedFiles), 0.01);
-		assertEquals(0.0, ContributorFocusUtil.calculateFocusValue(listOfModifiedFiles.subList(1, 3)), 0.01);
+		
+		ContributorFocusUtil contributorFocusUtil = new ContributorFocusUtil();
+		assertEquals(0.0, contributorFocusUtil.calculateFocusValue(null), 0.01);
+		assertEquals(0.0, contributorFocusUtil.calculateFocusValue(new ArrayList<String>()), 0.01);
+		assertEquals(0.0, contributorFocusUtil.calculateFocusValue(listOfModifiedFiles.subList(0, 1)), 0.01);
+		assertEquals(20.0/3, contributorFocusUtil.calculateFocusValue(listOfModifiedFiles), 0.01);
+		assertEquals(0.0, contributorFocusUtil.calculateFocusValue(listOfModifiedFiles.subList(1, 3)), 0.01);
 	}
 	
 	@Test
 	public void testCalculateDistance() {
-		assertEquals(3, ContributorFocusUtil.calculateDistance("com/mycompany/mymodule/MyFile.java", "com/mycompany/myservice/connect/MyConnect.java"));
-		assertEquals(0, ContributorFocusUtil.calculateDistance("com/mycompany/mymodule/MyFile.java", "com/mycompany/mymodule/MyOtherFile.java"));
-		assertEquals(0, ContributorFocusUtil.calculateDistance("com/mycompany/mymodule/MyFile.java", "com/mycompany/mymodule/MyFile.java"));
-		assertEquals(2, ContributorFocusUtil.calculateDistance("com/mycompany/mymodule/MyFile.java", "com/mycompany/myservice/MyService.java"));
-		assertEquals(1, ContributorFocusUtil.calculateDistance("com/mycompany/mymodule/MyFile.java", "com/mycompany/Main.java"));
-		assertEquals(3, ContributorFocusUtil.calculateDistance("com/mycompany/mymodule/MyFile.java", "com/mycompany/myservice/connect/MyConnect.java"));
+		ContributorFocusUtil contributorFocusUtil = new ContributorFocusUtil();
+		assertEquals(3, contributorFocusUtil.calculateDistance("com/mycompany/mymodule/MyFile.java", "com/mycompany/myservice/connect/MyConnect.java"));
+		assertEquals(0, contributorFocusUtil.calculateDistance("com/mycompany/mymodule/MyFile.java", "com/mycompany/mymodule/MyOtherFile.java"));
+		assertEquals(0, contributorFocusUtil.calculateDistance("com/mycompany/mymodule/MyFile.java", "com/mycompany/mymodule/MyFile.java"));
+		assertEquals(2, contributorFocusUtil.calculateDistance("com/mycompany/mymodule/MyFile.java", "com/mycompany/myservice/MyService.java"));
+		assertEquals(1, contributorFocusUtil.calculateDistance("com/mycompany/mymodule/MyFile.java", "com/mycompany/Main.java"));
+		assertEquals(3, contributorFocusUtil.calculateDistance("com/mycompany/mymodule/MyFile.java", "com/mycompany/myservice/connect/MyConnect.java"));
+	}
+	
+	@Test
+	public void testCachingMechanism() {
+		ContributorFocusUtil contributorFocusUtil = new ContributorFocusUtil();
+		Map<String, List<CommitDataExtended>> fileCommitMap = CommitFileMapGenerator.createFileCommitMap();
+		
+		assertEquals(0, contributorFocusUtil.fileNameOrder.size());
+		
+		contributorFocusUtil.initializeCache(fileCommitMap);
+		
+		assertEquals(5, contributorFocusUtil.fileNameOrder.size());
+		assertEquals(new Integer(0), contributorFocusUtil.fileNameOrder.get(CommitFileMapGenerator.file1));
+		assertEquals(new Integer(1), contributorFocusUtil.fileNameOrder.get(CommitFileMapGenerator.file2));
+		assertEquals(new Integer(4), contributorFocusUtil.fileNameOrder.get(CommitFileMapGenerator.file3));
+		assertEquals(new Integer(3), contributorFocusUtil.fileNameOrder.get(CommitFileMapGenerator.file4));
+		assertEquals(new Integer(2), contributorFocusUtil.fileNameOrder.get(CommitFileMapGenerator.file5));
+		
+		assertEquals(5, contributorFocusUtil.distanceCache.length);
+		assertEquals(5, contributorFocusUtil.distanceCache[0].length);
+		assertEquals(5, contributorFocusUtil.distanceCache[1].length);
+		assertEquals(5, contributorFocusUtil.distanceCache[2].length);
+		assertEquals(5, contributorFocusUtil.distanceCache[3].length);
+		assertEquals(5, contributorFocusUtil.distanceCache[4].length);
+		for (int i = 0; i < 5; i++) {
+			for (int j = 0; j < 5; j++) {
+				assertTrue(contributorFocusUtil.distanceCache[i][j] < 0);
+			}
+		}
+		
+		// now calling calculateDistance
+		assertEquals(1, contributorFocusUtil.calculateDistanceCaching(CommitFileMapGenerator.file1, CommitFileMapGenerator.file2));
+		assertEquals(1, contributorFocusUtil.distanceCache[0][1]);
+		assertEquals(1, contributorFocusUtil.distanceCache[1][0]);
+		
+		// now not calling calculateDistance
+		assertEquals(1, contributorFocusUtil.calculateDistanceCaching(CommitFileMapGenerator.file1, CommitFileMapGenerator.file2));
 	}
 }

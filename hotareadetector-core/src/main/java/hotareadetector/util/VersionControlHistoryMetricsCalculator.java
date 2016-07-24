@@ -18,7 +18,7 @@ public class VersionControlHistoryMetricsCalculator {
 		Map<String, VersionControlHistoryMetrics> result = new HashMap<String, VersionControlHistoryMetrics>();
 		Map<String, Double> focusWeightedContributions = null;
 		if (isFocusNeeded) {
-			focusWeightedContributions = ContributorFocusUtil.calculateFocusWeightedOwnership(fileCommitMap);
+			focusWeightedContributions = (new ContributorFocusUtil()).calculateFocusWeightedOwnership(fileCommitMap);
 		}
 		for (Entry<String, List<CommitDataExtended>> fileCommitEntry : fileCommitMap.entrySet()) {
 			VersionControlHistoryMetrics versionControlHistoryMetrics = new VersionControlHistoryMetrics();
