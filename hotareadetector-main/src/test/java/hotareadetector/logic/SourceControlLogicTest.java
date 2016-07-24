@@ -55,7 +55,7 @@ public class SourceControlLogicTest {
 		if (deepAnalysis) {
 			context.setAnalysisType(AnalysisType.FULL);
 		} else {
-			context.setAnalysisType(AnalysisType.CHEAP_AND_FOCUS);
+			context.setAnalysisType(AnalysisType.CHEAP);
 		}
 		CommitDataPerFile commitDataPerFile = sourceControlLogic.readCommitData(executor, parser, context);
 		

@@ -30,12 +30,9 @@ public class ContributorFocusUtil {
 	 * /com/mycompany/myapp/util/Asserts.java -> 5
 	 */
 	public Map<String, Double> calculateFocusWeightedOwnership(Map<String, List<CommitDataExtended>> fileCommitMap) {
-		System.out.println("Starting building structures for developer focus calculations.");
 		ContributorFocusStructure contributorFocusStructure = buildContributorFocusStructure(fileCommitMap);
 		initializeCache(fileCommitMap);
-		System.out.println("Finished building structures, starting calculation of focus weighted ownership.");
 		Map<String, Double> result = calculateFocusWeightedOwnershipOfFiles(contributorFocusStructure);
-		System.out.println("Finished with focus weighted ownership calculation.");
 		return result;
 	}
 	
@@ -151,9 +148,7 @@ public class ContributorFocusUtil {
 	protected Map<String, Double> calculateFocusWeightedOwnershipOfFiles(ContributorFocusStructure contributorFocusStructure) {
 		Map<String, Double> focusWeightedOwnerships = new HashMap<String, Double>();
 		Set<String> fileNames = contributorFocusStructure.getContributorsPerFile().keySet();
-		int index = 0;
 		for (String fileName : fileNames) {
-			System.out.println("(" + ++index + "/" + fileNames.size() + ")" + fileName);
 			Double focusWeightedOwnership = calculateFocusWeightedOwnershipOfFile(contributorFocusStructure, fileName);
 			focusWeightedOwnerships.put(fileName, focusWeightedOwnership);
 		}

@@ -14,12 +14,10 @@ import hotareadetector.data.VersionControlHistoryMetrics;
 
 public class VersionControlHistoryMetricsCalculator {
 
-	public Map<String, VersionControlHistoryMetrics> calculateVersionControlHistoryMetrics(Map<String, List<CommitDataExtended>> fileCommitMap, boolean isFocusNeeded) {
+	public Map<String, VersionControlHistoryMetrics> calculateVersionControlHistoryMetrics(Map<String, List<CommitDataExtended>> fileCommitMap) {
 		Map<String, VersionControlHistoryMetrics> result = new HashMap<String, VersionControlHistoryMetrics>();
 		Map<String, Double> focusWeightedContributions = null;
-		if (isFocusNeeded) {
-			focusWeightedContributions = (new ContributorFocusUtil()).calculateFocusWeightedOwnership(fileCommitMap);
-		}
+		focusWeightedContributions = (new ContributorFocusUtil()).calculateFocusWeightedOwnership(fileCommitMap);
 		for (Entry<String, List<CommitDataExtended>> fileCommitEntry : fileCommitMap.entrySet()) {
 			VersionControlHistoryMetrics versionControlHistoryMetrics = new VersionControlHistoryMetrics();
 			List<CommitDataExtended> commitDataExtendedList = fileCommitEntry.getValue();
@@ -27,9 +25,7 @@ public class VersionControlHistoryMetricsCalculator {
 			setModificationIntensityLikeMetrics(versionControlHistoryMetrics, commitDataExtendedList);
 			setContributorLikeMetrics(versionControlHistoryMetrics, commitDataExtendedList);
 			setDateLikeMetrics(versionControlHistoryMetrics, commitDataExtendedList);
-			if (isFocusNeeded) {
-				versionControlHistoryMetrics.setFocusWeightedContributors(focusWeightedContributions.get(fileCommitEntry.getKey()));
-			}
+			versionControlHistoryMetrics.setFocusWeightedContributors(focusWeightedContributions.get(fileCommitEntry.getKey()));
 			
 			result.put(fileCommitEntry.getKey(), versionControlHistoryMetrics);
 		}

@@ -13,7 +13,7 @@ public class VersionControlHistoryMetricsCalculatorTest {
 	public void testSetModificationIntensityLikeMetrics() {
 		Map<String, List<CommitDataExtended>> fileCommitMap = CommitFileMapGenerator.createFileCommitMap(true);
 		
-		Map<String, VersionControlHistoryMetrics> result = (new VersionControlHistoryMetricsCalculator()).calculateVersionControlHistoryMetrics(fileCommitMap, true);
+		Map<String, VersionControlHistoryMetrics> result = (new VersionControlHistoryMetricsCalculator()).calculateVersionControlHistoryMetrics(fileCommitMap);
 		
 		assertEquals(5, result.size());
 		
@@ -69,10 +69,10 @@ public class VersionControlHistoryMetricsCalculatorTest {
 	}
 
 	@Test
-	public void testSetModificationIntensityLikeMetricsNoFocusNoChurn() {
+	public void testSetModificationIntensityLikeMetricsNoChurn() {
 		Map<String, List<CommitDataExtended>> fileCommitMap = CommitFileMapGenerator.createFileCommitMap(false);
 		
-		Map<String, VersionControlHistoryMetrics> result = (new VersionControlHistoryMetricsCalculator()).calculateVersionControlHistoryMetrics(fileCommitMap, false);
+		Map<String, VersionControlHistoryMetrics> result = (new VersionControlHistoryMetricsCalculator()).calculateVersionControlHistoryMetrics(fileCommitMap);
 		
 		assertEquals(5, result.size());
 		
@@ -83,17 +83,12 @@ public class VersionControlHistoryMetricsCalculatorTest {
 		assertEquals(CommitFileMapGenerator.date1, result.get(CommitFileMapGenerator.file1).getCreatingDate());
 		assertEquals(CommitFileMapGenerator.date2, result.get(CommitFileMapGenerator.file1).getLastModificationDate());
 		assertEquals(1456704634333L, result.get(CommitFileMapGenerator.file1).getModificationDatesAverage().getTime());
+		assertEquals(new Double(20.0/3), result.get(CommitFileMapGenerator.file1).getFocusWeightedContributors());
 		
 		assertEquals(null, result.get(CommitFileMapGenerator.file1).getChurnValue());
 		assertEquals(null, result.get(CommitFileMapGenerator.file2).getChurnValue());
 		assertEquals(null, result.get(CommitFileMapGenerator.file3).getChurnValue());
 		assertEquals(null, result.get(CommitFileMapGenerator.file4).getChurnValue());
 		assertEquals(null, result.get(CommitFileMapGenerator.file5).getChurnValue());
-		
-		assertEquals(null, result.get(CommitFileMapGenerator.file1).getFocusWeightedContributors());
-		assertEquals(null, result.get(CommitFileMapGenerator.file2).getFocusWeightedContributors());
-		assertEquals(null, result.get(CommitFileMapGenerator.file3).getFocusWeightedContributors());
-		assertEquals(null, result.get(CommitFileMapGenerator.file4).getFocusWeightedContributors());
-		assertEquals(null, result.get(CommitFileMapGenerator.file5).getFocusWeightedContributors());
 	}
 }

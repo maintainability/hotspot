@@ -1,5 +1,6 @@
 package hotareadetector.logic;
 
+import hotareadetector.data.AnalysisType;
 import hotareadetector.data.CommitData;
 import hotareadetector.data.CommitDataPerFile;
 import hotareadetector.data.CommitedFileData;
@@ -8,7 +9,6 @@ import hotareadetector.data.HotAreaDetectorContext;
 import hotareadetector.data.SourceControlResultData;
 import hotareadetector.interfaces.SourceControlCommandExecutor;
 import hotareadetector.interfaces.SourceControlCommandParser;
-import hotareadetector.util.AnalysisNecessityChecker;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public class SourceControlLogic {
 		CommitDataPerFile commitDataPerFile = new CommitDataPerFile();
 		CommitData previous = null;
 		CommitData actual = null;
-		boolean churnNeeded = AnalysisNecessityChecker.isChurnNeeded(context.getAnalysisType());
+		boolean churnNeeded = context.getAnalysisType() == AnalysisType.FULL;
 		List<FileDiffInformation> emptyFiles = new ArrayList<FileDiffInformation>();
 		for (CommitData commitData : commitDataListFiltered) {
 			System.out.println("Elaborating revision r" + commitData.getRevisionNumber() + "...");

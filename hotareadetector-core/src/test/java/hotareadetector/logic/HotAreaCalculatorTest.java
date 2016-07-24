@@ -16,7 +16,7 @@ public class HotAreaCalculatorTest {
 	@Test
 	public void testCalculateHotNumbers() {
 		Map<String, List<CommitDataExtended>> fileCommitMap = CommitFileMapGenerator.createFileCommitMap(true);
-		Map<String, VersionControlHistoryMetrics> versionControlHistoryMetricsPerFile = (new VersionControlHistoryMetricsCalculator()).calculateVersionControlHistoryMetrics(fileCommitMap, true);
+		Map<String, VersionControlHistoryMetrics> versionControlHistoryMetricsPerFile = (new VersionControlHistoryMetricsCalculator()).calculateVersionControlHistoryMetrics(fileCommitMap);
 		
 		HotAreaCalculator hotAreaCalculator = new HotAreaCalculator(versionControlHistoryMetricsPerFile);
 		Map<String, Map<String, Double>> result = hotAreaCalculator.calculateHotNumbers();
@@ -165,9 +165,9 @@ public class HotAreaCalculatorTest {
 	}
 	
 	@Test
-	public void testCalculateHotNumbersNoFocusNoChurn() {
+	public void testCalculateHotNumbersNoChurn() {
 		Map<String, List<CommitDataExtended>> fileCommitMap = CommitFileMapGenerator.createFileCommitMap(false);
-		Map<String, VersionControlHistoryMetrics> versionControlHistoryMetricsPerFile = (new VersionControlHistoryMetricsCalculator()).calculateVersionControlHistoryMetrics(fileCommitMap, false);
+		Map<String, VersionControlHistoryMetrics> versionControlHistoryMetricsPerFile = (new VersionControlHistoryMetricsCalculator()).calculateVersionControlHistoryMetrics(fileCommitMap);
 		
 		HotAreaCalculator hotAreaCalculator = new HotAreaCalculator(versionControlHistoryMetricsPerFile);
 		Map<String, Map<String, Double>> result = hotAreaCalculator.calculateHotNumbers();
@@ -186,21 +186,7 @@ public class HotAreaCalculatorTest {
 		assertEquals(null, hotAreaCalculator.churnValues.get(3));
 		assertEquals(null, hotAreaCalculator.churnValues.get(4));
 		
-		assertEquals(5, hotAreaCalculator.focusWeightedOwnership.size());
-		assertEquals(null, hotAreaCalculator.focusWeightedOwnership.get(0));
-		assertEquals(null, hotAreaCalculator.focusWeightedOwnership.get(1));
-		assertEquals(null, hotAreaCalculator.focusWeightedOwnership.get(2));
-		assertEquals(null, hotAreaCalculator.focusWeightedOwnership.get(3));
-		assertEquals(null, hotAreaCalculator.focusWeightedOwnership.get(4));
-		
-		assertEquals(5, hotAreaCalculator.combinedValues.size());
-		assertEquals(null, hotAreaCalculator.combinedValues.get(0));
-		assertEquals(null, hotAreaCalculator.combinedValues.get(1));
-		assertEquals(null, hotAreaCalculator.combinedValues.get(2));
-		assertEquals(null, hotAreaCalculator.combinedValues.get(3));
-		assertEquals(null, hotAreaCalculator.combinedValues.get(4));
-		
-		assertEquals(7, result.size());
+		assertEquals(9, result.size());
 		
 		assertEquals(5, result.get("modifications").size());
 		assertEquals(new Double(0.6), result.get("modifications").get(CommitFileMapGenerator.file1));
@@ -210,8 +196,6 @@ public class HotAreaCalculatorTest {
 		assertEquals(new Double(0.0), result.get("modifications").get(CommitFileMapGenerator.file5));
 		
 		assertEquals(null, result.get("churn"));
-		assertEquals(null, result.get("focusWeightedOwnership"));
-		assertEquals(null, result.get("combinedValues"));
 	}
 	
 	@Test
