@@ -12,7 +12,7 @@ import hotareadetector.svn.SvnCommandExecutor;
 import hotareadetector.svn.SvnCommandParser;
 import hotareadetector.util.AnalysisNecessityChecker;
 import hotareadetector.util.FilteringUtil;
-import hotareadetector.util.MetricsSaver;
+import hotareadetector.util.ResultSaver;
 import hotareadetector.util.VersionControlHistoryMetricsCalculator;
 
 import java.io.IOException;
@@ -36,7 +36,7 @@ public class HotAreaDetectorCommandExecutor {
 		CommitDataPerFile commitDataPerFile = readCommitData(context);
 		Map<String, List<CommitDataExtended>> fileCommitMapFiltered = filterCommitData(context, commitDataPerFile);
 		Map<String, VersionControlHistoryMetrics> versionControlHistoryMetricsPerFile = (new VersionControlHistoryMetricsCalculator()).calculateVersionControlHistoryMetrics(fileCommitMapFiltered, AnalysisNecessityChecker.isFocusNeeded(context.getAnalysisType()));
-		MetricsSaver.saveMetrics(context, versionControlHistoryMetricsPerFile);
+		ResultSaver.saveMetrics(context, versionControlHistoryMetricsPerFile);
 		Map<String, Map<String, Double>> hotNumbers = (new HotAreaCalculator(versionControlHistoryMetricsPerFile)).calculateHotNumbers();
 		return hotNumbers;
 	}

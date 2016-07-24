@@ -7,7 +7,7 @@ import hotareadetector.data.HotAreaDetectorContext;
 import hotareadetector.exception.ParameterException;
 import hotareadetector.logic.HotAreaDetectorCommandExecutor;
 import hotareadetector.logic.ParameterHandler;
-import hotareadetector.result.HotAreaResultHandler;
+import hotareadetector.util.ResultSaver;
 
 public class HotAreaDetector {
 	public static void main(String[] args) {
@@ -15,11 +15,7 @@ public class HotAreaDetector {
 		try {
 			HotAreaDetectorContext context = ParameterHandler.parseParameters(args);
 			Map<String, Map<String, Double>> hotNumbers = (new HotAreaDetectorCommandExecutor()).executeHotAreaDetection(context);
-			String outputPath = context.getDirName() + "hotspotResults.csv";
-			if (context.getOutputFileName() != null) {
-				outputPath = context.getDirName() + context.getOutputFileName();
-			}
-			HotAreaResultHandler.writeHotNumbersIntoFile(hotNumbers, outputPath);
+			ResultSaver.writeHotNumbersIntoFile(context, hotNumbers);
 			System.out.println("Hot area detector ended successfully.");
 		} catch (ParameterException e) {
 			System.out.println("Parameter error occurred: " + e.getMessage());

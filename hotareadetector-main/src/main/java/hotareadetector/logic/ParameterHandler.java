@@ -49,8 +49,8 @@ public class ParameterHandler {
 				context.setOutputFileName(paramValue);
 				break;
 
-			case "-metricsPrefix":
-				context.setMetricsFileName(paramValue);
+			case "-prefix":
+				context.setPrefix(paramValue);
 				break;
 				
 			case "-extensions":
@@ -109,12 +109,11 @@ public class ParameterHandler {
 		System.out.println("    -password:        if the type is svn, then the password, else it must be omitted.");
 		System.out.println("    -dirName:         name of the directory where the logs reside");
 		System.out.println("    -outputFileName:  name of the result file. If set, then the result is written to that file. If not set, then the result is written on the console.");
-		System.out.println("    -metricsPrefix:   indicates that the metrics should be saved as well, into files. Prefix of the result files, without extension. (Not written if not set.)");
+		System.out.println("    -prefix:          indicates the prefix of the resulting files, e.g. myproject_v1.");
 		System.out.println("    -extensions:      extensions to consider, e.g. java,xml (use empty for folders)");
 		System.out.println("    -includePrefixes: prefixes of the paths to consider only (e.g. /trunk/myproject)");
 		System.out.println("    -excludePrefixes: prefixes to exclude from analysis (e.g. /trunk/myproject/test)");
 		System.out.println("    -revision:        revision at which the analysis should be performed (e.g. 12345)");
-		System.out.println("    -saveLogsOnly:    true or false; indicates if full analysis should be performed (true) or just save the logs (false).");
 		System.out.println("    -atRNecessary:    true or false; indicates if the URL should be appended with @[revision] (true).");
 		System.out.println("    -analysisType:    " + HotAreaDetectorContext.getFormattedAnalyisTypes() + "; indicates the type of the analysis (FULL).");
 	}
