@@ -1,20 +1,9 @@
 package hotareadetector.data;
 
 public enum AnalysisType {
-	CHURN,
-	MODIFICATION,
-	
-	OWNERSHIP,
-	OWNERSHIP_TOLERANCE1,
-	OWNERSHIP_TOLERANCE2,
-	OWNERSHIP_FOCUS,
-	
-	DATEADDED,
-	DATEMODIFIED,
-	DATEAVERAGE,
-	
 	COMBINED,
 	FULL,
-	
-	NONE
+	CHEAP, // modifications, ownerships without focus, date related
+	CHEAP_AND_FOCUS, // cheap + focus
+	CHEAP_AND_CHURN // cheap + churn
 }

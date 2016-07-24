@@ -1,236 +1,161 @@
 package hotareadetector.logic;
 
-import hotareadetector.data.AnalysisType;
-import hotareadetector.data.CommitFileCell;
-import hotareadetector.data.CommitFileMatrix;
-import hotareadetector.data.HotNumber;
-import hotareadetector.util.Calculator;
-
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import hotareadetector.data.VersionControlHistoryMetrics;
+import hotareadetector.util.Calculator;
 
 /**
  * Calculation of hot areas in a given revision.
  */
 public class HotAreaCalculator {
-	private final CommitFileMatrix commitFileMatrix;
-	private final List<CommitFileCell> fileDataListOfRevision;
-	// package private attributes because they are used at unit testing
+	private Map<String, VersionControlHistoryMetrics> versionControlHistoryMetricsPerFile;
+
+	List<Integer> numberOfModifications = new ArrayList<Integer>();
+	List<Integer> churnValues = new ArrayList<Integer>();
+	
 	List<Integer> ownershipValues = new ArrayList<Integer>();
 	List<Integer> ownershipValuesToleranceOne = new ArrayList<Integer>();
 	List<Integer> ownershipValuesToleranceTwo = new ArrayList<Integer>();
-	List<Double> focusWeightedContributors = new ArrayList<Double>();
+	List<Double> focusWeightedOwnership = new ArrayList<Double>();
 	
-	List<Integer> numberOfModifications = new ArrayList<Integer>();
-	List<Integer> churnValuesCoarse = new ArrayList<Integer>();
-	List<Integer> churnValuesFine = new ArrayList<Integer>();
+	List<Date> creatingDates = new ArrayList<Date>();
+	List<Date> lastModificationDates = new ArrayList<Date>();
+	List<Date> modificationDatesAverage = new ArrayList<Date>();
 	
-	List<Date> addedDates = new ArrayList<Date>();
-	List<Date> lastModifiedDates = new ArrayList<Date>();
-	List<Date> averageDates = new ArrayList<Date>();
+	List<Double> combinedValues = new ArrayList<Double>();
 	
-	List<Integer> combinedValues = new ArrayList<Integer>();
-	
-	final int revision;
-
-	/**
-	 * Saves commit file matrix, retrieves all files of the revision given, and performs the initialization.
-	 */
-	public HotAreaCalculator(CommitFileMatrix commitFileMatrix, int revision) {
-		this.commitFileMatrix = commitFileMatrix;
-		this.revision = revision;
-		fileDataListOfRevision = new ArrayList<CommitFileCell>();
-		initialize();
+	public HotAreaCalculator(Map<String, VersionControlHistoryMetrics> versionControlHistoryMetricsPerFile) {
+		this.versionControlHistoryMetricsPerFile = versionControlHistoryMetricsPerFile;
 	}
 
-	/**
-	 * HotAreaCalculator with the latest revision.
-	 */
-	public HotAreaCalculator(CommitFileMatrix commitFileMatrix) {
-		this(commitFileMatrix, commitFileMatrix.getLatestRevision());
+	public Map<String, Map<String, Double>> calculateHotNumbers() {
+		initializeStructures();
+		Map<String, Map<String, Double>> hotNumbers = performHotNumberCalculation();
+		return hotNumbers;
 	}
 
-	/**
-	 * Populates the ownership and churn values with all the data found in the revision in question, and then sorts it.
-	 */
-	private void initialize() {
-		List<CommitFileCell> fileDataListOfRevisionTemp = commitFileMatrix.getAllFilesOfRevision(revision);
-		for (CommitFileCell fileData : fileDataListOfRevisionTemp) {
-			fileDataListOfRevision.add(fileData);
-			ownershipValues.add(fileData.getNumberOfContributors());
-			ownershipValuesToleranceOne.add(fileData.getNumberOfContributorsToleranceOne());
-			ownershipValuesToleranceTwo.add(fileData.getNumberOfContributorsToleranceTwo());
-			focusWeightedContributors.add(fileData.getFocusWeightedContributors());
-			numberOfModifications.add(fileData.getNumberOfModifications());
-			if (commitFileMatrix.isDeepAnalysis()) {
-				churnValuesCoarse.add(fileData.getChurnValueCoarse());
-				churnValuesFine.add(fileData.getChurnValueFine());
-			}
-			addedDates.add(fileData.getDateAdded());
-			lastModifiedDates.add(fileData.getDateLastModified());
-			averageDates.add(fileData.getDateAverage());
+	private void initializeStructures() {
+		for (Entry<String, VersionControlHistoryMetrics> versionControlHistoryMetricsPerFileEntry : versionControlHistoryMetricsPerFile.entrySet()) {
+			VersionControlHistoryMetrics versionControlHistoryMetrics = versionControlHistoryMetricsPerFileEntry.getValue();
+			numberOfModifications.add(versionControlHistoryMetrics.getNumberOfModifications());
+			churnValues.add(versionControlHistoryMetrics.getChurnValue());
+			ownershipValues.add(versionControlHistoryMetrics.getNumberOfContributors());
+			ownershipValuesToleranceOne.add(versionControlHistoryMetrics.getNumberOfContributorsToleranceOne());
+			ownershipValuesToleranceTwo.add(versionControlHistoryMetrics.getNumberOfContributorsToleranceTwo());
+			focusWeightedOwnership.add(versionControlHistoryMetrics.getFocusWeightedContributors());
+			creatingDates.add(versionControlHistoryMetrics.getCreatingDate());
+			lastModificationDates.add(versionControlHistoryMetrics.getLastModificationDate());
+			modificationDatesAverage.add(versionControlHistoryMetrics.getModificationDatesAverage());
+			combinedValues.add(calculateCombinedMetric(versionControlHistoryMetrics));
+		}
+		Collections.sort(numberOfModifications);
+		if (!churnValues.contains(null)) {
+			Collections.sort(churnValues);
 		}
 		Collections.sort(ownershipValues);
 		Collections.sort(ownershipValuesToleranceOne);
 		Collections.sort(ownershipValuesToleranceTwo);
-		Collections.sort(focusWeightedContributors);
-		Collections.sort(numberOfModifications);
-		Collections.sort(churnValuesCoarse);
-		Collections.sort(churnValuesFine);
-		Collections.sort(addedDates);
-		Collections.sort(lastModifiedDates);
-		Collections.sort(averageDates);
-		
-		if (!ownershipValues.isEmpty()) {
-			int maxOwnershipValuePlusOne = ownershipValues.get(ownershipValues.size() - 1) + 1;
-			for (CommitFileCell fileData : fileDataListOfRevisionTemp) {
-				combinedValues.add(fileData.getNumberOfContributors() + maxOwnershipValuePlusOne * fileData.getNumberOfModifications());
-			}
+		if (!focusWeightedOwnership.contains(null)) {
+			Collections.sort(focusWeightedOwnership);
+		}
+		Collections.sort(creatingDates);
+		Collections.sort(lastModificationDates);
+		Collections.sort(modificationDatesAverage);
+		if (!combinedValues.contains(null)) {
 			Collections.sort(combinedValues);
 		}
 	}
 	
-	/**
-	 * Saves metrics to file.
-	 */
-	public void saveMetrics(String fileNamePrefix) throws IOException {
-		PrintWriter writerChurn = new PrintWriter(fileNamePrefix + "-churn.csv", "UTF-8");
-		PrintWriter writerChurnCoarse = new PrintWriter(fileNamePrefix + "-churncoarse.csv", "UTF-8");
-		PrintWriter writerModifications = new PrintWriter(fileNamePrefix + "-modifications.csv", "UTF-8");
-		PrintWriter writerOwnership = new PrintWriter(fileNamePrefix + "-ownership.csv", "UTF-8");
-		PrintWriter writerOwnership1 = new PrintWriter(fileNamePrefix + "-ownership1.csv", "UTF-8");
-		PrintWriter writerOwnership2 = new PrintWriter(fileNamePrefix + "-ownership2.csv", "UTF-8");
-		PrintWriter writerFocus = new PrintWriter(fileNamePrefix + "-focus.csv", "UTF-8");
-		PrintWriter writerDateAdded = new PrintWriter(fileNamePrefix + "-dateadded.csv", "UTF-8");
-		PrintWriter writerDateAverage = new PrintWriter(fileNamePrefix + "-dateaverage.csv", "UTF-8");
-		PrintWriter writerDateModified = new PrintWriter(fileNamePrefix + "-datemodified.csv", "UTF-8");
-		
-		
-		writerChurn.println("Name;Churn");
-		writerChurnCoarse.println("Name;Churncoarse");
-		writerModifications.println("Name;Modifications");
-		writerOwnership.println("Name;Ownership");
-		writerOwnership1.println("Name;Ownership1");
-		writerOwnership2.println("Name;Ownership2");
-		writerFocus.println("Name;Focus");
-		writerDateAdded.println("Name;DateAdded");
-		writerDateAverage.println("Name;DateAverage");
-		writerDateModified.println("Name;DateModified");
+	protected Map<String, Map<String, Double>> performHotNumberCalculation() {
+		Map<String, Map<String, Double>> hotNumbers = new HashMap<String, Map<String, Double>>();
+		Map<String, Double> hotNumbersModifications = new HashMap<String, Double>();
+		Map<String, Double> hotNumbersChurn = new HashMap<String, Double>();
+		Map<String, Double> hotNumbersOwnership = new HashMap<String, Double>();
+		Map<String, Double> hotNumbersOwnershipToleranceOne = new HashMap<String, Double>();
+		Map<String, Double> hotNumbersOwnershipToleranceTwo = new HashMap<String, Double>();
+		Map<String, Double> hotNumbersFocusWeightedOwnership = new HashMap<String, Double>();
+		Map<String, Double> hotNumbersCreatingDates = new HashMap<String, Double>();
+		Map<String, Double> hotNumbersLastModificationDates = new HashMap<String, Double>();
+		Map<String, Double> hotNumbersModificationDateAverage = new HashMap<String, Double>();
+		Map<String, Double> hotNumbersCombinedValues = new HashMap<String, Double>();
+		for (Entry<String, VersionControlHistoryMetrics> versionControlHistoryMetricsPerFileEntry : versionControlHistoryMetricsPerFile.entrySet()) {
+			String fileName = versionControlHistoryMetricsPerFileEntry.getKey();
+			VersionControlHistoryMetrics versionControlHistoryMetrics = versionControlHistoryMetricsPerFileEntry.getValue();
+			
+			Double hotNumberModification = Calculator.calculateDistributionValue(numberOfModifications, versionControlHistoryMetrics.getNumberOfModifications());
+			hotNumbersModifications.put(fileName, hotNumberModification);
+			
+			if (versionControlHistoryMetrics.getChurnValue() != null) {
+				Double hotNumberChurn = Calculator.calculateDistributionValue(churnValues, versionControlHistoryMetrics.getChurnValue());
+				hotNumbersChurn.put(fileName, hotNumberChurn);
+			} else {
+				hotNumbersChurn = null;
+			}
+			
+			Double hotNumberOwnership = Calculator.calculateDistributionValue(ownershipValues, versionControlHistoryMetrics.getNumberOfContributors());
+			hotNumbersOwnership.put(fileName, hotNumberOwnership);
+			
+			Double hotNumberOwnershipToleranceOne = Calculator.calculateDistributionValue(ownershipValuesToleranceOne, versionControlHistoryMetrics.getNumberOfContributorsToleranceOne());
+			hotNumbersOwnershipToleranceOne.put(fileName, hotNumberOwnershipToleranceOne);
+			
+			Double hotNumberOwnershipToleranceTwo = Calculator.calculateDistributionValue(ownershipValuesToleranceTwo, versionControlHistoryMetrics.getNumberOfContributorsToleranceTwo());
+			hotNumbersOwnershipToleranceTwo.put(fileName, hotNumberOwnershipToleranceTwo);
+					
+			if (versionControlHistoryMetrics.getFocusWeightedContributors() != null) {
+				Double hotNumberFocusWeightedOwnership = Calculator.calculateDistributionValue(focusWeightedOwnership, versionControlHistoryMetrics.getFocusWeightedContributors());
+				hotNumbersFocusWeightedOwnership.put(fileName, hotNumberFocusWeightedOwnership);
+			} else {
+				hotNumbersFocusWeightedOwnership = null;
+			}
+			
+			Double hotNumberCreatingDate = Calculator.calculateDistributionValue(creatingDates, versionControlHistoryMetrics.getCreatingDate());
+			hotNumbersCreatingDates.put(fileName, hotNumberCreatingDate);
+			
+			Double hotNumberLastModificationDate = Calculator.calculateDistributionValue(lastModificationDates, versionControlHistoryMetrics.getLastModificationDate());
+			hotNumbersLastModificationDates.put(fileName, hotNumberLastModificationDate);
+			
+			Double hotNumberModificationDateAverage = Calculator.calculateDistributionValue(modificationDatesAverage, versionControlHistoryMetrics.getModificationDatesAverage());
+			hotNumbersModificationDateAverage.put(fileName, hotNumberModificationDateAverage);
 
-		for (CommitFileCell fileData : fileDataListOfRevision) {
-			writerChurn.println(fileData.getFileName() + ";" + fileData.getChurnValueFine());
-			writerChurnCoarse.println(fileData.getFileName() + ";" + fileData.getChurnValueCoarse());
-			writerModifications.println(fileData.getFileName() + ";" + fileData.getNumberOfModifications());
-			writerOwnership.println(fileData.getFileName() + ";" + fileData.getNumberOfContributors());
-			writerOwnership1.println(fileData.getFileName() + ";" + fileData.getNumberOfContributorsToleranceOne());
-			writerOwnership2.println(fileData.getFileName() + ";" + fileData.getNumberOfContributorsToleranceTwo());
-			writerFocus.println(fileData.getFileName() + ";" + fileData.getFocusWeightedContributors());
-			writerDateAdded.println(fileData.getFileName() + ";" + fileData.getDateAdded());
-			writerDateAverage.println(fileData.getFileName() + ";" + fileData.getDateAverage());
-			writerDateModified.println(fileData.getFileName() + ";" + fileData.getDateLastModified());
+			Double combinedValue = calculateCombinedMetric(versionControlHistoryMetrics);
+			if (combinedValue != null) {
+				Double hotNumberCombined = Calculator.calculateDistributionValue(combinedValues, combinedValue);
+				hotNumbersCombinedValues.put(fileName, hotNumberCombined);
+			} else {
+				hotNumbersCombinedValues = null;
+			}
 		}
-		
-		writerChurn.close();
-		writerChurnCoarse.close();
-		writerModifications.close();
-		writerOwnership.close();
-		writerOwnership1.close();
-		writerOwnership2.close();
-		writerFocus.close();
-		writerDateAdded.close();
-		writerDateAverage.close();
-		writerDateModified.close();
-	}
-
-	/**
-	 * Calculates hot numbers of each occurring file, with specific extensions only.
-	 */
-	public List<HotNumber> calculateHotNumbers(AnalysisType analysisType) {
-		List<HotNumber> hotNumbers = new ArrayList<HotNumber>();
-		for (CommitFileCell fileData : fileDataListOfRevision) {
-			hotNumbers.add(new HotNumber(fileData.getFileName(), calculateHotNumberCommitFileCell(fileData, analysisType)));
+		hotNumbers.put("modifications", hotNumbersModifications);
+		if (hotNumbersChurn != null) {
+			hotNumbers.put("churn", hotNumbersChurn);
 		}
-		Collections.sort(hotNumbers, Collections.reverseOrder());
+		hotNumbers.put("ownership", hotNumbersOwnership);
+		hotNumbers.put("ownershipToleranceOne", hotNumbersOwnershipToleranceOne);
+		hotNumbers.put("ownershipToleranceTwo", hotNumbersOwnershipToleranceTwo);
+		if (hotNumbersFocusWeightedOwnership != null) {
+			hotNumbers.put("focusWeightedOwnership", hotNumbersFocusWeightedOwnership);
+		}
+		hotNumbers.put("creatingDates", hotNumbersCreatingDates);
+		hotNumbers.put("lastModificationDates", hotNumbersLastModificationDates);
+		hotNumbers.put("modificationDatesAverage", hotNumbersModificationDateAverage);
+		if (hotNumbersCombinedValues != null) {
+			hotNumbers.put("combined", hotNumbersCombinedValues);
+		}
 		return hotNumbers;
 	}
-
-	/**
-	 * Calculates the distribution position of a commit file cell, considering various ownership and churn values.
-	 * The relative positions are aggregated.
-	 */
-	protected Double calculateHotNumberCommitFileCell(CommitFileCell commitFileCell, AnalysisType analysisType) {
+	
+	protected static Double calculateCombinedMetric(VersionControlHistoryMetrics versionControlHistoryMetrics) {
 		Double result = null;
-		
-		switch (analysisType) {
-		case CHURN:
-			result = Calculator.calculateDistributionValue(churnValuesFine, commitFileCell.getChurnValueFine());
-			break;
-			
-		case MODIFICATION:
-			result = Calculator.calculateDistributionValue(numberOfModifications, commitFileCell.getNumberOfModifications());
-			break;
-			
-		case OWNERSHIP:
-			result = Calculator.calculateDistributionValue(ownershipValues, commitFileCell.getNumberOfContributors());
-			break;
-			
-		case OWNERSHIP_TOLERANCE1:
-			result = Calculator.calculateDistributionValue(ownershipValuesToleranceOne, commitFileCell.getNumberOfContributorsToleranceOne());
-			break;
-			
-		case OWNERSHIP_TOLERANCE2:
-			result = Calculator.calculateDistributionValue(ownershipValuesToleranceTwo, commitFileCell.getNumberOfContributorsToleranceTwo());
-			break;
-			
-		case OWNERSHIP_FOCUS:
-			result = Calculator.calculateDistributionValue(focusWeightedContributors, commitFileCell.getFocusWeightedContributors());
-			break;
-			
-		case DATEADDED:
-			result = Calculator.calculateDistributionValue(addedDates, commitFileCell.getDateAdded());
-			break;
-			
-		case DATEMODIFIED:
-			result = Calculator.calculateDistributionValue(lastModifiedDates, commitFileCell.getDateLastModified());
-			break;
-			
-		case DATEAVERAGE:
-			result = Calculator.calculateDistributionValue(averageDates, commitFileCell.getDateAverage());
-			break;
-			
-		case COMBINED:
-			if (!ownershipValues.isEmpty()) {
-				int maxOwnershipValuePlusOne = ownershipValues.get(ownershipValues.size() - 1) + 1;
-				result = Calculator.calculateDistributionValue(combinedValues, commitFileCell.getNumberOfContributors() + maxOwnershipValuePlusOne * commitFileCell.getNumberOfModifications());
-			}
-			break;
-			
-		case FULL:
-			Double[] aggregatedDistributionValues = new Double[2];
-			
-			Double[] ownershipDistributionValues = new Double[3];
-			ownershipDistributionValues[0] = Calculator.calculateDistributionValue(ownershipValues, commitFileCell.getNumberOfContributors());
-			ownershipDistributionValues[1] = Calculator.calculateDistributionValue(ownershipValuesToleranceOne, commitFileCell.getNumberOfContributorsToleranceOne());
-			ownershipDistributionValues[2] = Calculator.calculateDistributionValue(ownershipValuesToleranceTwo, commitFileCell.getNumberOfContributorsToleranceTwo());
-			aggregatedDistributionValues[0] = Calculator.calculateAverage(ownershipDistributionValues);
-			
-			Double[] churnDistributionValues = new Double[3];
-			churnDistributionValues[0] = Calculator.calculateDistributionValue(numberOfModifications, commitFileCell.getNumberOfModifications());
-			churnDistributionValues[1] = Calculator.calculateDistributionValue(churnValuesCoarse, commitFileCell.getChurnValueCoarse());
-			churnDistributionValues[2] = Calculator.calculateDistributionValue(churnValuesFine, commitFileCell.getChurnValueFine());
-			aggregatedDistributionValues[1] = Calculator.calculateAverage(churnDistributionValues);
-			
-			result = Calculator.calculateAverage(aggregatedDistributionValues);
-			break;
-			
-		case NONE:
-			break;
+		if (versionControlHistoryMetrics.getFocusWeightedContributors() != null) {
+			result = versionControlHistoryMetrics.getNumberOfModifications() * versionControlHistoryMetrics.getFocusWeightedContributors();
 		}
-		
 		return result;
 	}
 

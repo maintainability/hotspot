@@ -72,4 +72,9 @@ public class FileDiffInformation {
 		this.numberOfRemoves++;
 	}
 
+	@Override
+	public String toString() {
+		return "FileDiffInformation [fileName=" + fileName + ", atAtDiffs=" + atAtDiffs + ", numberOfAdds=" + numberOfAdds + ", numberOfRemoves=" + numberOfRemoves + "]";
+	}
+
 }

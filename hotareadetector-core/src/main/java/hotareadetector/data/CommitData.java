@@ -10,11 +10,21 @@ import java.util.List;
  */
 public class CommitData implements Comparable<CommitData> {
 	private int revisionNumber;
-	private String developer;
+	private String contributor;
 	private Date date = new Date();
 	private String comment;
 	private List<CommitedFileData> commitedFiles = new ArrayList<CommitedFileData>();
 	
+	public CommitData() {}
+	
+	public CommitData(int revisionNumber, String contributor, Date date, String comment, List<CommitedFileData> commitedFiles) {
+		this.revisionNumber = revisionNumber;
+		this.contributor = contributor;
+		this.date = date;
+		this.comment = comment;
+		this.commitedFiles = commitedFiles;
+	}
+
 	public int getRevisionNumber() {
 		return revisionNumber;
 	}
@@ -23,12 +33,12 @@ public class CommitData implements Comparable<CommitData> {
 		this.revisionNumber = revisionNumber;
 	}
 	
-	public String getDeveloper() {
-		return developer;
+	public String getContributor() {
+		return contributor;
 	}
 	
-	public void setDeveloper(String developer) {
-		this.developer = developer;
+	public void setContributor(String contributor) {
+		this.contributor = contributor;
 	}
 	
 	public Date getDate() {
@@ -64,4 +74,9 @@ public class CommitData implements Comparable<CommitData> {
 		return Integer.valueOf(revisionNumber).compareTo(Integer.valueOf(commitData.getRevisionNumber()));
 	}
 	
+	@Override
+	public String toString() {
+		return "CommitData [revisionNumber=" + revisionNumber + ", contributor=" + contributor + ", date=" + date
+				+ ", comment=" + comment + ", commitedFiles=" + commitedFiles + "]";
+	}
 }

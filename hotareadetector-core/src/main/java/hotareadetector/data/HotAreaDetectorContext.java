@@ -15,12 +15,10 @@ public class HotAreaDetectorContext {
 	private String sourceControlPassword = null;
 	private String dirName = "";
 	private String outputFileName = null;
-	private boolean deepAnalysis = false;
 	private List<String> extensions = null;
 	private List<String> includePrefixes = null;
 	private List<String> excludePrefixes = null;
 	private Integer revision = null;
-	private boolean saveLogsOnly = false;
 	private boolean atRNecessary = true;
 	private AnalysisType analysisType = FULL;
 	private String metricsPrefix = null;
@@ -80,14 +78,6 @@ public class HotAreaDetectorContext {
 		this.outputFileName = outputFileName;
 	}
 
-	public boolean isDeepAnalysis() {
-		return deepAnalysis;
-	}
-
-	public void setDeepAnalysis(boolean deepAnalysis) {
-		this.deepAnalysis = deepAnalysis;
-	}
-
 	public List<String> getExtensions() {
 		return extensions;
 	}
@@ -131,14 +121,6 @@ public class HotAreaDetectorContext {
 
 	public void setRevision(Integer revision) {
 		this.revision = revision;
-	}
-
-	public boolean isSaveLogsOnly() {
-		return saveLogsOnly;
-	}
-
-	public void setSaveLogsOnly(boolean saveLogsOnly) {
-		this.saveLogsOnly = saveLogsOnly;
 	}
 
 	public boolean isAtRNecessary() {

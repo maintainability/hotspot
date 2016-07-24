@@ -41,16 +41,6 @@ public class ParameterHandler {
 				context.setSourceControlPassword(paramValue);
 				break;
 
-			case "-deepAnalysis":
-				if ("true".compareToIgnoreCase(paramValue) == 0) {
-					context.setDeepAnalysis(true);
-				} else if ("false".compareToIgnoreCase(paramValue) == 0) {
-					context.setDeepAnalysis(false);
-				} else {
-					throw new ParameterException("Parameter 'deepAnalysis' must be either true or false (case insensitive), but was: " + paramValue + ".");
-				}
-				break;
-
 			case "-dirName":
 				context.setDirName(paramValue);
 				break;
@@ -73,16 +63,6 @@ public class ParameterHandler {
 
 			case "-excludePrefixes":
 				context.setExcludePrefixes(paramValue);
-				break;
-
-			case "-saveLogsOnly":
-				if ("true".compareToIgnoreCase(paramValue) == 0) {
-					context.setSaveLogsOnly(true);
-				} else if ("false".compareToIgnoreCase(paramValue) == 0) {
-					context.setSaveLogsOnly(false);
-				} else {
-					throw new ParameterException("Parameter 'saveLogsOnly' must be either true or false (case insensitive), but was: " + paramValue + ".");
-				}
 				break;
 
 			case "-revision":
@@ -127,7 +107,6 @@ public class ParameterHandler {
 		System.out.println("    -client:          if the type is svn, then the executable svn client, else it must be omitted.");
 		System.out.println("    -userName:        if the type is svn, then the user name, else it must be omitted.");
 		System.out.println("    -password:        if the type is svn, then the password, else it must be omitted.");
-		System.out.println("    -deepAnalysis:    true or false; indicates if deep analyisis (executing diffs on each revision) should be performed.");
 		System.out.println("    -dirName:         name of the directory where the logs reside");
 		System.out.println("    -outputFileName:  name of the result file. If set, then the result is written to that file. If not set, then the result is written on the console.");
 		System.out.println("    -metricsPrefix:   indicates that the metrics should be saved as well, into files. Prefix of the result files, without extension. (Not written if not set.)");

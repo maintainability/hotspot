@@ -59,7 +59,7 @@ public class SvnCommandParser implements SourceControlCommandParser{
 				commitData = new CommitData();
 				sourceControlData.add(0, commitData);
 				commitData.setRevisionNumber(Integer.parseInt(splitted[0].trim().substring(1)));
-				commitData.setDeveloper(splitted[1].trim());
+				commitData.setContributor(splitted[1].trim());
 				commitData.setDate(DateUtil.convertToDate(splitted[2]));
 				String commentLengthStr = splitted[3].split(" ")[1].trim();
 				commentLengthRemaining = Integer.parseInt(commentLengthStr);
@@ -86,7 +86,6 @@ public class SvnCommandParser implements SourceControlCommandParser{
 						splitted = trimmed.split(" \\(from ");
 						commitedFile.setFileName(splitted[0].trim().substring(2));
 						commitedFile.setFromFileName(splitted[1].split(":")[0]);
-						commitedFile.setOperationType(OperationType.R);
 					} else {
 						commitedFile.setFileName(trimmed.substring(2));
 					}
