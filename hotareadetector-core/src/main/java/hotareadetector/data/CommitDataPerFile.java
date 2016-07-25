@@ -26,17 +26,18 @@ public class CommitDataPerFile {
 		Collections.sort(commitData.getCommitedFiles());
 		for (CommitedFileData committedFile : commitData.getCommitedFiles()) {
 			String fileName = committedFile.getFileName();
+			Integer churnValue = findChurnValue(churnData, fileName);
 			switch (committedFile.getOperationType()) {
 			case A:
 				if (committedFile.getFromFileName() == null) {
-					performAdd(commitData, fileName, churnData.containsKey(fileName) ? churnData.get(fileName) : null);
+					performAdd(commitData, fileName, churnValue);
 				} else {
 					performRename(commitData, committedFile.getFromFileName(), fileName, true);
 				}
 				break;
 				
 			case M:
-				performModify(commitData, fileName, churnData.containsKey(fileName) ? churnData.get(fileName) : null);
+				performModify(commitData, fileName, churnValue);
 				break;
 				
 			case D:
@@ -50,6 +51,71 @@ public class CommitDataPerFile {
 		}
 	}
 	
+	/**
+	 * The logic implemented in this function is necessary due to the following reason.
+	 * 
+	 * In the svn log the file names are typically longer than in the results of the svn diff. Here are some examples:
+	 * 
+	 * In svn log: /ant/core/trunk/src/main/org/apache/tools/ant/Main.java
+	 * The same in svn diff: core/trunk/src/main/org/apache/tools/ant/Main.java
+	 * 
+	 * In svn log: /ant/sandbox/antlibs/dotnet/branches/Ant_1.6.2_compatible/docs/msbuild.html
+	 * Same in the svn diff: /sandbox/antlibs/dotnet/branches/Ant_1.6.2_compatible/docs/msbuild.html
+	 * 
+	 * In svn log: /jEdit/trunk/org/gjt/sp/jedit/View.java
+	 * The same in svn diff: trunk/org/gjt/sp/jedit/View.java
+	 * 
+	 * In svn log: /logging/log4j/trunk/src/java/org/apache/log4j/Appender.java
+	 * The same in svn diff: trunk/src/java/org/apache/log4j/Appender.java
+	 * 
+	 * In svn log: /xerces/c/trunk/src/util/BitSet.cpp
+	 * The same in svn diff: c/trunk/src/util/BitSet.cpp
+	 * 
+	 * In these cases some of the prefixes is missing from svn diff.
+	 * If the file name is in format /prefix1/prefix2/path/File.ext, then the following lookups are tried, in this order:
+	 * 1. /prefix1/prefix2/path/File.ext
+	 * 2. prefix1/prefix2/path/File.ext
+	 * 3. /prefix2/path/File.ext
+	 * 4. prefix2/path/File.ext
+	 * 5. /path/File.ext
+	 * 6. path/File.ext
+	 */
+	protected Integer findChurnValue(Map<String, Integer> churnData, String fileName) {
+		// 1. match
+		Integer churnValue = churnData.get(fileName);
+		if (churnValue == null) {
+			int firstIndex = fileName.indexOf('/');
+			if (firstIndex >= 0 && fileName.length() > firstIndex) {
+				// 2. match
+				churnValue = churnData.get(fileName.substring(firstIndex + 1));
+				if (churnValue == null) {
+					int secondIndex = fileName.indexOf('/', firstIndex + 1);
+					if (secondIndex >= 0 && fileName.length() > secondIndex + 1) {
+						// 3. match
+						churnValue = churnData.get(fileName.substring(secondIndex));
+						if (churnValue == null) {
+							// 4. match
+							churnValue = churnData.get(fileName.substring(secondIndex + 1));
+							if (churnValue == null) {
+								int thirdIndex = fileName.indexOf('/', secondIndex + 1);
+								if (thirdIndex >= 0 && fileName.length() > thirdIndex + 1) {
+									// 5. match
+									churnValue = churnData.get(fileName.substring(thirdIndex));
+									if (churnValue == null) {
+										// 6. match
+										churnValue = churnData.get(fileName.substring(thirdIndex + 1));
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return churnValue;
+	}
+	
+
 	protected void performAdd(CommitData commitData, String fileName, Integer churnValue) {
 		if (fileCommitMap.keySet().contains(fileName)) {
 			throw new RuntimeException("Error: file " + fileName + " already added.");

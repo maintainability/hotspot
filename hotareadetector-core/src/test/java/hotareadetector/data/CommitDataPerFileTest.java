@@ -501,4 +501,67 @@ public class CommitDataPerFileTest {
 		assertEquals(1, commitDataPerFile.getFileCommitMap().get("/org/mycompany/myapp/EntryPoint.java").size());
 		assertEquals(6, commitDataPerFile.getFileCommitMap().get("/org/mycompany/myapp/EntryPoint.java").get(0).getCommitData().getRevisionNumber());
 	}
+	
+	@Test
+	public void testFindChurnValueFirstMatch() {
+		CommitDataPerFile commitDataPerFile = new CommitDataPerFile();
+		Map<String, Integer> churnData = new HashMap<String, Integer>();
+		churnData.put("/prefix1/prefix2/path/File.ext", 15);
+		
+		assertEquals(new Integer(15), commitDataPerFile.findChurnValue(churnData, "/prefix1/prefix2/path/File.ext"));
+	}
+	
+	@Test
+	public void testFindChurnValueSecondMatch() {
+		CommitDataPerFile commitDataPerFile = new CommitDataPerFile();
+		Map<String, Integer> churnData = new HashMap<String, Integer>();
+		churnData.put("prefix1/prefix2/path/File.ext", 15);
+		
+		assertEquals(new Integer(15), commitDataPerFile.findChurnValue(churnData, "/prefix1/prefix2/path/File.ext"));
+	}
+	
+	@Test
+	public void testFindChurnValueThirdMatch() {
+		CommitDataPerFile commitDataPerFile = new CommitDataPerFile();
+		Map<String, Integer> churnData = new HashMap<String, Integer>();
+		churnData.put("/prefix2/path/File.ext", 15);
+		
+		assertEquals(new Integer(15), commitDataPerFile.findChurnValue(churnData, "/prefix1/prefix2/path/File.ext"));
+	}
+	
+	@Test
+	public void testFindChurnValueFourthMatch() {
+		CommitDataPerFile commitDataPerFile = new CommitDataPerFile();
+		Map<String, Integer> churnData = new HashMap<String, Integer>();
+		churnData.put("prefix2/path/File.ext", 15);
+		
+		assertEquals(new Integer(15), commitDataPerFile.findChurnValue(churnData, "/prefix1/prefix2/path/File.ext"));
+	}
+	
+	@Test
+	public void testFindChurnValueFifthMatch() {
+		CommitDataPerFile commitDataPerFile = new CommitDataPerFile();
+		Map<String, Integer> churnData = new HashMap<String, Integer>();
+		churnData.put("/path/File.ext", 15);
+		
+		assertEquals(new Integer(15), commitDataPerFile.findChurnValue(churnData, "/prefix1/prefix2/path/File.ext"));
+	}
+	
+	@Test
+	public void testFindChurnValueSixthMatch() {
+		CommitDataPerFile commitDataPerFile = new CommitDataPerFile();
+		Map<String, Integer> churnData = new HashMap<String, Integer>();
+		churnData.put("path/File.ext", 15);
+		
+		assertEquals(new Integer(15), commitDataPerFile.findChurnValue(churnData, "/prefix1/prefix2/path/File.ext"));
+	}
+	
+	@Test
+	public void testFindChurnValueNoMatch() {
+		CommitDataPerFile commitDataPerFile = new CommitDataPerFile();
+		Map<String, Integer> churnData = new HashMap<String, Integer>();
+		churnData.put("/File.ext", 15);
+		
+		assertEquals(null, commitDataPerFile.findChurnValue(churnData, "/prefix1/prefix2/path/File.ext"));
+	}
 }

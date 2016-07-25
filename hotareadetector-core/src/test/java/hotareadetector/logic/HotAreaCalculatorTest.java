@@ -165,40 +165,6 @@ public class HotAreaCalculatorTest {
 	}
 	
 	@Test
-	public void testCalculateHotNumbersNoChurn() {
-		Map<String, List<CommitDataExtended>> fileCommitMap = CommitFileMapGenerator.createFileCommitMap(false);
-		Map<String, VersionControlHistoryMetrics> versionControlHistoryMetricsPerFile = (new VersionControlHistoryMetricsCalculator()).calculateVersionControlHistoryMetrics(fileCommitMap);
-		
-		HotAreaCalculator hotAreaCalculator = new HotAreaCalculator(versionControlHistoryMetricsPerFile);
-		Map<String, Map<String, Double>> result = hotAreaCalculator.calculateHotNumbers();
-		
-		assertEquals(5, hotAreaCalculator.numberOfModifications.size());
-		assertEquals(1, hotAreaCalculator.numberOfModifications.get(0).intValue());
-		assertEquals(1, hotAreaCalculator.numberOfModifications.get(1).intValue());
-		assertEquals(1, hotAreaCalculator.numberOfModifications.get(2).intValue());
-		assertEquals(3, hotAreaCalculator.numberOfModifications.get(3).intValue());
-		assertEquals(3, hotAreaCalculator.numberOfModifications.get(4).intValue());
-		
-		assertEquals(5, hotAreaCalculator.churnValues.size());
-		assertEquals(null, hotAreaCalculator.churnValues.get(0));
-		assertEquals(null, hotAreaCalculator.churnValues.get(1));
-		assertEquals(null, hotAreaCalculator.churnValues.get(2));
-		assertEquals(null, hotAreaCalculator.churnValues.get(3));
-		assertEquals(null, hotAreaCalculator.churnValues.get(4));
-		
-		assertEquals(9, result.size());
-		
-		assertEquals(5, result.get("modifications").size());
-		assertEquals(new Double(0.6), result.get("modifications").get(CommitFileMapGenerator.file1));
-		assertEquals(new Double(0.0), result.get("modifications").get(CommitFileMapGenerator.file2));
-		assertEquals(new Double(0.0), result.get("modifications").get(CommitFileMapGenerator.file3));
-		assertEquals(new Double(0.6), result.get("modifications").get(CommitFileMapGenerator.file4));
-		assertEquals(new Double(0.0), result.get("modifications").get(CommitFileMapGenerator.file5));
-		
-		assertEquals(null, result.get("churn"));
-	}
-	
-	@Test
 	public void testCalculateCombinedMetric() {
 		VersionControlHistoryMetrics versionControlHistoryMetrics = new VersionControlHistoryMetrics();
 		versionControlHistoryMetrics.setNumberOfModifications(5);

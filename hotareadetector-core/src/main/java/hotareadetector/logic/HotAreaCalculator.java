@@ -45,7 +45,9 @@ public class HotAreaCalculator {
 		for (Entry<String, VersionControlHistoryMetrics> versionControlHistoryMetricsPerFileEntry : versionControlHistoryMetricsPerFile.entrySet()) {
 			VersionControlHistoryMetrics versionControlHistoryMetrics = versionControlHistoryMetricsPerFileEntry.getValue();
 			numberOfModifications.add(versionControlHistoryMetrics.getNumberOfModifications());
-			churnValues.add(versionControlHistoryMetrics.getChurnValue());
+			if (versionControlHistoryMetrics.getChurnValue() != null) {
+				churnValues.add(versionControlHistoryMetrics.getChurnValue());
+			}
 			ownershipValues.add(versionControlHistoryMetrics.getNumberOfContributors());
 			ownershipValuesToleranceOne.add(versionControlHistoryMetrics.getNumberOfContributorsToleranceOne());
 			ownershipValuesToleranceTwo.add(versionControlHistoryMetrics.getNumberOfContributorsToleranceTwo());
@@ -92,11 +94,11 @@ public class HotAreaCalculator {
 			Double hotNumberModification = Calculator.calculateDistributionValue(numberOfModifications, versionControlHistoryMetrics.getNumberOfModifications());
 			hotNumbersModifications.put(fileName, hotNumberModification);
 			
-			if (versionControlHistoryMetrics.getChurnValue() != null) {
+			if (versionControlHistoryMetrics.getChurnValue() == null) {
+				hotNumbersChurn.put(fileName, 0.0);
+			} else {
 				Double hotNumberChurn = Calculator.calculateDistributionValue(churnValues, versionControlHistoryMetrics.getChurnValue());
 				hotNumbersChurn.put(fileName, hotNumberChurn);
-			} else {
-				hotNumbersChurn = null;
 			}
 			
 			Double hotNumberOwnership = Calculator.calculateDistributionValue(ownershipValues, versionControlHistoryMetrics.getNumberOfContributors());
@@ -108,12 +110,8 @@ public class HotAreaCalculator {
 			Double hotNumberOwnershipToleranceTwo = Calculator.calculateDistributionValue(ownershipValuesToleranceTwo, versionControlHistoryMetrics.getNumberOfContributorsToleranceTwo());
 			hotNumbersOwnershipToleranceTwo.put(fileName, hotNumberOwnershipToleranceTwo);
 					
-			if (versionControlHistoryMetrics.getFocusWeightedContributors() != null) {
-				Double hotNumberFocusWeightedOwnership = Calculator.calculateDistributionValue(focusWeightedOwnership, versionControlHistoryMetrics.getFocusWeightedContributors());
-				hotNumbersFocusWeightedOwnership.put(fileName, hotNumberFocusWeightedOwnership);
-			} else {
-				hotNumbersFocusWeightedOwnership = null;
-			}
+			Double hotNumberFocusWeightedOwnership = Calculator.calculateDistributionValue(focusWeightedOwnership, versionControlHistoryMetrics.getFocusWeightedContributors());
+			hotNumbersFocusWeightedOwnership.put(fileName, hotNumberFocusWeightedOwnership);
 			
 			Double hotNumberCreatingDate = Calculator.calculateDistributionValue(creatingDates, versionControlHistoryMetrics.getCreatingDate());
 			hotNumbersCreatingDates.put(fileName, hotNumberCreatingDate);
@@ -125,29 +123,19 @@ public class HotAreaCalculator {
 			hotNumbersModificationDateAverage.put(fileName, hotNumberModificationDateAverage);
 
 			Double combinedValue = calculateCombinedMetric(versionControlHistoryMetrics);
-			if (combinedValue != null) {
-				Double hotNumberCombined = Calculator.calculateDistributionValue(combinedValues, combinedValue);
-				hotNumbersCombinedValues.put(fileName, hotNumberCombined);
-			} else {
-				hotNumbersCombinedValues = null;
-			}
+			Double hotNumberCombined = Calculator.calculateDistributionValue(combinedValues, combinedValue);
+			hotNumbersCombinedValues.put(fileName, hotNumberCombined);
 		}
 		hotNumbers.put("modifications", hotNumbersModifications);
-		if (hotNumbersChurn != null) {
-			hotNumbers.put("churn", hotNumbersChurn);
-		}
+		hotNumbers.put("churn", hotNumbersChurn);
 		hotNumbers.put("ownership", hotNumbersOwnership);
 		hotNumbers.put("ownershipToleranceOne", hotNumbersOwnershipToleranceOne);
 		hotNumbers.put("ownershipToleranceTwo", hotNumbersOwnershipToleranceTwo);
-		if (hotNumbersFocusWeightedOwnership != null) {
-			hotNumbers.put("focusWeightedOwnership", hotNumbersFocusWeightedOwnership);
-		}
+		hotNumbers.put("focusWeightedOwnership", hotNumbersFocusWeightedOwnership);
 		hotNumbers.put("creatingDates", hotNumbersCreatingDates);
 		hotNumbers.put("lastModificationDates", hotNumbersLastModificationDates);
 		hotNumbers.put("modificationDatesAverage", hotNumbersModificationDateAverage);
-		if (hotNumbersCombinedValues != null) {
-			hotNumbers.put("combined", hotNumbersCombinedValues);
-		}
+		hotNumbers.put("combined", hotNumbersCombinedValues);
 		return hotNumbers;
 	}
 	

@@ -59,8 +59,8 @@ public class SourceControlLogic {
 				fileDiffInformationList = parser.parseSourceControlDiff(sourceControlDiffResultData);
 				System.out.println("Diff parsed.");
 			}
-			
-			commitDataPerFile.addCommitData(commitData, createChurnData(fileDiffInformationList));
+			Map<String, Integer> churnData = createChurnData(fileDiffInformationList);
+			commitDataPerFile.addCommitData(commitData, churnData);
 			System.out.println("Revision r" + commitData.getRevisionNumber() + " elaborated.");
 		}
 		System.out.println("Elaboration of all revisions finished.");
