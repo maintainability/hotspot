@@ -9,8 +9,9 @@ import hotareadetector.data.CommitDataExtended;
 public class FocusDistanceCalculatorCache {
 	FocusDistanceCalculator focusDistanceCalculator;
 	
-	public FocusDistanceCalculatorCache(FocusDistanceCalculator focusDistanceCalculator) {
+	public FocusDistanceCalculatorCache(FocusDistanceCalculator focusDistanceCalculator, Map<String, List<CommitDataExtended>> fileCommitMap) {
 		this.focusDistanceCalculator = focusDistanceCalculator;
+		initializeCache(fileCommitMap);
 	}
 	
 	/**
@@ -32,7 +33,7 @@ public class FocusDistanceCalculatorCache {
 	/**
 	 * Initialize the cache.
 	 */
-	protected void initializeCache(Map<String, List<CommitDataExtended>> fileCommitMap) {
+	private void initializeCache(Map<String, List<CommitDataExtended>> fileCommitMap) {
 		List<String> fileNameList = HotspotStringUtil.createSortedListFromSet(fileCommitMap.keySet());
 		int index = 0;
 		for (String fileName : fileNameList) {
@@ -53,7 +54,7 @@ public class FocusDistanceCalculatorCache {
 		Integer orderOfFile1 = fileNameOrder.get(fileName1);
 		Integer orderOfFile2 = fileNameOrder.get(fileName2);
 		if (orderOfFile1 == null || orderOfFile2 == null) {
-			System.out.println("Order of file " + orderOfFile1 + " or file " + orderOfFile2 + " not found. This message should appear in case of unit testing only. Proceeding with real calculation.");
+			System.out.println("Order of file " + fileName1 + " or file " + fileName2 + " not found. This message should appear in case of unit testing only. Proceeding with real calculation.");
 			return focusDistanceCalculator.calculateDistance(fileName1, fileName2);
 		}
 		int cachedDistance = distanceCache[orderOfFile1][orderOfFile2];

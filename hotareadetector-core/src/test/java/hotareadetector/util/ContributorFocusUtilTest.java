@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -19,7 +20,7 @@ public class ContributorFocusUtilTest {
 	public void testCalculateFocusWeightedOwnership() {
 		Map<String, List<CommitDataExtended>> fileCommitMap = CommitFileMapGenerator.createFileCommitMap();
 		
-		Map<String, Double> result = (new ContributorFocusUtil()).calculateFocusWeightedOwnership(fileCommitMap);
+		Map<String, Double> result = (new ContributorFocusUtil(fileCommitMap)).calculateFocusWeightedOwnership();
 		
 		assertEquals(5, result.size());
 		assertEquals(new Double(20.0/3), result.get(CommitFileMapGenerator.file1));
@@ -75,7 +76,7 @@ public class ContributorFocusUtilTest {
 	public void testBuildContributorFocusStructure() {
 		Map<String, List<CommitDataExtended>> fileCommitMap = CommitFileMapGenerator.createFileCommitMap();
 		
-		ContributorFocusStructure result = (new ContributorFocusUtil()).buildContributorFocusStructure(fileCommitMap);
+		ContributorFocusStructure result = (new ContributorFocusUtil(fileCommitMap)).buildContributorFocusStructure();
 		
 		assertEquals(3, result.getContributorsModifications().get(CommitFileMapGenerator.contributor1).size());
 		
@@ -187,9 +188,10 @@ public class ContributorFocusUtilTest {
 	@Test
 	public void testCalculateFocusWeightedOwnershipOfFiles() {
 		Map<String, List<CommitDataExtended>> fileCommitMap = CommitFileMapGenerator.createFileCommitMap();
-		ContributorFocusStructure contributorFocusStructure = (new ContributorFocusUtil()).buildContributorFocusStructure(fileCommitMap);
+		ContributorFocusUtil contributorFocusUtil = new ContributorFocusUtil(fileCommitMap);
+		ContributorFocusStructure contributorFocusStructure = contributorFocusUtil.buildContributorFocusStructure();
 		
-		Map<String, Double> result = (new ContributorFocusUtil()).calculateFocusWeightedOwnershipOfFiles(contributorFocusStructure);
+		Map<String, Double> result = contributorFocusUtil.calculateFocusWeightedOwnershipOfFiles(contributorFocusStructure);
 		
 		assertEquals(5, result.size());
 		assertEquals(new Double(20.0/3), result.get(CommitFileMapGenerator.file1));
@@ -203,18 +205,19 @@ public class ContributorFocusUtilTest {
 	@Test
 	public void testCalculateFocusWeightedOwnershipOfFile() {
 		Map<String, List<CommitDataExtended>> fileCommitMap = CommitFileMapGenerator.createFileCommitMap();
-		ContributorFocusUtil contributorFocusUtil = new ContributorFocusUtil();
-		ContributorFocusStructure contributorFocusStructure = contributorFocusUtil.buildContributorFocusStructure(fileCommitMap);
+		ContributorFocusUtil contributorFocusUtil = new ContributorFocusUtil(fileCommitMap);
+		ContributorFocusStructure contributorFocusStructure = contributorFocusUtil.buildContributorFocusStructure();
 		
-		assertEquals(new Double(20.0/3), (new ContributorFocusUtil()).calculateFocusWeightedOwnershipOfFile(contributorFocusStructure, CommitFileMapGenerator.file1));
+		assertEquals(new Double(20.0/3), contributorFocusUtil.calculateFocusWeightedOwnershipOfFile(contributorFocusStructure, CommitFileMapGenerator.file1));
 	}
 	
 	@Test
 	public void testDetermineModifiedFilesPerContributor() {
 		Map<String, List<CommitDataExtended>> fileCommitMap = CommitFileMapGenerator.createFileCommitMap();
-		ContributorFocusStructure contributorFocusStructure = (new ContributorFocusUtil()).buildContributorFocusStructure(fileCommitMap);
+		ContributorFocusUtil contributorFocusUtil = new ContributorFocusUtil(fileCommitMap);
+		ContributorFocusStructure contributorFocusStructure = contributorFocusUtil.buildContributorFocusStructure();
 		
-		Set<String> fileModifications1 = (new ContributorFocusUtil()).determineModifiedFilesPerContributor(contributorFocusStructure, CommitFileMapGenerator.contributor1, CommitFileMapGenerator.file1);
+		Set<String> fileModifications1 = contributorFocusUtil.determineModifiedFilesPerContributor(contributorFocusStructure, CommitFileMapGenerator.contributor1, CommitFileMapGenerator.file1);
 		
 		assertEquals(4, fileModifications1.size());
 		assertTrue(fileModifications1.contains(CommitFileMapGenerator.file1));
@@ -232,7 +235,7 @@ public class ContributorFocusUtilTest {
 		listOfModifiedFiles.add("org/apache/tools/ant/taskdefs/UpToDate.java");
 		listOfModifiedFiles.add("org/apache/tools/ant/types/mappers/FilterMapper.java");
 		
-		ContributorFocusUtil contributorFocusUtil = new ContributorFocusUtil();
+		ContributorFocusUtil contributorFocusUtil = new ContributorFocusUtil(new HashMap<String, List<CommitDataExtended>>());
 		assertEquals(0.0, contributorFocusUtil.calculateFocusValue(null), 0.01);
 		assertEquals(0.0, contributorFocusUtil.calculateFocusValue(new ArrayList<String>()), 0.01);
 		assertEquals(0.0, contributorFocusUtil.calculateFocusValue(listOfModifiedFiles.subList(0, 1)), 0.01);

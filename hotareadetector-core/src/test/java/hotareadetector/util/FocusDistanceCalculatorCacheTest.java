@@ -15,12 +15,8 @@ import hotareadetector.mock.CommitFileMapGenerator;
 public class FocusDistanceCalculatorCacheTest {
 	@Test
 	public void testCachingMechanism() {
-		FocusDistanceCalculatorCache focusDistanceCalculatorCache = new FocusDistanceCalculatorCache(new FocusDistanceCalculator());
 		Map<String, List<CommitDataExtended>> fileCommitMap = CommitFileMapGenerator.createFileCommitMap();
-		
-		assertEquals(0, focusDistanceCalculatorCache.fileNameOrder.size());
-		
-		focusDistanceCalculatorCache.initializeCache(fileCommitMap);
+		FocusDistanceCalculatorCache focusDistanceCalculatorCache = new FocusDistanceCalculatorCache(new FocusDistanceCalculator(), fileCommitMap);
 		
 		assertEquals(5, focusDistanceCalculatorCache.fileNameOrder.size());
 		assertEquals(new Integer(0), focusDistanceCalculatorCache.fileNameOrder.get(CommitFileMapGenerator.file1));
@@ -56,9 +52,8 @@ public class FocusDistanceCalculatorCacheTest {
 		FocusDistanceCalculator focusDistanceCalculator = mock(FocusDistanceCalculator.class);
 		when(focusDistanceCalculator.calculateDistance(CommitFileMapGenerator.file1, CommitFileMapGenerator.file2)).thenReturn(1);
 		
-		FocusDistanceCalculatorCache focusDistanceCalculatorCache = new FocusDistanceCalculatorCache(focusDistanceCalculator);
 		Map<String, List<CommitDataExtended>> fileCommitMap = CommitFileMapGenerator.createFileCommitMap();		
-		focusDistanceCalculatorCache.initializeCache(fileCommitMap);
+		FocusDistanceCalculatorCache focusDistanceCalculatorCache = new FocusDistanceCalculatorCache(focusDistanceCalculator, fileCommitMap);
 		
 		// verify that not called yet
 		verify(focusDistanceCalculator, times(0)).calculateDistance(CommitFileMapGenerator.file1, CommitFileMapGenerator.file2);

@@ -19,7 +19,13 @@ import hotareadetector.data.ContributorFocusStructure;
  * Utility functions for contributor focus calculation.
  */
 public class ContributorFocusUtil {
-	FocusDistanceCalculatorCache focusDistanceCalculatorCache = new FocusDistanceCalculatorCache(new FocusDistanceCalculator());
+	private FocusDistanceCalculatorCache focusDistanceCalculatorCache;
+	Map<String, List<CommitDataExtended>> fileCommitMap;
+	
+	public ContributorFocusUtil(Map<String, List<CommitDataExtended>> fileCommitMap) {
+		focusDistanceCalculatorCache = new FocusDistanceCalculatorCache(new FocusDistanceCalculator(), fileCommitMap);
+		this.fileCommitMap = fileCommitMap;
+	}
 	
 	/**
 	 * Calculates the focus weighted ownership of all files. Returns the calculated data in the following format:
@@ -30,8 +36,8 @@ public class ContributorFocusUtil {
 	 * /com/mycompany/myapp/util/Calculations.java -> 7
 	 * /com/mycompany/myapp/util/Asserts.java -> 5
 	 */
-	public Map<String, Double> calculateFocusWeightedOwnership(Map<String, List<CommitDataExtended>> fileCommitMap) {
-		ContributorFocusStructure contributorFocusStructure = buildContributorFocusStructure(fileCommitMap);
+	public Map<String, Double> calculateFocusWeightedOwnership() {
+		ContributorFocusStructure contributorFocusStructure = buildContributorFocusStructure();
 		Map<String, Double> result = calculateFocusWeightedOwnershipOfFiles(contributorFocusStructure);
 		return result;
 	}
@@ -47,7 +53,7 @@ public class ContributorFocusUtil {
 	 * 
 	 * For an example, see the related unit test.
 	 */
-	protected ContributorFocusStructure buildContributorFocusStructure(Map<String, List<CommitDataExtended>> fileCommitMap) {
+	protected ContributorFocusStructure buildContributorFocusStructure() {
 		Map<String, TreeMap<Date, ArrayList<String>>> contributorsModifications = new HashMap<String, TreeMap<Date, ArrayList<String>>>();
 		Map<ContributorFile, Date> fileLastModifiedByContributor = new HashMap<ContributorFile, Date>();
 		Map<String, Set<String>> contributorsPerFile = new HashMap<String, Set<String>>(); 
