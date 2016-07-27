@@ -33,7 +33,15 @@ public class HotAreaDetectorCommandExecutor {
 	 */
 	public Map<String, Map<String, Double>> executeHotAreaDetection(HotAreaDetectorContext context) throws IOException {
 		CommitDataPerFile commitDataPerFile = readCommitData(context);
+		
+		System.out.println("commitDataPerFile.getFileCommitMap().keySet()");
+		System.out.println(commitDataPerFile.getFileCommitMap().keySet());
+		
 		Map<String, List<CommitDataExtended>> fileCommitMapFiltered = filterCommitData(context, commitDataPerFile);
+		
+		System.out.println("fileCommitMapFiltered.keySet()");
+		System.out.println(fileCommitMapFiltered.keySet());
+		
 		Map<String, VersionControlHistoryMetrics> versionControlHistoryMetricsPerFile = (new VersionControlHistoryMetricsCalculator()).calculateVersionControlHistoryMetrics(fileCommitMapFiltered);
 		ResultSaver.saveMetrics(context, versionControlHistoryMetricsPerFile);
 		Map<String, Map<String, Double>> hotNumbers = (new HotAreaCalculator(versionControlHistoryMetricsPerFile)).calculateHotNumbers();
